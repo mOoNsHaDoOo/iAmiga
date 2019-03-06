@@ -25,6 +25,7 @@
 
 static bool g_inited = false;
 static NSMutableArray *_romArray = nil;
+static NSString *searchTerm = nil;
 
 @implementation EMUROMBrowserViewController {
     @private
@@ -53,6 +54,11 @@ static NSMutableArray *_romArray = nil;
                                                  name:[EMUROMBrowserViewController getFileImportedNotificationName]
                                                object:nil];
     [self reloadAdfs];
+    if (searchTerm != nil) {
+        _searchBar.text = searchTerm;
+        [self searchAdfs];
+        [self.tableView reloadData];
+    }
     [_scrollToRowHandler scrollToRow];
 }
 
@@ -112,6 +118,7 @@ static NSMutableArray *_romArray = nil;
 
 -(void)searchBar:(UISearchBar *)searchBar textDidChange: (NSString *) term
 {
+    searchTerm = _searchBar.text;
     [self searchAdfs];
     [self.tableView reloadData];
 }
