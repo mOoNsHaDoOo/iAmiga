@@ -121,16 +121,27 @@ static NSMutableArray *_romArray = nil;
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-	return _roms.count;
+    if (_results == nil)
+        return _sectionRoms.count;
+    else {
+        return 1;
+    }
 }
 
 - (NSArray *)sectionIndexTitlesForTableView:(UITableView *)tableView {
-    return _indexTitles;
+    if (_results == nil)
+        return [_indexTitles copy];
+    else
+        return @[@"S"];
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
-	EMUFileGroup *g = (EMUFileGroup*)[_roms objectAtIndex:section];
-	return g.sectionName;
+    if (_results == nil) {
+        EMUFileGroup *g = (EMUFileGroup*)[_sectionRoms objectAtIndex:section];
+        return g.sectionName;
+    } else {
+        return @"Found ADFs";
+    }
 }
 
 - (NSInteger)tableView:(UITableView *)tableView sectionForSectionIndexTitle:(NSString *)title atIndex:(NSInteger)index {
@@ -146,86 +157,82 @@ static NSMutableArray *_romArray = nil;
 }
 
 - (void)onAdfChanged {
-    [_scrollToRowHandler clearRow];
     [self reloadAdfs];
     [self.tableView reloadData];
 }
 
 - (NSInteger)tableView:(UITableView *)table numberOfRowsInSection:(NSInteger)section {
-    EMUFileGroup *g = (EMUFileGroup*)[_roms objectAtIndex:section];
-    return g.files.count;
+    if (_results == nil) {
+        EMUFileGroup *g = (EMUFileGroup*)[_sectionRoms objectAtIndex:section];
+        return g.files.count;
+    }
+    
+    return _results.count;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    EMUFileGroup *g = (EMUFileGroup*)[_roms objectAtIndex:indexPath.section];
-    EMUFileInfo *fi = [g.files objectAtIndex:indexPath.row];
+    if (indexPath == _selectedIndexPath || _segueSelect)
+        return;
+    
+    UITableViewCell *cell = [tableView cellForRowAtIndexPath: _selectedIndexPath];
+    
+    cell.accessoryType = UITableViewCellAccessoryNone;
+    cell = [tableView cellForRowAtIndexPath:indexPath];
+    //cell.accessoryType = UITableViewCellAccessoryCheckmark;
+    _selectedIndexPath = indexPath;
+    
+    EMUFileInfo *fi = [self getFileInfoForIndexPath: indexPath];
     [self.navigationController popViewControllerAnimated:YES];
-    [self.delegate didSelectROM:fi withContext:self.context];
-    [_scrollToRowHandler setRow:indexPath];
+    if (self.delegate)
+        [self.delegate didSelectROM:fi withContext: _context];
 }
 
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
-    return YES;
+    EMUFileInfo *fileInfo = [self getFileInfoForIndexPath:indexPath];
+    return [_adfImporter isDownloadedAdf:fileInfo.path];
 }
 
-- (NSArray *)tableView:(UITableView *)tableView editActionsForRowAtIndexPath:(NSIndexPath *)indexPath {
-    NSMutableArray *editActions = [NSMutableArray arrayWithCapacity:2];
-    
-    EMUFileInfo *fileInfo = [self getFileInfoForIndexPath:indexPath];
-    
-    UITableViewRowAction *shareAction = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleNormal title:@"Share" handler:^(UITableViewRowAction *action, NSIndexPath *indexPath) {
-        NSURL *url = [NSURL fileURLWithPath:fileInfo.path];
-        NSString *string = @"iAmiga File Sharing";
-        UIActivityViewController *activityViewController =
-            [[[UIActivityViewController alloc] initWithActivityItems:@[string, url] applicationActivities:nil] autorelease];
-        if ([activityViewController respondsToSelector:@selector(popoverPresentationController)]) {
-            // iOS8: setting the sourceView is required for iPad
-            UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
-            activityViewController.popoverPresentationController.sourceView = [cell.subviews firstObject]; // firstObject == cell actions
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (editingStyle == UITableViewCellEditingStyleDelete) {
+        EMUFileInfo *fileInfo = [self getFileInfoForIndexPath:indexPath];
+        BOOL deleteOk = [[NSFileManager defaultManager] removeItemAtPath:fileInfo.path error:NULL];
+        if (deleteOk) {
+            [self reloadAdfs];
+            [tableView beginUpdates];
+            [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+            [tableView endUpdates];
         }
-        [self presentViewController:activityViewController animated:YES completion:^{ }];
-    }];
-    shareAction.backgroundColor = [UIColor blueColor];
-    [editActions addObject:shareAction];
-    
-    BOOL okToDelete = [_adfImporter isDownloadedAdf:fileInfo.path];
-
-    if (okToDelete) {
-        UITableViewRowAction *deleteAction = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleDestructive title:@"Delete" handler:^(UITableViewRowAction *action, NSIndexPath *indexPath) {
-            BOOL deleted = [[NSFileManager defaultManager] removeItemAtPath:fileInfo.path error:NULL];
-            if (deleted) {
-                [_scrollToRowHandler clearRow];
-                [self reloadAdfs];
-                [tableView beginUpdates];
-                [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
-                [tableView endUpdates];
-            }
-        }];
-        [editActions addObject:deleteAction];
     }
-    return editActions;
 }
 
 #define CELL_ID @"DiskCell"
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-	
-	UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CELL_ID];
-    if (!cell) {
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CELL_ID];
+    if (cell == nil)
         cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CELL_ID] autorelease];
-    }
-	
+    
     cell.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+    if ([indexPath compare: _selectedIndexPath] == NSOrderedSame)
+        cell.accessoryType = UITableViewCellAccessoryCheckmark;
+    else
+        cell.accessoryType = UITableViewCellAccessoryNone;
+    
     EMUFileInfo *fileInfo = [self getFileInfoForIndexPath:indexPath];
     cell.textLabel.text = [fileInfo fileName];
-	
+    
     return cell;
 }
 
 - (EMUFileInfo *)getFileInfoForIndexPath:(NSIndexPath *)indexPath {
-    EMUFileGroup *group = [_roms objectAtIndex:indexPath.section];
-    return [group.files objectAtIndex:indexPath.row];
+    if (_results == nil) {
+        EMUFileGroup *group = [_sectionRoms objectAtIndex:indexPath.section];
+        return [group.files objectAtIndex:indexPath.row];
+    } else {
+        return [_results objectAtIndex:indexPath.row];
+    }
 }
+
 
 - (void)dealloc {
 

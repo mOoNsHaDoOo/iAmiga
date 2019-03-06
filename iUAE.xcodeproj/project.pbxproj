@@ -2835,10 +2835,10 @@
 				05BC1AEF1073448200EABC6E /* EMUFileGroup.m */,
 				05BC1AF01073448200EABC6E /* EMUFileInfo.h */,
 				05BC1AF11073448200EABC6E /* EMUFileInfo.m */,
-				05BC1AF31073448200EABC6E /* EMUROMBrowserViewController.h */,
 				7ED69CFA1A6D9D9B00059F7D /* DiskAssociationViewController.h */,
-				05BC1AF41073448200EABC6E /* EMUROMBrowserViewController.mm */,
 				7ED69CFB1A6D9DAF00059F7D /* DiskAssociationViewController.mm */,
+				05BC1AF31073448200EABC6E /* EMUROMBrowserViewController.h */,
+				05BC1AF41073448200EABC6E /* EMUROMBrowserViewController.mm */,
 			);
 			path = "File Browser";
 			sourceTree = "<group>";

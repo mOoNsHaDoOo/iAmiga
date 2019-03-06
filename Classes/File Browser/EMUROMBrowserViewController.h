@@ -26,7 +26,7 @@
 - (void)didSelectROM:(EMUFileInfo*)fileInfo withContext:(id)context;
 @end
 
-@interface EMUROMBrowserViewController : UITableViewController
+@interface EMUROMBrowserViewController : UITableViewController<UISearchBarDelegate>
 
 + (NSString *)getFileImportedNotificationName;
 
@@ -36,5 +36,8 @@
 @property (retain, nonatomic) IBOutlet UISearchBar *searchBar;
 @property (nonatomic, retain) NSMutableArray *results;
 @property (nonatomic, retain) NSMutableArray *sectionRoms;
+@property (nonatomic, retain) NSIndexPath *selectedIndexPath;
+@property (nonatomic) int selectedRow;
+@property (nonatomic) bool segueSelect;
 
 @end
