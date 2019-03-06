@@ -808,7 +808,7 @@
                                         <rect key="frame" x="0.0" y="731.5" width="1024" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="6ac-bH-HQi" id="4mR-EQ-fwM">
-                                            <rect key="frame" x="0.0" y="0.0" width="574" height="43.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="998" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="HD0:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yml-CR-nwp">
