@@ -40,7 +40,7 @@
 
 - (NSArray *)getFileInfosInDirectory:(NSString *)directory fileNameFilter:(NSString *)fileNameFilter {
     NSDirectoryEnumerator *direnum = [[NSFileManager defaultManager] enumeratorAtPath:directory];
-    NSArray *relativeFilePaths = [[direnum allObjects] pathsMatchingExtensions:@[@"adf", @"ADF"]];
+    NSArray *relativeFilePaths = [direnum allObjects]; // pathsMatchingExtensions:@[@"adf", @"ADF"]];
     NSMutableArray *fileInfos = [[[NSMutableArray alloc] initWithCapacity:[relativeFilePaths count]] autorelease];
     for (NSString *relativeFilePath in relativeFilePaths) {
         NSString *filePath = [directory stringByAppendingPathComponent:relativeFilePath];
