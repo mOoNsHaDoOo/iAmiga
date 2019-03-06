@@ -1,5 +1,9 @@
 # iAmiga/iUAE version 1.31MS
 
+#### iAmiga 1.31MS adds a search bar (i have 20 GiB of ADFs :-) ) to the file browser and fixes a long standing bug with non ascii file names.
+
+![alt text](https://github.com/mOoNsHaDoOo/Images/blob/master/iAmigaNew.jpg?raw=true)
+
 ## Download
 
 To download the source code type git clone --recurse-submodules https://github.com/mOoNsHaDoOo/iAmiga<br>
