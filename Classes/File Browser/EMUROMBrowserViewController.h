@@ -33,5 +33,8 @@
 @property (nonatomic, assign) id<SelectRomDelegate>	delegate;
 @property (nonatomic, retain) id context;
 @property (nonatomic, retain) NSArray *extensions; // extensions of files to show
+@property (retain, nonatomic) IBOutlet UISearchBar *searchBar;
+@property (nonatomic, retain) NSMutableArray *results;
+@property (nonatomic, retain) NSMutableArray *sectionRoms;
 
 @end

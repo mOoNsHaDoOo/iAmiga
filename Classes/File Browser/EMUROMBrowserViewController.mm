@@ -23,6 +23,9 @@
 #import "EMUFileGroup.h"
 #import "ScrollToRowHandler.h"
 
+static bool g_inited = false;
+static NSMutableArray *_romArray = nil;
+
 @implementation EMUROMBrowserViewController {
     @private
     AdfImporter *_adfImporter;
@@ -54,31 +57,63 @@
 }
 
 - (void)reloadAdfs {
+    NSMutableArray *sections = [[NSMutableArray alloc] init];
+    
+    for (int i = 0; i < 26; i++) {
+        unichar c = i+65;
+        EMUFileGroup *g = [[EMUFileGroup alloc] initWithSectionName:[NSString stringWithFormat:@"%c", c]];
+        [sections addObject:g];
+    }
+    [sections addObject:[[EMUFileGroup alloc] initWithSectionName:@"#"]];
+    
+    EMUBrowser *browser = [[EMUBrowser alloc] init];
+    
+    NSArray *files;
+    
+    if (!g_inited) {
+        _romArray = [[NSMutableArray alloc] init];
+        files = [browser getFileInfos];
+    } else
+        files = _romArray;
+    
+    for (EMUFileInfo* f in files) {
+        EMUFileGroup *g;
+        
+        if (!g_inited)
+            [_romArray addObject: f];
+        
+        unichar c = [[f fileName] characterAtIndex:0];
+        c = toupper(c) - 65;
+        if (c < [sections count] && c >= 0)
+            g = (EMUFileGroup*)[sections objectAtIndex:c];
+        else
+            g = (EMUFileGroup*)[sections objectAtIndex:26];
+        
+        [g.files addObject:f];
+    }
+    [browser release];
+    _sectionRoms = sections;
+    g_inited = 1;
+}
 
-	NSMutableArray *sections = [[NSMutableArray alloc] init];
-	for (int i = 0; i < 26; i++) {
-		unichar c = i+65;
-		EMUFileGroup *g = [[EMUFileGroup alloc] initWithSectionName:[NSString stringWithFormat:@"%c", c]];
-		[sections addObject:g];
-	}
-	[sections addObject:[[EMUFileGroup alloc] initWithSectionName:@"#"]];
-	
-	EMUBrowser *browser = [[[EMUBrowser alloc] init] autorelease];
+-(void)searchAdfs
+{
+    NSPredicate *srcResults;
+    
+    if ([_searchBar.text length] == 0) {
+        _results = nil;
+        return;
+    }
+    
+    srcResults = [NSPredicate predicateWithFormat: @"SELF.fileName contains [search] %@", _searchBar.text];
+    if (srcResults)
+        _results = [[_romArray filteredArrayUsingPredicate: srcResults] mutableCopy];
+}
 
-    NSArray *files = [browser getFileInfosForExtensions:self.extensions];
-	for (EMUFileInfo* f in files) {
-		unichar c = [[f fileName] characterAtIndex:0];
-		if (isdigit(c)) {
-			EMUFileGroup *g = (EMUFileGroup*)[sections objectAtIndex:26];
-			[g.files addObject:f];
-		} else {
-			c = toupper(c) - 65;
-			EMUFileGroup *g = (EMUFileGroup*)[sections objectAtIndex:c];
-			[g.files addObject:f];
-		}
-	}
-    [_roms release];
-    _roms = [sections retain];
+-(void)searchBar:(UISearchBar *)searchBar textDidChange: (NSString *) term
+{
+    [self searchAdfs];
+    [self.tableView reloadData];
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
@@ -99,12 +134,15 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView sectionForSectionIndexTitle:(NSString *)title atIndex:(NSInteger)index {
-    unichar c = [title characterAtIndex:0];
-    if (c > 64 && c < 91) {
-		return c - 65;
+    if (_results == nil) {
+        unichar c = [title characterAtIndex:0];
+        if (c > 64 && c < 91)
+            return c - 65;
+        
+        return 26;
     }
-	
-    return 26;
+    
+    return 0;
 }
 
 - (void)onAdfChanged {
@@ -200,7 +238,8 @@
 
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 
-	[super dealloc];
+    [_searchBar release];
+    [super dealloc];
 }
 
 @end

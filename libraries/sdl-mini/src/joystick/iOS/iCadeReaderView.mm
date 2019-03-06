@@ -222,7 +222,7 @@ static const char *OFF_STATES = "eczqtrfnmpgv";
     
     int tiState = (int) _iCadeState;
     
-    char *p = strchr(ON_STATES, ch);
+    char *p = (char *) strchr(ON_STATES, ch);
     bool stateChanged = false;
     if (p) {
         int index = p-ON_STATES;
@@ -235,7 +235,7 @@ static const char *OFF_STATES = "eczqtrfnmpgv";
         
         [self handleinputbuttons];
     } else {
-        p = strchr(OFF_STATES, ch);
+        p = (char *) strchr(OFF_STATES, ch);
         if (p) {
             int index = p-OFF_STATES;
             tiState &= ~(1 << index);

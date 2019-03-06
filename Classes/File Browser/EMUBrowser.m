@@ -22,6 +22,41 @@
 
 @implementation EMUBrowser
 
+- (NSArray *)getFileInfos {
+    return [self getFileInfosWithFileNameFilter:nil];
+}
+
+- (NSArray *)getFileInfosWithFileNameFilter:(NSString *)fileNameFilter {
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *documentsDirectory = [paths objectAtIndex:0];
+    
+    NSArray *documentFileInfos = [self getFileInfosInDirectory:documentsDirectory fileNameFilter:fileNameFilter];
+    NSArray *bundleFileInfos = [self getFileInfosInDirectory:[[NSBundle mainBundle] bundlePath] fileNameFilter:fileNameFilter];
+    NSMutableArray *fileInfos = [[[NSMutableArray alloc] initWithCapacity:[documentFileInfos count] + [bundleFileInfos count]] autorelease];
+    [fileInfos addObjectsFromArray:documentFileInfos];
+    [fileInfos addObjectsFromArray:bundleFileInfos];
+    return fileInfos;
+}
+
+- (NSArray *)getFileInfosInDirectory:(NSString *)directory fileNameFilter:(NSString *)fileNameFilter {
+    NSDirectoryEnumerator *direnum = [[NSFileManager defaultManager] enumeratorAtPath:directory];
+    NSArray *relativeFilePaths = [[direnum allObjects] pathsMatchingExtensions:@[@"adf", @"ADF"]];
+    NSMutableArray *fileInfos = [[[NSMutableArray alloc] initWithCapacity:[relativeFilePaths count]] autorelease];
+    for (NSString *relativeFilePath in relativeFilePaths) {
+        NSString *filePath = [directory stringByAppendingPathComponent:relativeFilePath];
+        EMUFileInfo *fileInfo = [[[EMUFileInfo alloc] initFromPath:filePath] autorelease];
+        if (fileNameFilter) {
+            NSString *fileName = [relativeFilePath lastPathComponent];
+            if ([fileName isEqualToString:fileNameFilter]) {
+                return [NSArray arrayWithObject:fileInfo];
+            }
+        } else {
+            [fileInfos addObject:fileInfo];
+        }
+    }
+    return fileInfos;
+}
+
 - (NSArray *)getAdfFileInfos {
     return [self getFileInfosForExtensions:@[@"adf", @"ADF"]];
 }
