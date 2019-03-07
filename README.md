@@ -2,10 +2,10 @@
 
 #### iAmiga 1.31MS Changelist<br>
 
-- Fixed a crash in file browser with some adf filenames<br>
-- Added a search bar in file browser (i have 20 GiB of ADFs :-) )<br>
-- Search bar keeps its contents between browser controller access<br>
-- Removed .adf file extension filter on file browser<br>
+- GUI.File browser: Fixed a crash some adf filenames<br>
+- GUI.File browser: Added a search bar (i have 20 GiB of ADFs :-) )<br>
+- GUI.File browser: Search bar keeps its contents<br>
+- GUI.File browser: Removed .adf file extension filter<br>
 
 Still a lot to do. Stay tuned :-)
 
