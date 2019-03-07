@@ -5,7 +5,7 @@
 - Fix for a long standing bug with non ascii file names<br>
 - File browser searchbar (i have 20 GiB of ADFs :-) )<br>
 - Search bar keeps its contents between file browsings<br>
-- Removed .adf filter on file browser controller<br>
+- Removed .adf file extension filter  on file browsering<br>
 
 ![alt text](https://github.com/mOoNsHaDoOo/Images/blob/master/iAmigaNew.jpg?raw=true)
 
