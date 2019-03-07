@@ -1,6 +1,10 @@
 # iAmiga/iUAE version 1.31MS
 
-#### iAmiga 1.31MS adds a search bar (i have 20 GiB of ADFs :-) ) to the file browser and fixes a long standing bug with non ascii file names.
+#### iAmiga 1.31MS Changelist<br>
+
+- File browser searchbar (i have 20 GiB of ADFs :-) )<br>
+- Search bar keeps its contents between file browsings<br>
+- Fixe for a long standing bug with non ascii file names<br>
 
 ![alt text](https://github.com/mOoNsHaDoOo/Images/blob/master/iAmigaNew.jpg?raw=true)
 
