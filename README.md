@@ -1,11 +1,11 @@
 # iAmiga/iUAE version 1.31MS
 
-#### iAmiga 1.31MS Changelist<br>
+#### iAmiga 1.31MS Changelist stack<br>
 
-- GUI.File browser: Fixed a crash some adf filenames<br>
-- GUI.File browser: Added a search bar (i have 20 GiB of ADFs :-) )<br>
-- GUI.File browser: Search bar keeps its contents<br>
 - GUI.File browser: Removed .adf file extension filter<br>
+- GUI.File browser: Search bar now keeps its contents<br>
+- GUI.File browser: Added a search bar (i have 20 GiB of ADFs :-) )<br>
+- GUI.File browser: Fixed app crash some with adf filenames<br>
 
 Still a lot to do. Stay tuned :-)
 
