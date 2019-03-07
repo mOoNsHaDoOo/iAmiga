@@ -3,7 +3,7 @@
 #### iAmiga 1.31MS Changelist<br>
 
 - Fix for a long standing bug with non ascii file names<br>
-- File browser searchbar (i have 20 GiB of ADFs :-) )<br>
+- Added a search bar in file browser (i have 20 GiB of ADFs :-) )<br>
 - Search bar keeps its contents between file browsings<br>
 - Removed .adf file extension filter  on file browsering<br>
 
