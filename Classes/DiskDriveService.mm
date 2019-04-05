@@ -24,17 +24,16 @@
 
 @implementation DiskDriveService
 
-- (NSString *)getInsertedDiskForDrive:(int)driveNumber {
+- (NSString *)getInsertedDiskForDrive:(NSUInteger)driveNumber {
     if (driveNumber < NUM_DRIVES)
     {
-        
         NSString *adfPath = [NSString stringWithCString:changed_df[driveNumber] encoding:[NSString defaultCStringEncoding]];
         return [adfPath length] == 0 ? nil : adfPath;
     }
     return nil;
 }
 
-- (void)insertDisk:(NSString *)adfPath intoDrive:(int)driveNumber {
+- (void)insertDisk:(NSString *)adfPath intoDrive:(NSUInteger)driveNumber {
     if (driveNumber < NUM_DRIVES)
     {
         [adfPath getCString:changed_df[driveNumber] maxLength:256 encoding:[NSString defaultCStringEncoding]];
@@ -43,7 +42,7 @@
 }
 
 - (void)insertDisks:(NSArray *)adfPaths {
-    for (int driveNumber = 0; driveNumber < [adfPaths count]; driveNumber++)
+    for (NSUInteger driveNumber = 0; driveNumber < [adfPaths count]; driveNumber++)
     {
         if (driveNumber < NUM_DRIVES)
         {

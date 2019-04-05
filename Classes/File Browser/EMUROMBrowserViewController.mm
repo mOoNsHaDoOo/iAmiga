@@ -23,9 +23,8 @@
 #import "EMUFileGroup.h"
 #import "ScrollToRowHandler.h"
 
-static bool g_inited = false;
-static NSMutableArray *_romArray = nil;
-static NSString *searchTerm = nil;
+static NSMutableDictionary *_files = nil;
+static NSMutableDictionary *_lastSeachTerms = nil;
 
 @implementation EMUROMBrowserViewController {
     @private
@@ -46,23 +45,30 @@ static NSString *searchTerm = nil;
     _indexTitles = [@[@"A", @"B", @"C", @"D", @"E", @"F", @"G", @"H", @"I",
                       @"J", @"K", @"L", @"M", @"N", @"O", @"P", @"Q", @"R", @"S", @"T", @"U", @"V",
                       @"W", @"X", @"Y", @"Z", @"#"] retain];
-    _scrollToRowHandler = [[ScrollToRowHandler alloc] initWithTableView:self.tableView identity:[_extensions description]];
+    _scrollToRowHandler = [[ScrollToRowHandler alloc] initWithTableView:self.tableView identity:[_extension description]];
     
-
+    if (_files == nil)
+        _files = [NSMutableDictionary new];
+    
+    if (_lastSeachTerms == nil)
+        _lastSeachTerms = [NSMutableDictionary new];
+    
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(onAdfChanged)
                                                  name:[EMUROMBrowserViewController getFileImportedNotificationName]
                                                object:nil];
-    [self reloadAdfs];
-    if (searchTerm != nil) {
-        _searchBar.text = searchTerm;
-        [self searchAdfs];
+    [self loadFiles: false];
+    NSString *lastSearchTerm = [_lastSeachTerms objectForKey: _extension];
+    if (lastSearchTerm != nil) {
+        _searchBar.text = lastSearchTerm;
+        [self searchFiles];
         [self.tableView reloadData];
     }
+    _searchBar.placeholder = [NSString stringWithFormat: @"search %@", _extension];
     [_scrollToRowHandler scrollToRow];
 }
 
-- (void)reloadAdfs {
+- (void)loadFiles: (bool) forceReload {
     NSMutableArray *sections = [[NSMutableArray alloc] init];
     
     for (int i = 0; i < 26; i++) {
@@ -73,20 +79,17 @@ static NSString *searchTerm = nil;
     [sections addObject:[[EMUFileGroup alloc] initWithSectionName:@"#"]];
     
     EMUBrowser *browser = [[EMUBrowser alloc] init];
-    
     NSArray *files;
     
-    if (!g_inited) {
-        _romArray = [[NSMutableArray alloc] init];
-        files = [browser getFileInfos];
-    } else
-        files = _romArray;
+    files = [_files objectForKey: _extension];
+    if (files == nil || forceReload) {
+        files = [browser getFileInfosWithFileNameFilter: _extension];
+        _files[_extension] = files;
+    }
     
+    _activeFilesCollection = files;
     for (EMUFileInfo* f in files) {
         EMUFileGroup *g;
-        
-        if (!g_inited)
-            [_romArray addObject: f];
         
         unichar c = [[f fileName] characterAtIndex:0];
         c = toupper(c) - 65;
@@ -98,11 +101,10 @@ static NSString *searchTerm = nil;
         [g.files addObject:f];
     }
     [browser release];
-    _sectionRoms = sections;
-    g_inited = 1;
+    _sectionFiles = sections;
 }
 
--(void)searchAdfs
+-(void)searchFiles
 {
     NSPredicate *srcResults;
     
@@ -113,13 +115,13 @@ static NSString *searchTerm = nil;
     
     srcResults = [NSPredicate predicateWithFormat: @"SELF.fileName contains [search] %@", _searchBar.text];
     if (srcResults)
-        _results = [[_romArray filteredArrayUsingPredicate: srcResults] mutableCopy];
+        _results = [[_activeFilesCollection filteredArrayUsingPredicate: srcResults] mutableCopy];
 }
 
 -(void)searchBar:(UISearchBar *)searchBar textDidChange: (NSString *) term
 {
-    searchTerm = _searchBar.text;
-    [self searchAdfs];
+    _lastSeachTerms[_extension] = _searchBar.text;
+    [self searchFiles];
     [self.tableView reloadData];
 }
 
@@ -129,7 +131,7 @@ static NSString *searchTerm = nil;
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     if (_results == nil)
-        return _sectionRoms.count;
+        return _sectionFiles.count;
     else {
         return 1;
     }
@@ -144,10 +146,10 @@ static NSString *searchTerm = nil;
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
     if (_results == nil) {
-        EMUFileGroup *g = (EMUFileGroup*)[_sectionRoms objectAtIndex:section];
+        EMUFileGroup *g = (EMUFileGroup*)[_sectionFiles objectAtIndex:section];
         return g.sectionName;
     } else {
-        return @"Found ADFs";
+        return @"Found files";
     }
 }
 
@@ -164,13 +166,13 @@ static NSString *searchTerm = nil;
 }
 
 - (void)onAdfChanged {
-    [self reloadAdfs];
+    [self loadFiles: true];
     [self.tableView reloadData];
 }
 
 - (NSInteger)tableView:(UITableView *)table numberOfRowsInSection:(NSInteger)section {
     if (_results == nil) {
-        EMUFileGroup *g = (EMUFileGroup*)[_sectionRoms objectAtIndex:section];
+        EMUFileGroup *g = (EMUFileGroup*)[_sectionFiles objectAtIndex:section];
         return g.files.count;
     }
     
@@ -204,7 +206,7 @@ static NSString *searchTerm = nil;
         EMUFileInfo *fileInfo = [self getFileInfoForIndexPath:indexPath];
         BOOL deleteOk = [[NSFileManager defaultManager] removeItemAtPath:fileInfo.path error:NULL];
         if (deleteOk) {
-            [self reloadAdfs];
+            [self loadFiles: true];
             [tableView beginUpdates];
             [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
             [tableView endUpdates];
@@ -233,7 +235,7 @@ static NSString *searchTerm = nil;
 
 - (EMUFileInfo *)getFileInfoForIndexPath:(NSIndexPath *)indexPath {
     if (_results == nil) {
-        EMUFileGroup *group = [_sectionRoms objectAtIndex:indexPath.section];
+        EMUFileGroup *group = [_sectionFiles objectAtIndex:indexPath.section];
         return [group.files objectAtIndex:indexPath.row];
     } else {
         return [_results objectAtIndex:indexPath.row];
@@ -244,7 +246,7 @@ static NSString *searchTerm = nil;
 - (void)dealloc {
 
     self.context = nil;
-    self.extensions = nil;
+    self.extension= nil;
     [_roms release];
     [_indexTitles release];
     [_adfImporter release];

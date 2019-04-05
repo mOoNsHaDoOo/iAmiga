@@ -27,12 +27,12 @@
 /**
  * Returns the adf path for the specified drive (df[0], df[1] ...), nil if no disk is inserted in the specified drive.
  */
-- (NSString *)getInsertedDiskForDrive:(int)driveNumber;
+- (NSString *)getInsertedDiskForDrive:(NSUInteger)driveNumber;
 
 /**
  * Inserts the specified adf into the specified drive (df[0], df[1] ...).
  */
-- (void)insertDisk:(NSString *)adfPath intoDrive:(int)driveNumber;
+- (void)insertDisk:(NSString *)adfPath intoDrive:(NSUInteger)driveNumber;
 
 /**
  * Inserts the specified adfs into the drives corresponding to the adfs' positions in the array: adf at position 0 -> df0, adf at position 1 -> df1 ...

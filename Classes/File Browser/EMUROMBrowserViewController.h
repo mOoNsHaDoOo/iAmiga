@@ -32,12 +32,12 @@
 
 @property (nonatomic, assign) id<SelectRomDelegate>	delegate;
 @property (nonatomic, retain) id context;
-@property (nonatomic, retain) NSArray *extensions; // extensions of files to show
+@property (nonatomic, retain) NSString *extension; // extensions of files to show
 @property (retain, nonatomic) IBOutlet UISearchBar *searchBar;
 @property (nonatomic, retain) NSMutableArray *results;
-@property (nonatomic, retain) NSMutableArray *sectionRoms;
+@property (nonatomic, retain) NSMutableArray *sectionFiles;
 @property (nonatomic, retain) NSIndexPath *selectedIndexPath;
 @property (nonatomic) int selectedRow;
 @property (nonatomic) bool segueSelect;
-
+@property (nonatomic, retain) NSArray *activeFilesCollection;
 @end

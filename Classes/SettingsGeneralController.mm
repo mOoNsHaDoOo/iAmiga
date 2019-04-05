@@ -42,31 +42,31 @@ static const NSUInteger kMiscSection = 3;
 static const NSUInteger kHardDrivesSection = 4;
 
 @protocol FileSelectionContext <NSObject>
-@property (nonatomic, readonly) NSArray *extensions;
+@property (nonatomic, readonly) NSString *extension;
 @end
 
 @interface AdfSelectionContext : NSObject <FileSelectionContext>
-@property (nonatomic, assign) int driveNumber;
+@property (nonatomic, assign) NSUInteger driveNumber;
 @end
 @implementation AdfSelectionContext : NSObject
-- (NSArray *)extensions {
-    return @[@"ADF", @"adf"];
+- (NSString *)extension {
+    return @"adf";
 }
 @end
 
 @interface RomSelectionContext : NSObject <FileSelectionContext>
 @end
 @implementation RomSelectionContext : NSObject
-- (NSArray *)extensions {
-    return @[@"rom", @"ROM"];
+- (NSString *)extension {
+    return @"rom";
 }
 @end
 
 @interface HdfSelectionContext : NSObject <FileSelectionContext>
 @end
 @implementation HdfSelectionContext : NSObject
-- (NSArray *)extensions {
-    return @[@"hdf", @"HDF"];
+- (NSString *)extension {
+    return @"hdf";
 }
 @end
 
@@ -233,7 +233,7 @@ static const NSUInteger kHardDrivesSection = 4;
     }
     else if (indexPath.section == kDiskDrivesSection)
     {
-        int driveNumber = indexPath.row;
+        NSInteger driveNumber = indexPath.row;
         if (driveNumber == 1)
         {
             return @[_df1EnabledSetting];
@@ -260,7 +260,7 @@ static const NSUInteger kHardDrivesSection = 4;
     {
         if (indexPath.section == kDiskDrivesSection)
         {
-            int driveNumber = indexPath.row;
+            NSInteger driveNumber = indexPath.row;
             [self onAdfChanged:kNoDiskAdfPath drive:driveNumber];
             [_diskDriveService ejectDiskFromDrive:driveNumber];
         }
@@ -329,7 +329,7 @@ static const NSUInteger kHardDrivesSection = 4;
     {
         EMUROMBrowserViewController *controller = segue.destinationViewController;
         id<FileSelectionContext> ctx = sender;
-        controller.extensions = ctx.extensions;
+        controller.extension = ctx.extension;
         controller.delegate = self;
         controller.context = ctx;
     }

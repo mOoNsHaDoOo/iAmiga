@@ -46,7 +46,6 @@
 /**
  * Methods for search bar
  */
--(NSArray *)getFileInfos;
 -(NSArray *)getFileInfosWithFileNameFilter:(NSString *)fileNameFilter;
 -(NSArray *)getFileInfosInDirectory:(NSString *)directory fileNameFilter:(NSString *)fileNameFilter;
 

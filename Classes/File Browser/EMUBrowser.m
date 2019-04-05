@@ -22,10 +22,6 @@
 
 @implementation EMUBrowser
 
-- (NSArray *)getFileInfos {
-    return [self getFileInfosWithFileNameFilter:nil];
-}
-
 - (NSArray *)getFileInfosWithFileNameFilter:(NSString *)fileNameFilter {
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *documentsDirectory = [paths objectAtIndex:0];
@@ -46,8 +42,8 @@
         NSString *filePath = [directory stringByAppendingPathComponent:relativeFilePath];
         EMUFileInfo *fileInfo = [[[EMUFileInfo alloc] initFromPath:filePath] autorelease];
         if (fileNameFilter) {
-            NSString *fileName = [relativeFilePath lastPathComponent];
-            if ([fileName isEqualToString:fileNameFilter]) {
+            NSString *fileExt = [relativeFilePath lastPathComponent];
+            if ([fileExt caseInsensitiveCompare: fileNameFilter]) {
                 return [NSArray arrayWithObject:fileInfo];
             }
         } else {
@@ -58,7 +54,7 @@
 }
 
 - (NSArray *)getAdfFileInfos {
-    return [self getFileInfosForExtensions:@[@"adf", @"ADF"]];
+    return [self getFileInfosForExtensions:@[@"adf"]];
 }
 
 - (NSArray *)getFileInfosForExtensions:(NSArray *)extensions {
