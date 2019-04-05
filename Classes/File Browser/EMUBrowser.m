@@ -36,15 +36,15 @@
 
 - (NSArray *)getFileInfosInDirectory:(NSString *)directory fileNameFilter:(NSString *)fileNameFilter {
     NSDirectoryEnumerator *direnum = [[NSFileManager defaultManager] enumeratorAtPath:directory];
-    NSArray *relativeFilePaths = [direnum allObjects]; // pathsMatchingExtensions:@[@"adf", @"ADF"]];
+    NSArray *relativeFilePaths = [direnum allObjects];
     NSMutableArray *fileInfos = [[[NSMutableArray alloc] initWithCapacity:[relativeFilePaths count]] autorelease];
     for (NSString *relativeFilePath in relativeFilePaths) {
         NSString *filePath = [directory stringByAppendingPathComponent:relativeFilePath];
         EMUFileInfo *fileInfo = [[[EMUFileInfo alloc] initFromPath:filePath] autorelease];
         if (fileNameFilter) {
-            NSString *fileExt = [relativeFilePath lastPathComponent];
-            if ([fileExt caseInsensitiveCompare: fileNameFilter]) {
-                return [NSArray arrayWithObject:fileInfo];
+            NSString *fileExt = [relativeFilePath pathExtension];
+            if ([fileExt caseInsensitiveCompare: fileNameFilter] == NSOrderedSame) {
+                [fileInfos addObject:fileInfo];
             }
         } else {
             [fileInfos addObject:fileInfo];
