@@ -1,8 +1,10 @@
-# iAmiga/iUAE version 1.31MS
+# iAmiga/iUAE version 1.31.1.0
 
-#### iAmiga 1.31MS Changelist stack<br>
+#### iAmiga 1.31.1.0 Changelist stack<br>
 
-- GUI.File browser: Removed .adf file extension filter<br>
+- GUI.File browser: File browser now remembers scanned files and search term for each file type (adf,rom,hdf etc)
+- GUI.File browser: readded file extension filters (fixed for each file type) 
+- GUI.File browser: temporarly removed .adf file extension filter to circumvent a bug<br>
 - GUI.File browser: Search bar now keeps its contents<br>
 - GUI.File browser: Added a search bar (i have 20 GiB of ADFs :-) )<br>
 - GUI.File browser: Fixed app crash with some with adf filenames<br>
