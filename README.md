@@ -6,7 +6,7 @@
 - GUI.File browser: re added file extension filters (fixed for each file type) 
 - GUI.File browser: temporarly removed .adf file extension filter to circumvent a bug<br>
 - GUI.File browser: Search bar now keeps its contents<br>
-- GUI.File browser: Added a search bar (i have 20 GiB of ADFs :-) )<br>
+- GUI.File browser: Added a search bar (i have 20 GB of ADFs :-) )<br>
 - GUI.File browser: Fixed app crash with some with adf filenames<br>
 
 Still a lot to do. Stay tuned :-)
