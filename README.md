@@ -1,6 +1,8 @@
-# iAmiga/iUAE version 1.31.1.0
+# iAmigaMS version 1.31.1.0
 
-#### iAmiga 1.31.1.0 Changelist stack<br>
+A fork of iAmiga.
+
+#### iAmigaMS 1.31.1.0 Changelist stack<br>
 
 - GUI.File browser: File browser now remembers scanned files and search term for each file type (adf,rom,hdf etc)
 - GUI.File browser: re added file extension filters (fixed for each file type) 
