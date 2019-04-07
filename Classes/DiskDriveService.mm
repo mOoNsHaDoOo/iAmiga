@@ -36,9 +36,16 @@
 - (void)insertDisk:(NSString *)adfPath intoDrive:(NSUInteger)driveNumber {
     if (driveNumber < NUM_DRIVES)
     {
-        [adfPath getCString:changed_df[driveNumber] maxLength:256 encoding:[NSString defaultCStringEncoding]];
+        [adfPath getCString:changed_df[driveNumber] maxLength:(sizeof(changed_df[0])/sizeof(char)) encoding:[NSString defaultCStringEncoding]];
         real_changed_df[driveNumber] = 1;
     }
+}
+
+- (NSString *) applicationDocumentsDirectory
+{
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *basePath = paths.firstObject;
+    return basePath;
 }
 
 - (void)insertDisks:(NSArray *)adfPaths {
@@ -47,6 +54,9 @@
         if (driveNumber < NUM_DRIVES)
         {
             NSString *adfPath = [adfPaths objectAtIndex:driveNumber];
+            adfPath = [adfPath lastPathComponent];
+            adfPath = [NSString stringWithFormat: @"%@/%@", [self applicationDocumentsDirectory], adfPath];
+            
             if ([adfPath length] == 0) {
                 continue; // placeholder item
             }

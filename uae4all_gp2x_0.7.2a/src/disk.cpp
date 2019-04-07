@@ -39,10 +39,10 @@
 #include "adfresolver.h"
 
 
-char prefs_df[NUM_DRIVES][256];
-char changed_df[NUM_DRIVES][256];
-char romfile[256];
-char romkeyfile[256];
+char prefs_df[NUM_DRIVES][512];
+char changed_df[NUM_DRIVES][512];
+char romfile[512];
+char romkeyfile[512];
 int real_changed_df[NUM_DRIVES]={0};
 
 /* writable track length with normal 2us bitcell/300RPM motor */

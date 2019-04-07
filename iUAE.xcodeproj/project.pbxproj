@@ -1675,6 +1675,7 @@
 		9064AD601C7F7982004CAE28 /* MultiPeerConnectivityController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MultiPeerConnectivityController.h; path = iUAEParents/MultiPeerConnectivityController.h; sourceTree = "<group>"; };
 		9064AD611C7F7982004CAE28 /* MultiPeerConnectivityController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = MultiPeerConnectivityController.mm; path = iUAEParents/MultiPeerConnectivityController.mm; sourceTree = "<group>"; };
 		9064AD621C7F7982004CAE28 /* MPCConnectionStates.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MPCConnectionStates.h; path = iUAEParents/MPCConnectionStates.h; sourceTree = "<group>"; };
+		92DBBCB8225A663400AE3A95 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		9706D70E1561817500073678 /* sdi.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = sdi.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9706D7111561827300073678 /* bg_web.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bg_web.png; sourceTree = "<group>"; };
 		9706D7121561827300073678 /* bg_web@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bg_web@2x.png"; sourceTree = "<group>"; };
@@ -2974,6 +2975,7 @@
 		29B97314FDCFA39411CA2CEA /* CustomTemplate */ = {
 			isa = PBXGroup;
 			children = (
+				92DBBCB8225A663400AE3A95 /* Info.plist */,
 				E937D8A81CB58C4F008DCC27 /* VPadMotionController.h */,
 				E937D8A91CB58C50008DCC27 /* VPadMotionController.mm */,
 				9064AD601C7F7982004CAE28 /* MultiPeerConnectivityController.h */,
@@ -4174,11 +4176,11 @@
 			};
 			buildConfigurationList = C01FCF4E08A954540054247B /* Build configuration list for PBXProject "iUAE" */;
 			compatibilityVersion = "Xcode 3.2";
-			developmentRegion = English;
+			developmentRegion = en;
 			hasScannedForEncodings = 1;
 			knownRegions = (
-				English,
 				en,
+				Base,
 			);
 			mainGroup = 29B97314FDCFA39411CA2CEA /* CustomTemplate */;
 			projectDirPath = "";
