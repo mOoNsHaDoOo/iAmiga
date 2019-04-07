@@ -224,7 +224,7 @@ return (A);
 #define M68K_PPL (m68kcontext.sr >> 8) & 7
 
 #define GET_PC                  \
-(uintptr_t) PC - (uintptr_t) BasePC;
+(u32)((uintptr_t) PC - (uintptr_t) BasePC);
 
 #define SET_PC(A)               \
 BasePC = Fetch[((A) >> M68K_FETCHSFT) & M68K_FETCHMASK];    \
@@ -695,7 +695,7 @@ M68K_CONTEXT *m68k_get_context(void)
 /* No recibe parametros                                                     */
 /* Retorna 68k PC                                                           */
 /****************************************************************************/
-uintptr_t m68k_get_pc(void)
+u32 m68k_get_pc(void)
 {
 	return (m68kcontext.execinfo & M68K_RUNNING)?(uintptr_t)PC-BasePC:m68kcontext.pc;
 }
@@ -991,15 +991,6 @@ static INLINE void finish_emulate(const s32 cycles_to_add)
     
     /* Actualizar contador de ciclos */
     m68kcontext.cycles_counter += cycles_to_add;
-}
-
-
-#define EXECUTE_EXCEPTION(EX,CYCLES)   \
-{                                      \
-u32 oldPC=GET_PC;                   \
-SET_PC(oldPC-2)                     \
-execute_exception(EX);              \
-RET(CYCLES)                         \
 }
 
 #pragma clang diagnostic push

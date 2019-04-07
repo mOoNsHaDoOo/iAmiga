@@ -54,7 +54,7 @@ static long bogo_filepos;
 static long rom_filepos;
 
 #include <zlib.h>
-static long compressed_size;
+static size_t compressed_size;
 
 addrbank *mem_banks[65536];
 
@@ -733,7 +733,7 @@ static int decode_cloanto_rom (uae_u8 *mem, int size, int real_size)
     FILE *keyf;
     uae_u8 *p;
     long cnt, t;
-    int keysize;
+    size_t keysize;
     
 #ifdef ANDROIDSDL
     __android_log_print(ANDROID_LOG_INFO, "UAE", "decode_cloanto_rom %s", romkeyfile);
@@ -794,7 +794,7 @@ static int kickstart_checksum (uae_u8 *mem, int size)
 static int read_kickstart (FILE *f, uae_u8 *mem, int size, int dochecksum, int *cloanto_rom)
 {
     unsigned char buffer[20];
-    int i, cr = 0;
+    size_t i, cr = 0;
     
     if (cloanto_rom)
         *cloanto_rom = 0;
@@ -998,7 +998,7 @@ static void allocate_memory (void)
         if(res != Z_OK)
         {
             // decompression failed - treat data literaly
-            allocated_chipmem=compressed_size;
+            allocated_chipmem=(uae_u32)compressed_size;
             fseek (savestate_file, chip_filepos, SEEK_SET);
             fread (chipmemory, 1, allocated_chipmem, savestate_file);
         }

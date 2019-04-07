@@ -371,11 +371,11 @@ void dl (uae_u32 data)
 
 uae_u32 ds (const char *str)
 {
-    int len = strlen (str) + 1;
+    size_t len = strlen (str) + 1;
 
     rt_straddr -= len;
     
-    int i;
+    size_t i;
     for (i = 0; i < len; i++)
     	do_put_mem_byte (rtarea + rt_straddr + i, str[i]);
     

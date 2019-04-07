@@ -156,7 +156,7 @@ typedef struct
 	famec_union32   areg[8];
 	uintptr_t *icust_handler;
 	u32 usp;
-	uintptr_t pc;
+	u32 pc;
 	u32 cycles_counter;
 	u8  interrupts[8];
 	u16 sr;
@@ -196,7 +196,7 @@ extern "C" {
     void     m68k_init(int force_table);
     unsigned m68k_reset(void);
     unsigned m68k_emulate(int n);
-    uintptr_t m68k_get_pc(void);
+    u32 m68k_get_pc(void);
     int      m68k_fetch(unsigned address);
     
     /* CPU context handling functions */

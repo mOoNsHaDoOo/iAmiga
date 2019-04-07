@@ -213,10 +213,8 @@ withDiscoveryInfo:(NSDictionary<NSString *,
         
     }
     
-    if
-        (kmNumber == NSNotFound)
+    if(kmNumber == NSNotFound)
     {
-        
         for(kmNumber= 0;kmNumber <= [_dMap count] -1; kmNumber++)
         {
             if(_dMap[kmNumber] == [NSNull null])
@@ -251,7 +249,7 @@ withDiscoveryInfo:(NSDictionary<NSString *,
     [self showMessage: @"Controller Mode Cancelled" withMessage: @"Controller Mode Cancelled. Device will not be used as remote controller"];
 }
 
-- (void)sendJoystickDataForDirection:(int)direction buttontoreleasehorizontal:(int)buttontoreleasehorizontal buttontoreleasevertical:(int)buttontoreleasevertical
+- (void)sendJoystickDataForDirection:(NSInteger)direction buttontoreleasehorizontal:(NSInteger)buttontoreleasehorizontal buttontoreleasevertical:(NSInteger)buttontoreleasevertical
 {
     if(session == nil || session.connectedPeers.count == 0)
     {
@@ -274,7 +272,7 @@ withDiscoveryInfo:(NSDictionary<NSString *,
     }
 }
 
-- (void)sendJoystickDataForButtonID:(int)buttonid buttonstate:(int)buttonstate {
+- (void)sendJoystickDataForButtonID:(NSInteger)buttonid buttonstate:(NSInteger)buttonstate {
  
     if(session == nil || session.connectedPeers.count == 0)
     {
@@ -400,7 +398,7 @@ didReceiveInvitationFromPeer:(MCPeerID *)peerID
     NSLog(@"Received data over stream with name %@ from peer %@", streamName, peerID.displayName);
 }
 
-- (void)handleinputdirections:(TouchStickDPadState)hat_state buttontoreleasevertical:(int)buttontoreleasevertical buttontoreleasehorizontal: (int)buttontoreleasehorizontal deviceid:(NSString *)dID
+- (void)handleinputdirections:(TouchStickDPadState)hat_state buttontoreleasevertical:(NSInteger)buttontoreleasevertical buttontoreleasehorizontal: (NSInteger)buttontoreleasehorizontal deviceid:(NSString *)dID
 {
     
     if(mainMenu_servermode == kServeAsController)
@@ -504,7 +502,7 @@ didReceiveInvitationFromPeer:(MCPeerID *)peerID
 }
 
 
-- (int)handleinputbuttons:(int)buttonid buttonstate:(int)buttonstate deviceid:(NSString *)dID {
+- (NSInteger)handleinputbuttons:(NSInteger)buttonid buttonstate:(NSInteger)buttonstate deviceid:(NSString *)dID {
     
     if(mainMenu_servermode == kServeAsController)
     {
@@ -551,7 +549,7 @@ didReceiveInvitationFromPeer:(MCPeerID *)peerID
 }
 
 
-- (int) dpadstatetojoypadkey:(NSString *)direction hatstate:(TouchStickDPadState)hat_state
+- (NSInteger) dpadstatetojoypadkey:(NSString *)direction hatstate:(TouchStickDPadState)hat_state
 {
     if(hat_state == DPadUp)
     {

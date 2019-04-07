@@ -3,7 +3,7 @@
 #define SAVEDISK_SLOT 512
 #endif
 
-unsigned savedisk_get_checksum(void *mem, unsigned size);
-void savedisk_apply_changes(void *mem, void *patch, unsigned patch_size);
-unsigned savedisk_get_changes_file(void *mem, unsigned size, void *patch, char *filename);
-unsigned savedisk_get_changes(void *mem, unsigned size, void *patch, void *orig);
+size_t savedisk_get_checksum(void *mem, size_t size);
+void savedisk_apply_changes(void *mem, void *patch, size_t patch_size);
+size_t savedisk_get_changes_file(void *mem, size_t size, void *patch, char *filename);
+size_t savedisk_get_changes(void *mem, size_t size, void *patch, void *orig);

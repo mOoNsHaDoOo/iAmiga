@@ -210,7 +210,7 @@ typedef long uae_s32;
 #error No 4 byte type, you lose.
 #endif
 
-typedef uintptr_t uaecptr;
+typedef uint32_t uaecptr;
 
 #undef uae_s64
 #undef uae_u64

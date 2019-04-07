@@ -135,19 +135,19 @@ static void eliminate_file(char *filename)
 #define MAX_DISK_LEN 1024*(1024-128)
 #define MAX_ROM_LEN  11 + (MAX_DISK_LEN-VRAM_MAX_LEN)
 static void *uae4all_rom_memory=NULL;
-static unsigned uae4all_rom_len=0;
-static unsigned uae4all_rom_pos=0;
+static size_t uae4all_rom_len=0;
+static size_t uae4all_rom_pos=0;
 
 static void *uae4all_disk_memory[4]={ NULL ,NULL ,NULL ,NULL };
 static void *uae4all_extra_buffer=NULL;
-static unsigned uae4all_disk_len[4]={ 0 ,0 ,0 ,0 };
-static unsigned uae4all_disk_pos[4]={ 0 ,0 ,0 ,0 };
+static size_t uae4all_disk_len[4]={ 0 ,0 ,0 ,0 };
+static size_t uae4all_disk_pos[4]={ 0 ,0 ,0 ,0 };
 static unsigned char uae4all_disk_used[4]= { 0 ,0 ,0 ,0 };
-static int uae4all_disk_writed[4]= { 0, 0, 0, 0 };
-static int uae4all_disk_writed_now[4]= { 0, 0, 0, 0 };
+static size_t uae4all_disk_writed[4]= { 0, 0, 0, 0 };
+static size_t uae4all_disk_writed_now[4]= { 0, 0, 0, 0 };
 static void *uae4all_disk_orig[4]={ NULL, NULL, NULL, NULL };
-static unsigned uae4all_disk_crc[4]={ 0, 0, 0, 0 };
-static unsigned uae4all_disk_actual_crc[4]={ 0, 0, 0, 0};
+static size_t uae4all_disk_crc[4]={ 0, 0, 0, 0 };
+static size_t uae4all_disk_actual_crc[4]={ 0, 0, 0, 0};
 
 void zfile_exit (void)
 {
@@ -192,12 +192,12 @@ int zfile_close (FILE *f)
 #define mi_z_close(F) fclose(F)
 #endif
 
-static int  try_to_read_disk(int i,const char *name)
+static size_t  try_to_read_disk(int i,const char *name)
 {
     mi_z_type f=mi_z_open(name,"rb");
     if (f)
     {
-	    int readed=mi_z_read(f,uae4all_disk_memory[i],MAX_DISK_LEN);
+	    size_t readed=mi_z_read(f,uae4all_disk_memory[i],MAX_DISK_LEN);
 	    mi_z_close(f);
 	    if (readed>0)
  	    {
@@ -226,13 +226,13 @@ static char __uae4all_write_namefile[32];
 
 static char *get_namefile(unsigned num)
 {
-	unsigned crc=uae4all_disk_crc[num];
+	size_t crc=uae4all_disk_crc[num];
 #if defined(GP2X) || defined(IPHONE)
 	if (!launchDir)
 	{
 		getcwd(launchDir, 250);
 	}
-	sprintf((char *)&__uae4all_write_namefile[0],"%s/saves/%.8X.ads",launchDir, crc);
+    sprintf((char *)&__uae4all_write_namefile[0],"%s/saves/%.8lX.ads",launchDir, crc);
 #else
 	sprintf((char *)&__uae4all_write_namefile[0],SAVE_PREFIX "%.8X.ads",crc);
 #endif
@@ -241,22 +241,22 @@ static char *get_namefile(unsigned num)
 
 static void uae4all_disk_real_write(int num)
 {
-	unsigned new_crc=savedisk_get_checksum(uae4all_disk_memory[num],MAX_DISK_LEN);
+	size_t new_crc=savedisk_get_checksum(uae4all_disk_memory[num],MAX_DISK_LEN);
 	if (new_crc!=uae4all_disk_actual_crc[num])
 	{
 		void *buff=uae4all_disk_memory[num];
 		void *buff_patch=uae4all_extra_buffer;
 		memset(buff_patch,0,MAX_DISK_LEN);
-		unsigned changed=savedisk_get_changes(buff,MAX_DISK_LEN,buff_patch,uae4all_disk_orig[num]);
+		size_t changed=savedisk_get_changes(buff,MAX_DISK_LEN,buff_patch,uae4all_disk_orig[num]);
 		if ((changed)&&(changed<MAX_DISK_LEN))
 		{
 			char *namefile=get_namefile(num);
 			void *bc=calloc(1,MAX_COMP_SIZE);
-			unsigned long sizecompressed=MAX_COMP_SIZE;
+			size_t sizecompressed=MAX_COMP_SIZE;
 			int retc=compress2((Bytef *)bc,&sizecompressed,(const Bytef *)uae4all_extra_buffer,changed,Z_BEST_COMPRESSION);
 			if (retc>=0)
 			{
-				unsigned usado=0;
+				size_t usado=0;
 				{
 					FILE *f=fopen(namefile,"rb");
 					if (f)
@@ -313,7 +313,7 @@ static void uae4all_initsave(unsigned num)
 		fread((void *)&n,1,4,f);
 		if (fread(bc,1,n,f)>=n)
 		{
-			unsigned long sizeuncompressed=MAX_DISK_LEN;
+			size_t sizeuncompressed=MAX_DISK_LEN;
 			int retc=uncompress((Bytef *)uae4all_extra_buffer,&sizeuncompressed,(const Bytef *)bc,n);
 			if (retc>=0)
 			{

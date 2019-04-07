@@ -8,12 +8,9 @@
 
 #include "savedisk.h"
 
-
-
-
-unsigned savedisk_get_checksum(void *mem, unsigned size)
+size_t savedisk_get_checksum(void *mem, size_t size)
 {
-	unsigned i,ret=0;
+	size_t i,ret=0;
 	unsigned char *p=(unsigned char *)mem;
 	for(i=0;i<size;i++)
 		ret+=(i+1)*(((unsigned)p[i])+1);
@@ -22,7 +19,7 @@ unsigned savedisk_get_checksum(void *mem, unsigned size)
 
 
 
-void savedisk_apply_changes(void *mem, void *patch, unsigned patch_size)
+void savedisk_apply_changes(void *mem, void *patch, size_t patch_size)
 {
 	unsigned *src=(unsigned *)patch;
 	unsigned char *dst=(unsigned char *)mem;
@@ -37,7 +34,7 @@ void savedisk_apply_changes(void *mem, void *patch, unsigned patch_size)
 }
 
 
-unsigned savedisk_get_changes_file(void *mem, unsigned size, void *patch, char *filename)
+size_t savedisk_get_changes_file(void *mem, size_t size, void *patch, char *filename)
 {
 	unsigned ret=0;
 	if (size%SAVEDISK_SLOT)
@@ -54,7 +51,7 @@ unsigned savedisk_get_changes_file(void *mem, unsigned size, void *patch, char *
 			unsigned i=(ret/sizeof(unsigned));
 			unsigned o=pos*SAVEDISK_SLOT;
 			dest[i++]=pos;
-			unsigned n=fread((void *)&dest[i],1,SAVEDISK_SLOT,f);
+			size_t n=fread((void *)&dest[i],1,SAVEDISK_SLOT,f);
 			if (!n)
 				break;
 			if (memcmp((void *)&src[o],(void *)&dest[i],n))
@@ -70,7 +67,7 @@ unsigned savedisk_get_changes_file(void *mem, unsigned size, void *patch, char *
 	return ret;
 }
 
-unsigned savedisk_get_changes(void *mem, unsigned size, void *patch, void *orig)
+size_t savedisk_get_changes(void *mem, size_t size, void *patch, void *orig)
 {
 	unsigned ret=0;
 	if (size%SAVEDISK_SLOT)

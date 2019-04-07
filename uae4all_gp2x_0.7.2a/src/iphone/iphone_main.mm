@@ -17,20 +17,20 @@
 
 char launchDir[300];
 
-int mainMenu_showStatus=0;
-int mainMenu_mouseMultiplier = 1;
-int mainMenu_sound=1;
-int mainMenu_case=-1;
-int mainMenu_autosave=1;
-int mainMenu_ntsc=0;
-int drawfinished=0;
-int mainMenu_stretchscreen = 0;
-int mainMenu_AddVerticalStretchValue=0;
+NSInteger mainMenu_showStatus=0;
+NSInteger mainMenu_mouseMultiplier = 1;
+NSInteger mainMenu_sound=1;
+NSInteger mainMenu_case=-1;
+NSInteger mainMenu_autosave=1;
+NSInteger mainMenu_ntsc=0;
+NSInteger drawfinished=0;
+NSInteger mainMenu_stretchscreen = 0;
+NSUInteger mainMenu_AddVerticalStretchValue=0;
 MPCStateType mainMenu_servermode=kConnectionIsOff;
-unsigned int mainMenu_joy0dir=0;
-int mainMenu_joy0button=0;
-unsigned int mainMenu_joy1dir=0;
-int mainMenu_joy1button=0;
+NSUInteger mainMenu_joy0dir=0;
+NSInteger mainMenu_joy0button=0;
+NSUInteger mainMenu_joy1dir=0;
+NSInteger mainMenu_joy1button=0;
 
 extern int vkbd_mode;
 

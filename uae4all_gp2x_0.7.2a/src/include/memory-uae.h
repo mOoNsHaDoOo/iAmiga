@@ -145,7 +145,7 @@ static __inline__ uae_u32 get_byte(uaecptr addr)
 {
     return byteget_1(addr);
 }
-static __inline__ void put_long(uaecptr addr, uintptr_t l)
+static __inline__ void put_long(uaecptr addr, uint32_t l)
 {
     longput_1(addr, l);
 }

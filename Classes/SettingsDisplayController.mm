@@ -101,13 +101,13 @@ extern int mainMenu_AddVerticalStretchValue;
     _settings.showStatusBar = !_settings.showStatusBar;
 }
 
-- (void)populateEffectLabel:(int)selectedEffectIndex {
+- (void)populateEffectLabel:(NSInteger)selectedEffectIndex {
     NSString *effectName = [_effectNames objectAtIndex:selectedEffectIndex];
     [_selectedEffectLabel setText:effectName];
 }
 
 - (void)handleSelectedEffect {
-    int effectIndex;
+    NSInteger effectIndex;
     if (_selectEffectController)
     {
         effectIndex = _selectEffectController.selectedEffectIndex;

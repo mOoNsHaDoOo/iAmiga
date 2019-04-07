@@ -37,7 +37,7 @@ extern int mainMenu_AddVerticalStretchValue;
 extern int joystickselected;
 
 static NSString *_configurationname;
-static int _cNumber = 1;
+static NSInteger _cNumber = 1;
 
 @implementation Settings {
     NSUserDefaults *defaults;
@@ -335,56 +335,56 @@ static int _cNumber = 1;
     [self setBool:lstickmouseFlag forKey:kLstickmouseFlag];
 }
 
--(NSString *)keyConfigurationforButton:(int)bID forController:(int)cNumber
+-(NSString *)keyConfigurationforButton:(NSInteger)bID forController:(NSInteger)cNumber
 {
     if(cNumber == 1)
-        return [self stringForKey:[NSString stringWithFormat:@"_BTN_%d", bID]];
+        return [self stringForKey:[NSString stringWithFormat:@"_BTN_%td", bID]];
     else
-        return [self stringForKey:[NSString stringWithFormat:@"_BTN_%d_%d", cNumber, bID]];
+        return [self stringForKey:[NSString stringWithFormat:@"_BTN_%td_%td", cNumber, bID]];
 }
 
--(NSString *)keyConfigurationforButton:(int)bID
+-(NSString *)keyConfigurationforButton:(NSInteger)bID
 {
     return [self keyConfigurationforButton:bID forController:_cNumber];
 }
 
--(void)setKeyconfiguration:(NSString *)configuredkey forController:(int)cNumber Button:(int)button {
+-(void)setKeyconfiguration:(NSString *)configuredkey forController:(NSInteger)cNumber Button:(NSInteger)button {
     
-    NSString *sKey = (cNumber == 1) ? [NSString stringWithFormat:@"_BTN_%d", button] : [NSString stringWithFormat:@"_BTN_%d_%d", cNumber, button];
+    NSString *sKey = (cNumber == 1) ? [NSString stringWithFormat:@"_BTN_%td", button] : [NSString stringWithFormat:@"_BTN_%td_%td", cNumber, button];
     
     if(![self keyExists:sKey]) _keyConfigurationCount = cNumber;
     [self setObject:configuredkey forKey:sKey];
     
 }
 
--(void)setKeyconfiguration:(NSString *)configuredkey Button:(int)button {
+-(void)setKeyconfiguration:(NSString *)configuredkey Button:(NSInteger)button {
     [self setKeyconfiguration:configuredkey forController:_cNumber Button:button];
 }
 
--(void)setCNumber:(int)cNumber {
+-(void)setCNumber:(NSInteger)cNumber {
     _cNumber = cNumber;
 }
 
--(NSString *)keyConfigurationNameforButton:(int)bID {
+-(NSString *)keyConfigurationNameforButton:(NSInteger)bID {
     return [self keyConfigurationNameforButton:bID forController:_cNumber];
 }
 
-- (NSString *)keyConfigurationNameforButton:(int)bID forController:(int)cNumber {
+- (NSString *)keyConfigurationNameforButton:(NSInteger)bID forController:(NSInteger)cNumber {
     if(cNumber == 1)
-        return [self stringForKey:[NSString stringWithFormat:@"_BTNN_%d", bID]];
+        return [self stringForKey:[NSString stringWithFormat:@"_BTNN_%td", bID]];
     else
-        return [self stringForKey:[NSString stringWithFormat:@"_BTNN_%d_%d", cNumber, bID]];
+        return [self stringForKey:[NSString stringWithFormat:@"_BTNN_%td_%td", cNumber, bID]];
 }
 
--(void)setKeyconfigurationname:(NSString *)configuredkey forController:(int)cNumber  Button:(int)button {
+-(void)setKeyconfigurationname:(NSString *)configuredkey forController:(NSInteger)cNumber  Button:(NSInteger)button {
     
     if(cNumber == 1)
-        [self setObject:configuredkey forKey:[NSString stringWithFormat:@"_BTNN_%d", button]];
+        [self setObject:configuredkey forKey:[NSString stringWithFormat:@"_BTNN_%td", button]];
     else
-        [self setObject:configuredkey forKey:[NSString stringWithFormat:@"_BTNN_%d_%d", cNumber, button]];
+        [self setObject:configuredkey forKey:[NSString stringWithFormat:@"_BTNN_%td_%td", cNumber, button]];
 }
 
--(void)setKeyconfigurationname:(NSString *)configuredkey Button:(int)button {
+-(void)setKeyconfigurationname:(NSString *)configuredkey Button:(NSInteger)button {
     [self setKeyconfigurationname:configuredkey forController:_cNumber Button:button];
 }
 

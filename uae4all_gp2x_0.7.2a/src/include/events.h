@@ -22,7 +22,7 @@ extern int rpt_available;
 
 extern void compute_vsynctime (void);
 
-extern unsigned long currcycle, nextevent;
+extern unsigned long int currcycle, nextevent;
 
 typedef void (*evfunc)(void);
 

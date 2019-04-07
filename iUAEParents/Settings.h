@@ -60,12 +60,12 @@ static NSString *const kJoyStyleFourButton = @"FourButton";
 - (void)initializespecificsettings;
 - (void)setFloppyConfigurations:(NSArray *)adfPaths;
 - (void)setFloppyConfiguration:(NSString *)adfPath;
-- (void)setKeyconfiguration:(NSString *)configuredkey forController:(int)cNumber Button:(int)button;
-- (void)setKeyconfiguration:(NSString *)configuredkey Button:(int)button;
-- (void)setKeyconfigurationname:(NSString *)configuredkey forController:(int)cNumber Button:(int)button;
-- (void)setKeyconfigurationname:(NSString *)configuredkey Button:(int)button;
+- (void)setKeyconfiguration:(NSString *)configuredkey forController:(NSInteger)cNumber Button:(NSInteger)button;
+- (void)setKeyconfiguration:(NSString *)configuredkey Button:(NSInteger)button;
+- (void)setKeyconfigurationname:(NSString *)configuredkey forController:(NSInteger)cNumber Button:(NSInteger)button;
+- (void)setKeyconfigurationname:(NSString *)configuredkey Button:(NSInteger)button;
 
-- (void)setCNumber:(int)cNumber;
+- (void)setCNumber:(NSInteger)cNumber;
 
 - (void)setBool:(BOOL)value forKey:(NSString *)settingitemname;
 - (void)setObject:(id)value forKey:(NSString *)settingitemname;
@@ -77,10 +77,10 @@ static NSString *const kJoyStyleFourButton = @"FourButton";
 - (void)setConfig:(NSString *)configName forDisk:(NSString *)diskName;
 - (NSArray *)controllers;
 - (void)setControllers:(NSArray *)controllers;
-- (NSString *)keyConfigurationNameforButton:(int)bID forController:(int)cNumber;
-- (NSString *)keyConfigurationNameforButton:(int)bID;
-- (NSString *)keyConfigurationforButton:(int)bID forController:(int)cNumber;
-- (NSString *)keyConfigurationforButton:(int)bID;
+- (NSString *)keyConfigurationNameforButton:(NSInteger)bID forController:(NSInteger)cNumber;
+- (NSString *)keyConfigurationNameforButton:(NSInteger)bID;
+- (NSString *)keyConfigurationforButton:(NSInteger)bID forController:(NSInteger)cNumber;
+- (NSString *)keyConfigurationforButton:(NSInteger)bID;
 
 
 @end

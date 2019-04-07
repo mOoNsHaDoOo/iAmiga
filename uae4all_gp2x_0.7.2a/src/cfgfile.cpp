@@ -27,7 +27,7 @@ char uae4all_hard_file[256];
 
 char * make_hard_dir_cfg_line (char *dst) {
 	char buffer[256];
-	int i;
+	size_t i;
 	
 	if (uae4all_hard_dir[0] != '\0') {
 		for (i = strlen(uae4all_hard_dir); i > 0; i--)
