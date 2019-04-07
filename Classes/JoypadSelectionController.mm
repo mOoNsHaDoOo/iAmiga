@@ -67,7 +67,7 @@
 
 - (UITableViewCell *)configureCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath {
     //NSString *configurationname = [configurations objectAtIndex:indexPath.row];
-    cell.textLabel.text = [NSString stringWithFormat:@"Controller %d", indexPath.row + 1];
+    cell.textLabel.text = [NSString stringWithFormat:@"Controller %td", indexPath.row + 1];
 
     return cell;
 }

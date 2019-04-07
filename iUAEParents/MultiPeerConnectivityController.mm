@@ -220,7 +220,7 @@ withDiscoveryInfo:(NSDictionary<NSString *,
             if(_dMap[kmNumber] == [NSNull null])
             {
                 _dMap[kmNumber] = [[NSString stringWithString:dID] retain];
-                [self showMessage:@"New Controller Mapped" withMessage:[NSString stringWithFormat:@"Using Keymap %d for this device", kmNumber+1]];
+                [self showMessage:@"New Controller Mapped" withMessage:[NSString stringWithFormat:@"Using Keymap %td for this device", kmNumber+1]];
                 break;
             }
         }
@@ -257,7 +257,7 @@ withDiscoveryInfo:(NSDictionary<NSString *,
     else
     {
         
-        int aints[6]= {  (unsigned int)direction, (unsigned int)0, BTN_INVALID, buttontoreleasehorizontal, buttontoreleasevertical};
+        int aints[6]= {  (unsigned int)direction, (unsigned int)0, BTN_INVALID, (unsigned int)buttontoreleasehorizontal, (unsigned int)buttontoreleasevertical};
         
         NSData *data = [NSData dataWithBytes: &aints length: sizeof(aints)];
         
@@ -420,14 +420,14 @@ didReceiveInvitationFromPeer:(MCPeerID *)peerID
     NSString *configuredkeytoreleasevertical = NULL;
     int asciicodekeytoreleasevertical = NULL;
     
-    int horButton = [self dpadstatetojoypadkey: @"horizontal" hatstate:hat_state];
+    NSInteger horButton = [self dpadstatetojoypadkey: @"horizontal" hatstate:hat_state];
     if(horButton)
     {
         configuredkeyhorizontal = [_settings keyConfigurationforButton:horButton];
         asciicodehorizontal = [[configuredkeyhorizontal stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"KEY_"]] intValue];
     }
     
-    int vertButton = [self dpadstatetojoypadkey: @"vertical" hatstate:hat_state];
+    NSInteger vertButton = [self dpadstatetojoypadkey: @"vertical" hatstate:hat_state];
     if(vertButton)
     {
         configuredkeyvertical = [_settings keyConfigurationforButton:vertButton];

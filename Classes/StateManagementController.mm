@@ -232,7 +232,7 @@ static NSString *const kSaveStateAlertTitle = @"Save";
 }
 
 - (void)updateNavigationBarTitle {
-    self.navigationItem.title = [_states count] == 0 ? @"No saved states" : [NSString stringWithFormat:@"Saved states: %i", [_states count]];
+    self.navigationItem.title = [_states count] == 0 ? @"No saved states" : [NSString stringWithFormat:@"Saved states: %tu", [_states count]];
 }
 
 - (void)setStateNameTextFieldForSelectedState {

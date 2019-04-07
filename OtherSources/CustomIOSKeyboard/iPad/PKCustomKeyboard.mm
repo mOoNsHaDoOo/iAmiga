@@ -101,7 +101,7 @@
 	UIButton *button = (UIButton *)sender;
     
     
-    NSString *character = [NSString stringWithFormat:@"D%d", button.tag];
+    NSString *character = [NSString stringWithFormat:@"D%td", button.tag];
     [self.textView insertText:character];
 }
 
@@ -110,7 +110,7 @@
 	UIButton *button = (UIButton *)sender;
     
     
-    NSString *character = [NSString stringWithFormat:@"U%d", button.tag];
+    NSString *character = [NSString stringWithFormat:@"U%td", button.tag];
     [self.textView insertText:character];
 }
 

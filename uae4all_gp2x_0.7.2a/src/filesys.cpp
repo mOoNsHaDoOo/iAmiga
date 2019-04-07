@@ -1694,7 +1694,7 @@ get_fileinfo (Unit *unit, dpacket packet, uaecptr info, a_inode *aino)
 	x = aino->aname;
     }
     TRACE(("name=\"%s\"\n", x));
-    n = strlen (x);
+    n = (int)strlen (x);
     if (n > 106)
 	n = 106;
     i = 8;
@@ -1705,16 +1705,16 @@ get_fileinfo (Unit *unit, dpacket packet, uaecptr info, a_inode *aino)
 	put_byte (info + i, 0), i++;
 
     put_long (info + 116, aino->amigaos_mode);
-    put_long (info + 124, statbuf.st_size);
+    put_long (info + 124, (uint32_t)statbuf.st_size);
 #ifdef HAVE_ST_BLOCKS
     put_long (info + 128, statbuf.st_blocks);
 #else
-    put_long (info + 128, statbuf.st_size / 512 + 1);
+    put_long (info + 128, (uint32_t)(statbuf.st_size / 512 + 1));
 #endif
     get_time (statbuf.st_mtime, &days, &mins, &ticks);
-    put_long (info + 132, days);
-    put_long (info + 136, mins);
-    put_long (info + 140, ticks);
+    put_long (info + 132, (uint32_t)days);
+    put_long (info + 136, (uint32_t)mins);
+    put_long (info + 140, (uint32_t)ticks);
     if (aino->comment == 0)
 	put_long (info + 144, 0);
     else {
@@ -1723,7 +1723,7 @@ get_fileinfo (Unit *unit, dpacket packet, uaecptr info, a_inode *aino)
 	x = aino->comment;
 	if (! x)
 	    x = "";
-	n = strlen (x);
+	n = (int)strlen (x);
 	if (n > 78)
 	    n = 78;
 	put_byte (info + i, n); i++;
