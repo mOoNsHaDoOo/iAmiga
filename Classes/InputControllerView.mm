@@ -244,7 +244,7 @@ extern MPCStateType mainMenu_servermode;
     int xposbuttonyheight = ((double)xpointsreltovertex/ (double) xposvertex) * (double) buttonheight;
     int pressedbutton;
     
-    NSString *configuredkey;
+    NSString *configuredkey = nil;
     
     if(tophalf && (coordinates->y <= xposbuttonyheight))
     //Button Y
@@ -313,7 +313,8 @@ extern MPCStateType mainMenu_servermode;
     {
         buttoncode = BTN_B;
         _buttonbpressed = false;
-    }
+    } else
+        return -1;
     
     [self setNeedsDisplay];
     return buttoncode;
@@ -325,6 +326,8 @@ extern MPCStateType mainMenu_servermode;
 
 - (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event {
     int buttoncode = [self releasebutton];
+    if(buttoncode == -1)
+        return;
     [_mpcController handleinputbuttons:buttoncode buttonstate:1 deviceid:kVirtualPad];
     _clickedscreen = YES;
 }
@@ -380,6 +383,7 @@ extern MPCStateType mainMenu_servermode;
 
 - (void)awakeFromNib {
 	[self configure];
+    [super awakeFromNib];
 }
 
 - (void)configure {

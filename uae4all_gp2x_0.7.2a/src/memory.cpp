@@ -1058,8 +1058,9 @@ void memory_reset (void)
     /* D80000 - DDFFFF not mapped (A1000 = custom chips) */
         map_banks (&dummy_bank, 0xD8, 6, 0);
     
+    // TODO: add AGA in config
     /* Map "nothing" to 0x200000 - 0x9FFFFF (0xBEFFFF if PCMCIA or AGA) */
-    /*bnk = allocated_chipmem >> 16;*/
+    bnk = allocated_chipmem >> 16;
     if (bnk < 0x20 + (allocated_fastmem >> 16))
         bnk = 0x20 + (allocated_fastmem >> 16);
     //bnk_end = (((changed_prefs.chipset_mask & CSMASK_AGA) /*|| currprefs.cs_pcmcia*/) ? 0xBF : 0xA0);
@@ -1178,10 +1179,10 @@ void memory_cleanup (void)
 void map_banks (addrbank *bank, int start, int size, int realsize)
 {
     int bnr;
-    unsigned long int hioffs = 0, endhioffs = 0x100;
+    u32 hioffs = 0, endhioffs = 0x100;
     addrbank *orgbank = bank;
     uae_u32 realstart = start;
-    
+
     if (!realsize)
         realsize = size << 16;
     

@@ -127,7 +127,7 @@ static const char *OFF_STATES = "eczqtrfnmpgv";
         
         if (_button[btn] != pr)
         {
-            int btn_pressed;
+            int btn_pressed = 0;
             
             switch (btn) {
                 case 0:

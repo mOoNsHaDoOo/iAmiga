@@ -859,7 +859,7 @@ static FAMEC_EXTRA_INLINE s32 interrupt_chk__(M68K_CONTEXT &m68kcontext)
 void process_exception(unsigned int vect)
 {
     u32 newPC;
-    u32 oldPC = (uintptr_t)(PC) - BasePC;
+    u32 oldPC = (u32)((uintptr_t)(PC) - BasePC);
     u32 oldSR = GET_SR;
     
     // TomB 02.12.2013: 68000 reference manual says, trace-flag is always cleared

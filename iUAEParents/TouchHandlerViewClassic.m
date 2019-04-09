@@ -89,6 +89,7 @@
 - (void)awakeFromNib
 {
     self.multipleTouchEnabled = YES;
+    [super awakeFromNib];
 }
 
 - (void)layoutSubviews

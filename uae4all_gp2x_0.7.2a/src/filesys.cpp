@@ -61,7 +61,7 @@
 #define DUMPLOCK(u,x)
 #endif
 
-static long dos_errno(void)
+static int dos_errno(void)
 {
     int e = errno;
 
