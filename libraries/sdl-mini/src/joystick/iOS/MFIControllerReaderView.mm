@@ -37,10 +37,10 @@ extern "C" {
 #define LANSTICK 2
 #define RANSTICK 3
 
-static NSString *const kdigStick = @"digStick";
-static NSString *const klanalogStick = @"lanalogStick";
-static NSString *const kranalogStick = @"ranalogStick";
-
+// TODO: verify
+//static NSString *const kdigStick = @"digStick";
+//static NSString *const klanalogStick = @"lanalogStick";
+//static NSString *const kranalogStick = @"ranalogStick";
 
 @implementation MFIControllerReaderView {
     int _button[9];
@@ -126,7 +126,7 @@ static NSString *const kranalogStick = @"ranalogStick";
        (buttonid == BTN_R2 && _settings.useR2forRightMouseButton == true))
         [self handleminputbuttons:(int)buttonid];
     else
-        _button[buttonid] = [mpcController handleinputbuttons:buttonid buttonstate:_button[buttonid] deviceid:devID];
+        _button[buttonid] = (int)[mpcController handleinputbuttons:buttonid buttonstate:_button[buttonid] deviceid:devID];
 }
 
 - (void)handleminputbuttons:(int)buttonid {
@@ -170,8 +170,8 @@ static NSString *const kranalogStick = @"ranalogStick";
     if (_hat_state != _hat_statelast) {
         _hat_statelast = _hat_state;
         
-        int buttonvertical = [mpcController dpadstatetojoypadkey:@"vertical" hatstate:_hat_state];
-        int buttonhorizontal = [mpcController dpadstatetojoypadkey:@"horizontal" hatstate: _hat_state];
+        int buttonvertical = (int)[mpcController dpadstatetojoypadkey:@"vertical" hatstate:_hat_state];
+        int buttonhorizontal = (int)[mpcController dpadstatetojoypadkey:@"horizontal" hatstate: _hat_state];
         
         [mpcController handleinputdirections:_hat_state buttontoreleasevertical:_buttontoreleasevertical buttontoreleasehorizontal: _buttontoreleasehorizontal deviceid:devID];
         
@@ -190,7 +190,7 @@ static NSString *const kranalogStick = @"ranalogStick";
 
 - (void)controllerDisconnected:(NSNotification *) btDevice {
     
-    int devCount = [[GCController controllers] count];
+    NSUInteger devCount = [[GCController controllers] count];
     if(devCount >= _devCount) return;
 
     NSString *devID = [NSString stringWithFormat:@"%p", btDevice];
@@ -199,7 +199,7 @@ static NSString *const kranalogStick = @"ranalogStick";
 
 - (void)controllerDiscovered:(NSNotification *)connectedNotification {
     
-    int devCount = [[GCController controllers] count];
+    int devCount = (int)[[GCController controllers] count];
     _devCount = devCount;
      
     GCController *controller = GCController.controllers[_devCount-1];

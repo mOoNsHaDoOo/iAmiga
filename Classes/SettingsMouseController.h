@@ -20,6 +20,7 @@
 - (IBAction)togglelStick:(id)sender;
 - (IBAction)togglebutSwitch:(id)sender;
 - (IBAction)togglerbutSwitch:(id)sender;
-- (IBAction)togglespeedSwitch:(id)sender;
+// TODO: check
+//- (IBAction)togglespeedSwitch:(id)sender;
 
 @end

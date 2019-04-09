@@ -309,7 +309,7 @@ static FMemCoreSetting *_fmeminstance;
     self = [super initWithName:settingName];
     
     _cmeminstance = self;
-    _actcmem = _settings.CMem;
+    _actcmem = (int)_settings.CMem;
     
     return self;
 }
@@ -325,8 +325,8 @@ static FMemCoreSetting *_fmeminstance;
 }
 
 - (void)hook_onReset:(NSNumber *)cmem {
-    prefs_chipmem_size = _settings.CMem * 1024;
-    _actcmem = _settings.CMem;
+    prefs_chipmem_size = (int)_settings.CMem * 1024;
+    _actcmem = (int)_settings.CMem;
 }
 
 - (NSNumber *)hook_getEmulatorValue {
@@ -335,8 +335,8 @@ static FMemCoreSetting *_fmeminstance;
 
 - (NSString *)getUnappliedValue {
     
-    int curcmem = _settings.CMem;
-    int actcmem = [[self hook_getEmulatorValue] integerValue];
+    int curcmem = (int)_settings.CMem;
+    int actcmem = (int)[[self hook_getEmulatorValue] integerValue];
     
     if(curcmem == actcmem) {
         return nil;
@@ -361,7 +361,7 @@ static FMemCoreSetting *_fmeminstance;
 - (instancetype)initWithName:(NSString *)settingName {
     
     self = [super initWithName:settingName];
-    _actfmem = _settings.FMem;
+    _actfmem = (int)_settings.FMem;
     
     _fmeminstance = self;
     
@@ -377,8 +377,8 @@ static FMemCoreSetting *_fmeminstance;
 }
 
 - (void)hook_onReset:(NSNumber *)cmem {
-    prefs_fastmem_size = _settings.FMem * 1024 * 1024;
-    _actfmem = _settings.FMem;
+    prefs_fastmem_size = (int)_settings.FMem * 1024 * 1024;
+    _actfmem = (int)_settings.FMem;
 }
 
 - (NSNumber *)hook_getEmulatorValue {
@@ -387,8 +387,8 @@ static FMemCoreSetting *_fmeminstance;
 
 - (NSString *)getUnappliedValue {
     
-    int curfmem = _settings.FMem;
-    int actfmem = [[self hook_getEmulatorValue] integerValue];
+    int curfmem = (int)_settings.FMem;
+    int actfmem = (int)[[self hook_getEmulatorValue] integerValue];
     
     if(curfmem == actfmem) {
         return nil;

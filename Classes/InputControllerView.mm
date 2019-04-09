@@ -316,8 +316,6 @@ extern MPCStateType mainMenu_servermode;
     }
     
     [self setNeedsDisplay];
-    
-    
     return buttoncode;
 }
 
@@ -326,13 +324,9 @@ extern MPCStateType mainMenu_servermode;
 }
 
 - (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event {
-    
     int buttoncode = [self releasebutton];
-    
     [_mpcController handleinputbuttons:buttoncode buttonstate:1 deviceid:kVirtualPad];
-    
     _clickedscreen = YES;
-    
 }
 
 - (void)dealloc {
@@ -570,8 +564,8 @@ extern MPCStateType mainMenu_servermode;
         
         _oldstate = state;
         
-        int buttonvertical = [_mpcController dpadstatetojoypadkey:@"vertical" hatstate:state];
-        int buttonhorizontal = [_mpcController dpadstatetojoypadkey:@"horizontal" hatstate:state];
+        int buttonvertical = (int)[_mpcController dpadstatetojoypadkey:@"vertical" hatstate:state];
+        int buttonhorizontal = (int)[_mpcController dpadstatetojoypadkey:@"horizontal" hatstate:state];
         
 
         [_mpcController handleinputdirections:state buttontoreleasevertical:_buttontoreleasevertical buttontoreleasehorizontal:_buttontoreleasehorizontal deviceid:@"InputControllerView"];

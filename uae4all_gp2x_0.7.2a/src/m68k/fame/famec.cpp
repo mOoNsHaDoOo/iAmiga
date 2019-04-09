@@ -697,7 +697,7 @@ M68K_CONTEXT *m68k_get_context(void)
 /****************************************************************************/
 u32 m68k_get_pc(void)
 {
-	return (m68kcontext.execinfo & M68K_RUNNING)?(uintptr_t)PC-BasePC:m68kcontext.pc;
+	return (u32)((m68kcontext.execinfo & M68K_RUNNING)?(uintptr_t)PC-BasePC:m68kcontext.pc);
 }
 
 /***********************************************************************/

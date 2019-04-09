@@ -502,8 +502,8 @@ didReceiveInvitationFromPeer:(MCPeerID *)peerID
 }
 
 
-- (NSInteger)handleinputbuttons:(NSInteger)buttonid buttonstate:(NSInteger)buttonstate deviceid:(NSString *)dID {
-    
+- (NSInteger)handleinputbuttons:(NSInteger)buttonid buttonstate:(NSInteger)buttonstate deviceid:(NSString *)dID
+{
     if(mainMenu_servermode == kServeAsController)
     {
         [self sendJoystickDataForButtonID:buttonid buttonstate:buttonstate];

@@ -90,11 +90,11 @@
 /**
  * Available CoreSetting instances:
  */
-+ (RomCoreSetting *)romCoreSetting;
+//+ (RomCoreSetting *)romCoreSetting;
 + (DF1EnabledCoreSetting *)df1EnabledCoreSetting;
 + (DF2EnabledCoreSetting *)df2EnabledCoreSetting;
 + (DF3EnabledCoreSetting *)df3EnabledCoreSetting;
-+ (HD0PathCoreSetting *)hd0PathCoreSetting;
+//+ (HD0PathCoreSetting *)hd0PathCoreSetting;
 + (HD0ReadOnlyCoreSetting *)hd0ReadOnlyCoreSetting;
 + (NTSCEnabledCoreSetting *)ntscEnabledCoreSetting;
 //+ (CMemCoreSetting *)cmemCoreSetting;

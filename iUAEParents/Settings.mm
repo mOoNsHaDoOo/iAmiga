@@ -95,7 +95,7 @@ static NSInteger _cNumber = 1;
     else
     {
         mainMenu_stretchscreen = self.stretchScreen;
-        mainMenu_AddVerticalStretchValue = self.addVerticalStretchValue;
+        mainMenu_AddVerticalStretchValue = (int)self.addVerticalStretchValue;
         mainMenu_showStatus = self.showStatus;
     }
     

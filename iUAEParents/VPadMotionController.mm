@@ -105,8 +105,8 @@ static int buttontoreleasevertical;
         dpadState = DPadCenter;
     }
     
-    int buttonvertical = [mpcController dpadstatetojoypadkey:@"vertical" hatstate:dpadState];
-    int buttonhorizontal = [mpcController dpadstatetojoypadkey:@"horizontal" hatstate:dpadState];
+    int buttonvertical = (int)[mpcController dpadstatetojoypadkey:@"vertical" hatstate:dpadState];
+    int buttonhorizontal = (int)[mpcController dpadstatetojoypadkey:@"horizontal" hatstate:dpadState];
     
     [mpcController handleinputdirections:dpadState buttontoreleasevertical:buttontoreleasevertical buttontoreleasehorizontal: buttontoreleasehorizontal deviceid:kVirtualPad];
     

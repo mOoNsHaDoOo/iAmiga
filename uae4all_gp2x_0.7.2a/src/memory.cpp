@@ -728,7 +728,7 @@ addrbank extendedkickmem_bank = {
     
 };
 
-static int decode_cloanto_rom (uae_u8 *mem, int size, int real_size)
+static int decode_cloanto_rom (uae_u8 *mem, size_t size, size_t real_size)
 {
     FILE *keyf;
     uae_u8 *p;
@@ -774,10 +774,11 @@ static int decode_cloanto_rom (uae_u8 *mem, int size, int real_size)
     return 1;
 }
 
-static int kickstart_checksum (uae_u8 *mem, int size)
+static int kickstart_checksum (uae_u8 *mem, size_t size)
 {
     uae_u32 cksum = 0, prevck = 0;
-    int i;
+    size_t i;
+    
     for (i = 0; i < size; i += 4) {
         uae_u32 data = mem[i] * 65536 * 256 + mem[i + 1] * 65536 + mem[i + 2] * 256 + mem[i + 3];
         cksum += data;
@@ -791,7 +792,7 @@ static int kickstart_checksum (uae_u8 *mem, int size)
     return 0;
 }
 
-static int read_kickstart (FILE *f, uae_u8 *mem, int size, int dochecksum, int *cloanto_rom)
+static int read_kickstart (FILE *f, uae_u8 *mem, size_t size, int dochecksum, size_t *cloanto_rom)
 {
     unsigned char buffer[20];
     size_t i, cr = 0;
@@ -1038,7 +1039,6 @@ void memory_reset (void)
     
     /* Can't be done here, or we'll lose all the extension/filesys traps that were set up */
     //    rtarea_cleanup();
-    
     if (kickmem_checksum!=get_kickmem_checksum() | bReloadKickstart)
     {
         bReloadKickstart=0;

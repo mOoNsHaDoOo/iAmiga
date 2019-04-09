@@ -101,7 +101,7 @@
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {
     NSSet *touchtype = [event allTouches];
-    int touchCounts = [touchtype count];
+    NSInteger touchCounts = [touchtype count];
     
     UITouch *touch = [touches anyObject];
     

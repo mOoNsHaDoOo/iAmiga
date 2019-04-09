@@ -66,7 +66,7 @@ extern uae_u32 allocated_a3000mem;
 #define kickmem_start 0x00F80000
 
 extern int ersatzkickfile;
-extern int cloanto_rom;
+extern size_t cloanto_rom;
 
 extern int bReloadKickstart;
 

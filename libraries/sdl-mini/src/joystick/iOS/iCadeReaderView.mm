@@ -166,7 +166,7 @@ static const char *OFF_STATES = "eczqtrfnmpgv";
                     break;
             }
             
-            _button[btn] = [_mpcController handleinputbuttons:btn_pressed buttonstate:_button[btn] deviceid:kiCadePad];
+            _button[btn] = (int)[_mpcController handleinputbuttons:btn_pressed buttonstate:_button[btn] deviceid:kiCadePad];
             _button[btn] = pr;
             
         }
@@ -176,8 +176,8 @@ static const char *OFF_STATES = "eczqtrfnmpgv";
            
             TouchStickDPadState tState = [self getDpadStateFromHatState:hat_state];
             
-            int buttonvertical = [_mpcController dpadstatetojoypadkey:@"vertical" hatstate:tState];
-            int buttonhorizontal = [_mpcController dpadstatetojoypadkey:@"horizontal" hatstate: tState];
+            int buttonvertical = (int)[_mpcController dpadstatetojoypadkey:@"vertical" hatstate:tState];
+            int buttonhorizontal = (int)[_mpcController dpadstatetojoypadkey:@"horizontal" hatstate: tState];
 
             [_mpcController handleinputdirections:tState buttontoreleasevertical:_buttontoreleasevertical buttontoreleasehorizontal:_buttontoreleasehorizontal deviceid:kiCadePad];
             
@@ -225,7 +225,7 @@ static const char *OFF_STATES = "eczqtrfnmpgv";
     char *p = (char *) strchr(ON_STATES, ch);
     bool stateChanged = false;
     if (p) {
-        int index = p-ON_STATES;
+        long index = p-ON_STATES;
         tiState |= (1 << index);
         _iCadeState = (iCadeState)tiState;
         stateChanged = true;
@@ -237,7 +237,7 @@ static const char *OFF_STATES = "eczqtrfnmpgv";
     } else {
         p = (char *) strchr(OFF_STATES, ch);
         if (p) {
-            int index = p-OFF_STATES;
+            long index = p-OFF_STATES;
             tiState &= ~(1 << index);
             _iCadeState = (iCadeState)tiState;
             stateChanged = true;

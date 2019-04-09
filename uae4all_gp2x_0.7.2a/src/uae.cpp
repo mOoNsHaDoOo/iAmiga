@@ -46,7 +46,7 @@ uae::uae() {
     running = false;
 }
 
-int cloanto_rom = 0;
+size_t cloanto_rom = 0;
 
 struct gui_info gui_data;
 
