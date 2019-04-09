@@ -3,7 +3,7 @@
 
 #define EXECUTE_EXCEPTION(EX,CYCLES)   \
 {                                      \
-u32 oldPC=(u32)GET_PC;                   \
+u32 oldPC=GET_PC;                   \
 SET_PC(oldPC-2)                     \
 execute_exception(EX);              \
 RET(CYCLES)                         \

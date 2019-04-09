@@ -288,7 +288,6 @@ extern MPCStateType mainMenu_servermode;
 }
 
 -(int)releasebutton {
-    
     int buttoncode;
     
     if(_buttonypressed)

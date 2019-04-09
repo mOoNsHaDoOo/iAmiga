@@ -97,7 +97,7 @@
 + (HD0PathCoreSetting *)hd0PathCoreSetting;
 + (HD0ReadOnlyCoreSetting *)hd0ReadOnlyCoreSetting;
 + (NTSCEnabledCoreSetting *)ntscEnabledCoreSetting;
-+ (CMemCoreSetting *)cmemCoreSetting;
+//+ (CMemCoreSetting *)cmemCoreSetting;
 
 @end
 

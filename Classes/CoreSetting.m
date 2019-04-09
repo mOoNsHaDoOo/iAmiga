@@ -780,4 +780,12 @@ extern int mainMenu_ntsc;
     return setting;
 }
 
+
+/*
++ (CMemCoreSetting *)cmemCoreSetting
+{
+    return
+}
+*/
+
 @end

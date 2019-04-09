@@ -30,7 +30,7 @@
 //7MHZ
 int mainMenu_CPU_speed = 0;
 int m68k_speed=5;
-int prefs_cpu_model = 000;
+int prefs_cpu_model = 020;
 
 unsigned mispcflags=0;
 
