@@ -4,7 +4,8 @@ A fork of iAmiga.
 
 #### iAmigaMS 1.31.1.0 Changelist stack<br>
 
-- Core, GUI: Many 32 bit / 64 bit type related warnings fixed. Still some work to do. Down to about 74 warnings from 570
+- Core, GUI: Many 32 bit / 64 bit type related warnings fixed. Still some work to do. Down to about 67 warnings from 570
+- Core, 68020: integrated rsn8887's Motorola 68020+ fixes for BFFFO bitfield instructions (fixes ViroCop AGA)
 - GUI.File browser: File browser now remembers scanned files and search term for each file type (adf,rom,hdf etc)
 - GUI.File browser: re added file extension filters (fixed for each file type) 
 - GUI.File browser: temporarly removed .adf file extension filter to circumvent a bug<br>
