@@ -32,7 +32,7 @@
 /***********************************************************************
  * Return the next byte in the pseudo-random sequence
  */
-static int decrypt_byte(uint32_t* pkeys, const uint32_t* pcrc_32_tab)
+static int decrypt_byte(uLong* pkeys, const uLong* pcrc_32_tab)
 {
     uint32_t temp;  /* POTENTIAL BUG:  temp*(temp^1) may overflow in an
                      * unpredictable manner on 16-bit systems; not a problem
@@ -45,7 +45,7 @@ static int decrypt_byte(uint32_t* pkeys, const uint32_t* pcrc_32_tab)
 /***********************************************************************
  * Update the encryption keys with the next byte of plain text
  */
-static int update_keys(uint32_t* pkeys,const uint32_t* pcrc_32_tab,int c)
+static int update_keys(uLong* pkeys,const uLong* pcrc_32_tab,int c)
 {
     (*(pkeys+0)) = CRC32((*(pkeys+0)), c);
     (*(pkeys+1)) += (*(pkeys+0)) & 0xff;
@@ -62,7 +62,7 @@ static int update_keys(uint32_t* pkeys,const uint32_t* pcrc_32_tab,int c)
  * Initialize the encryption keys and the random header according to
  * the given password.
  */
-static void init_keys(const char* passwd,uint32_t* pkeys,const uint32_t* pcrc_32_tab)
+static void init_keys(const char* passwd,uLong* pkeys,const uLong* pcrc_32_tab)
 {
     *(pkeys+0) = 305419896L;
     *(pkeys+1) = 591751049L;
@@ -91,8 +91,8 @@ static int crypthead(passwd, buf, bufSize, pkeys, pcrc_32_tab, crcForCrypting)
     const char *passwd;         /* password string */
     uint8_t *buf;         /* where to write header */
     int bufSize;
-    uint32_t* pkeys;
-    const uint32_t* pcrc_32_tab;
+    uLong* pkeys;
+    const uLong* pcrc_32_tab;
     uint32_t crcForCrypting;
 {
     int n;                       /* index in random header */

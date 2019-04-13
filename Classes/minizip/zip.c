@@ -132,7 +132,7 @@ typedef struct
     uLong crc32;
     int  encrypt;
 #ifndef NOCRYPT
-    uint32_t keys[3];     /* keys defining the pseudo-random sequence */
+    uLong keys[3];     /* keys defining the pseudo-random sequence */
     const z_crc_t* pcrc_32_tab;
     int crypt_header_size;
 #endif
@@ -711,7 +711,7 @@ extern int ZEXPORT zipOpenNewFileInZip3 (file, filename, zipfi,
     int memLevel;
     int strategy;
     const char* password;
-    uLong crcForCrypting;
+    uint32_t crcForCrypting;
 {
     zip_internal* zi;
     uInt size_filename;
@@ -881,7 +881,7 @@ extern int ZEXPORT zipOpenNewFileInZip3 (file, filename, zipfi,
     if ((err==Z_OK) && (password != NULL))
     {
         uint8_t bufHead[RAND_HEAD_LEN];
-        uint32_t sizeHead;
+        int sizeHead;
         zi->ci.encrypt = 1;
         zi->ci.pcrc_32_tab = get_crc_table();
         /*init_keys(password,zi->ci.keys,zi->ci.pcrc_32_tab);*/

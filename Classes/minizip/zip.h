@@ -191,7 +191,7 @@ extern int ZEXPORT zipOpenNewFileInZip3 OF((zipFile file,
                                             int memLevel,
                                             int strategy,
                                             const char* password,
-                                            uLong crcForCtypting));
+                                            uint32_t crcForCtypting));
 
 /*
   Same than zipOpenNewFileInZip2, except

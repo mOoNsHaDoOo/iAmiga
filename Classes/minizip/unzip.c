@@ -151,7 +151,7 @@ typedef struct
                                         file if we are decompressing it */
     int encrypted;
 #    ifndef NOUNCRYPT
-    uint32_t keys[3];     /* keys defining the pseudo-random sequence */
+    uLong keys[3];     /* keys defining the pseudo-random sequence */
     const z_crc_t* pcrc_32_tab;
 #    endif
 } unz_s;
