@@ -32,7 +32,7 @@ int mainMenu_CPU_speed = 0;
 int m68k_speed=5;
 int prefs_cpu_model = 020;
 
-unsigned mispcflags=0;
+uint32_t mispcflags=0;
 
 int in_m68k_go = 0;
 
@@ -88,9 +88,9 @@ static void uae4all_reset(void)
 
 static void m68k_run (void)
 {
-	unsigned long cycles;
-	unsigned int cycles_actual = M68KCONTEXT.cycles_counter;
-	unsigned long last_currcycle = currcycle;
+	uint32_t cycles;
+	uint32_t cycles_actual = M68KCONTEXT.cycles_counter;
+	uint32_t last_currcycle = currcycle;
 	
 	for (;;)
 	{
@@ -117,7 +117,7 @@ static void m68k_run (void)
         else
             last_currcycle = currcycle;
         
-		unsigned cuentalo = 0;
+		uint32_t cuentalo = 0;
 		while((nextevent - currcycle) <= 2048)
 		{
 			cycles = 2048; // 2048 are four cycles...

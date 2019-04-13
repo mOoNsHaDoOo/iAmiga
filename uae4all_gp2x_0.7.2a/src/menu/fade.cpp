@@ -1,25 +1,25 @@
-#include"fade.h"
+#include "fade.h"
 
 
-void fade16(SDL_Surface *screen, unsigned short n)
+void fade16(SDL_Surface *screen, uint16_t n)
 {
 	int i,total=screen->w*screen->h;
 	SDL_LockSurface(screen);
-	unsigned short rs=screen->format->Rshift;
-	unsigned short gs=screen->format->Gshift;
-	unsigned short bs=screen->format->Bshift;
-	unsigned short rm=screen->format->Rmask;
-	unsigned short gm=screen->format->Gmask;
-	unsigned short bm=screen->format->Bmask;
-	unsigned short rM=rm>>rs;
-	unsigned short gM=gm>>gs;
-	unsigned short bM=bm>>bs;
-	unsigned short * buff=(unsigned short*)screen->pixels;
+	uint16_t rs=screen->format->Rshift;
+	uint16_t gs=screen->format->Gshift;
+	uint16_t bs=screen->format->Bshift;
+	uint16_t rm=screen->format->Rmask;
+	uint16_t gm=screen->format->Gmask;
+	uint16_t bm=screen->format->Bmask;
+	uint16_t rM=rm>>rs;
+	uint16_t gM=gm>>gs;
+	uint16_t bM=bm>>bs;
+	uint16_t * buff=(uint16_t*)screen->pixels;
 	for(i=0;i<total;i++)
 	{
-		register unsigned short r=(buff[i]&rm)>>rs;
-		register unsigned short g=(buff[i]&gm)>>gs;
-		register unsigned short b=(buff[i]&bm)>>bs;
+		register uint16_t r=(buff[i]&rm)>>rs;
+		register uint16_t g=(buff[i]&gm)>>gs;
+		register uint16_t b=(buff[i]&bm)>>bs;
 //		if (n>r)
 		if (n+r<rM)
 			r+=n;

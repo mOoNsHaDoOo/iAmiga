@@ -67,7 +67,7 @@
 	time( &current );
 	
 	zip_fileinfo zipInfo = {0};
-//	zipInfo.dosDate = (unsigned long) current;
+//	zipInfo.dosDate = (uint32_t) current;
 	
 	NSDictionary* attr = [[NSFileManager defaultManager] fileAttributesAtPath:file traverseLink:YES];
 	if( attr )
@@ -106,7 +106,7 @@
 	else
 	{
 		data = [ NSData dataWithContentsOfFile:file];
-		uLong crcValue = crc32( 0L,NULL, 0L );
+		uLong crcValue = crc32( 0,NULL, 0 );
 		crcValue = crc32( crcValue, (const Bytef*)[data bytes], (uInt)[data length] );
 		ret = zipOpenNewFileInZip3( _zipFile,
 								  (const char*) [newname UTF8String],
@@ -131,7 +131,7 @@
 	{
 		data = [ NSData dataWithContentsOfFile:file];
 	}
-	unsigned int dataLen = (unsigned int)[data length];
+	uint32_t dataLen = (uint32_t)[data length];
 	ret = zipWriteInFileInZip( _zipFile, (const void*)[data bytes], dataLen);
 	if( ret!=Z_OK )
 	{
@@ -177,7 +177,7 @@
 {
 	BOOL success = YES;
 	int ret = unzGoToFirstFile( _unzFile );
-	unsigned char		buffer[4096] = {0};
+	uint8_t		buffer[4096] = {0};
 	NSFileManager* fman = [NSFileManager defaultManager];
 	if( ret!=UNZ_OK )
 	{

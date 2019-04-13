@@ -24,8 +24,8 @@
 #import "EMUFileInfo.h"
 #import "EMUBrowser.h"
 
-extern unsigned prefs_chipmem_size;
-extern unsigned prefs_fastmem_size;
+extern uint32_t prefs_chipmem_size;
+extern uint32_t prefs_fastmem_size;
 
 static RomCoreSetting *_romInstance;
 static HD0PathCoreSetting *_hdpathInstance;

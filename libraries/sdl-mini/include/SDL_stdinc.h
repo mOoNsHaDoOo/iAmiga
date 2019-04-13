@@ -45,7 +45,7 @@ typedef enum
  */
 typedef int8_t Sint8;
 /**
- * \brief An unsigned 8-bit integer type.
+ * \brief An uint32_t 8-bit integer type.
  */
 typedef uint8_t Uint8;
 /**
@@ -53,7 +53,7 @@ typedef uint8_t Uint8;
  */
 typedef int16_t Sint16;
 /**
- * \brief An unsigned 16-bit integer type.
+ * \brief An uint32_t 16-bit integer type.
  */
 typedef uint16_t Uint16;
 /**
@@ -61,7 +61,7 @@ typedef uint16_t Uint16;
  */
 typedef int32_t Sint32;
 /**
- * \brief An unsigned 32-bit integer type.
+ * \brief An uint32_t 32-bit integer type.
  */
 typedef uint32_t Uint32;
 
@@ -71,7 +71,7 @@ typedef uint32_t Uint32;
  */
 typedef int64_t Sint64;
 /**
- * \brief An unsigned 64-bit integer type.
+ * \brief An uint32_t 64-bit integer type.
  * \warning On platforms without any sort of 64-bit datatype, this is equivalent to Uint32!
  */
 typedef uint64_t Uint64;

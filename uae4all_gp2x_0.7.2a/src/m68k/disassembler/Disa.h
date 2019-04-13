@@ -11,10 +11,12 @@ extern "C" {
 #define CPU_CALL __fastcall
 #endif
 
-extern unsigned int DisaPc;
+#include <stdint.h>
+    
+extern uint32_t DisaPc;
 extern char *DisaText; // Text buffer to write in
 
-extern unsigned short (CPU_CALL *DisaWord)(unsigned int a);
+extern uint16_t (CPU_CALL *DisaWord)(uint32_t a);
 int DisaGetEa(char *t,int ea,int size);
 
 int DisaGet();

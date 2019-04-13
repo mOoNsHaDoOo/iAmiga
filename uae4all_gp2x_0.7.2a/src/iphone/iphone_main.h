@@ -11,8 +11,8 @@
 
 extern "C" char* get_rom_path();
 extern "C" char* get_key_path();
-extern "C" unsigned get_chipmem_size();
-extern "C" unsigned get_fastmem_size();
+extern "C" uint32_t get_chipmem_size();
+extern "C" uint32_t get_fastmem_size();
 extern "C" char* get_df_path(int drive);
 extern "C" int getDisplayIsNTSC();
 extern "C" void setDisplayIsNTSC(int isNTSC);

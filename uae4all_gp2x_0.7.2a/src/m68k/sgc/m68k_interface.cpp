@@ -28,32 +28,32 @@ extern m68kcontext_t m68k_context;
 
 #define SPLIT_32_2_16
 
-MH_STATIC unsigned int cyclone_read8 (unsigned int a);
-MH_STATIC unsigned int cyclone_read16(unsigned int a);
-MH_STATIC unsigned int cyclone_read32(unsigned int a);
-MH_STATIC void cyclone_write8 (unsigned int a,unsigned int d);
-MH_STATIC void cyclone_write16(unsigned int a,unsigned int d);
-MH_STATIC void cyclone_write32(unsigned int a,unsigned int d);
+MH_STATIC uint32_t cyclone_read8 (uint32_t a);
+MH_STATIC uint32_t cyclone_read16(uint32_t a);
+MH_STATIC uint32_t cyclone_read32(uint32_t a);
+MH_STATIC void cyclone_write8 (uint32_t a,uint32_t d);
+MH_STATIC void cyclone_write16(uint32_t a,uint32_t d);
+MH_STATIC void cyclone_write32(uint32_t a,uint32_t d);
 
-static unsigned int check_pc(unsigned int pc);
+static uint32_t check_pc(uint32_t pc);
 static int irq_ack(int level);
 static int unrecognized_callback(void);
 
-static unsigned custom_handlers[256];
+static uint32_t custom_handlers[256];
 
 int end_emulator(register m68kcontext_t *cpu, u32 vector) {
 	cpu->cycles = -cpu->cycles;
 	return 1;	// modified CPU state
 }
 
-static int m68k_exception(m68kcontext_t *cpu, unsigned n)
+static int m68k_exception(m68kcontext_t *cpu, uint32_t n)
 {
 	u32 pc = cpu->pc - cpu->membase;
 	u32 sr = cpu->srh << 8;
 	u32 sp = cpu->a[7].D;
 	if (!(sr&0x2000))
 	{
-		unsigned asp=cpu->osp;
+		uint32_t asp=cpu->osp;
 		//m68k_set_register(M68K_REG_SR,(sr&0x7FF)|0x2000);
 		//m68k_set_register(M68K_REG_ASP,sp);
 		//m68k_set_register(M68K_REG_A7,asp-6);
@@ -74,13 +74,13 @@ static int m68k_exception(m68kcontext_t *cpu, unsigned n)
 	if (n==4) IO_CYCLE+=4;
 	M68KCONTEXT.execinfo&=0x65;
 	/*
-	unsigned pc=m68k_get_pc();
-	unsigned sr=m68k_get_register(M68K_REG_SR);
-	unsigned sp=m68k_get_register(M68K_REG_A7);
+	uint32_t pc=m68k_get_pc();
+	uint32_t sr=m68k_get_register(M68K_REG_SR);
+	uint32_t sp=m68k_get_register(M68K_REG_A7);
 	
 	if (!(sr&0x2000))
 	{
-		unsigned asp=m68k_get_register(M68K_REG_ASP);
+		uint32_t asp=m68k_get_register(M68K_REG_ASP);
 		m68k_set_register(M68K_REG_SR,(sr&0x7FF)|0x2000);
 		m68k_set_register(M68K_REG_ASP,sp);
 		m68k_set_register(M68K_REG_A7,asp-6);
@@ -101,20 +101,20 @@ static int m68k_exception(m68kcontext_t *cpu, unsigned n)
 	return 1;
 }
 
-int uae_chk_handler(register m68kcontext_t *cpu, unsigned vector) {
+int uae_chk_handler(register m68kcontext_t *cpu, uint32_t vector) {
 	// handling invalid opcode
 	u32 pc = cpu->pc - cpu->membase;
-	unsigned opcode=cpu->fetch16(pc);
+	uint32_t opcode=cpu->fetch16(pc);
 	
 	return m68k_exception(cpu, 0x04);
 }
 
 void init_m68k() {
-	bzero(&custom_handlers, sizeof(unsigned)*256);
+	bzero(&custom_handlers, sizeof(uint32_t)*256);
 	bzero(&M68KCONTEXT, sizeof M68KCONTEXT);
 	M68KCONTEXT.exception_handlers = custom_handlers;
-	custom_handlers[0x04] = (unsigned)&uae_chk_handler;
-	custom_handlers[32 + 15] = (unsigned)&end_emulator;
+	custom_handlers[0x04] = (uint32_t)&uae_chk_handler;
+	custom_handlers[32 + 15] = (uint32_t)&end_emulator;
 	
 	m68k_init();
 	bzero(&m68k_context, sizeof m68k_context);
@@ -128,13 +128,13 @@ void init_m68k() {
 	
 }
 
-void map_zone(unsigned addr, addrbank* banco, unsigned realstart) {
+void map_zone(uint32_t addr, addrbank* banco, uint32_t realstart) {
 }
 
 void init_memmaps(addrbank* bank) {
 }
 
-static unsigned int check_pc(unsigned int pc) {
+static uint32_t check_pc(uint32_t pc) {
 	static int loopcode = 0x60fe60fe;
 	pc -= m68k_context.membase;
 	// pc &= ~1; // leave it for address error emulation
@@ -150,15 +150,15 @@ static unsigned int check_pc(unsigned int pc) {
 		p = (uae_u8 *)&loopcode - pc;
 	}
 	
-	m68k_context.membase = (unsigned)p;
-	return (unsigned)p + pc;
+	m68k_context.membase = (uint32_t)p;
+	return (uint32_t)p + pc;
 }
 
-static unsigned int cyclone_read8(unsigned int a) {
+static uint32_t cyclone_read8(uint32_t a) {
 	a &= ~0xff000000;
 	uae_u8 *p = baseaddr[a>>16];
 	if ((int)p & 1)	{
-		addrbank *ab = (addrbank *) ((unsigned)p & ~1);
+		addrbank *ab = (addrbank *) ((uint32_t)p & ~1);
 		uae_u32 ret = ab->bget(a);
 		return ret;
 	} else {
@@ -166,11 +166,11 @@ static unsigned int cyclone_read8(unsigned int a) {
 	}
 }
 
-static unsigned int cyclone_read16(unsigned int a) {
+static uint32_t cyclone_read16(uint32_t a) {
 	a &= ~0xff000000;
 	uae_u16 *p = (uae_u16 *) baseaddr[a>>16];
 	if ((int)p & 1)	{
-		addrbank *ab = (addrbank *) ((unsigned)p & ~1);
+		addrbank *ab = (addrbank *) ((uint32_t)p & ~1);
 		uae_u32 ret = ab->wget(a);
 		return ret;
 	} else {
@@ -178,14 +178,14 @@ static unsigned int cyclone_read16(unsigned int a) {
 	}
 }
 
-static unsigned int cyclone_read32(unsigned int a) {
+static uint32_t cyclone_read32(uint32_t a) {
 #ifdef SPLIT_32_2_16
 	return (cyclone_read16(a)<<16) | cyclone_read16(a+2);
 #else
 	a &= ~0xff000000;
 	uae_u16 *p = (uae_u16 *) baseaddr[a>>16];
 	if ((int)p & 1)	{
-		addrbank *ab = (addrbank *) ((unsigned)p & ~1);
+		addrbank *ab = (addrbank *) ((uint32_t)p & ~1);
 		uae_u32 ret = ab->lget(a);
 		return ret;
 	} else {
@@ -195,29 +195,29 @@ static unsigned int cyclone_read32(unsigned int a) {
 #endif
 }
 
-static void cyclone_write8(unsigned int a, unsigned int d) {
+static void cyclone_write8(uint32_t a, uint32_t d) {
 	a &= ~0xff000000;
 	uae_u8 *p = baseaddr[a>>16];
 	if ((int)p & 1) {
-		addrbank *ab = (addrbank *) ((unsigned)p & ~1);
+		addrbank *ab = (addrbank *) ((uint32_t)p & ~1);
 		ab->bput(a, d&0xff);
 	} else {
 		p[a^1] = d;
 	}
 }
 
-static void cyclone_write16(unsigned int a,unsigned int d) {
+static void cyclone_write16(uint32_t a,uint32_t d) {
 	a &= ~0xff000000;
 	uae_u16 *p = (uae_u16 *) baseaddr[a>>16];
 	if ((int)p & 1) {
-		addrbank *ab = (addrbank *) ((unsigned)p & ~1);
+		addrbank *ab = (addrbank *) ((uint32_t)p & ~1);
 		ab->wput(a, d&0xffff);
 	} else {
 		p[a>>1] = d;
 	}
 }
 
-static void cyclone_write32(unsigned int a,unsigned int d) {
+static void cyclone_write32(uint32_t a,uint32_t d) {
 #ifdef SPLIT_32_2_16
 	cyclone_write16(a, d>>16);
 	cyclone_write16(a+2, d);
@@ -225,7 +225,7 @@ static void cyclone_write32(unsigned int a,unsigned int d) {
 	a &= ~0xff000000;
 	uae_u16 *p = (uae_u16 *) baseaddr[a>>16];
 	if ((int)p & 1) {
-		addrbank *ab = (addrbank *) ((unsigned)p & ~1);
+		addrbank *ab = (addrbank *) ((uint32_t)p & ~1);
 		ab->lput(a, d);
 	} else {
 		a >>= 1;

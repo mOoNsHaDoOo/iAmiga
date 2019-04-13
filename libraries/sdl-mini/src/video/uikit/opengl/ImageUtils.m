@@ -74,14 +74,14 @@ char*  esLoadPNG ( const char *fileName, kRETexturePixelFormat desiredFormat, in
 	
 	// Repack the pixel data into the right format
 	void*					tempData;
-	unsigned int*			inPixel32;
-	unsigned short*			outPixel16;
+	uint32_t*			inPixel32;
+	uint16_t*			outPixel16;
 	if(desiredFormat == kRETexturePixelFormat_RGB565) {
 		//Convert "RRRRRRRRRGGGGGGGGBBBBBBBBAAAAAAAA" to "RRRRRGGGGGGBBBBB"
 		tempData = malloc(POTHigh * POTWide * 2);
-		inPixel32 = (unsigned int*)data;
-		outPixel16 = (unsigned short*)tempData;
-		for(unsigned int i = 0; i < POTWide * POTHigh; ++i, ++inPixel32)
+		inPixel32 = (uint32_t*)data;
+		outPixel16 = (uint16_t*)tempData;
+		for(uint32_t i = 0; i < POTWide * POTHigh; ++i, ++inPixel32)
 			*outPixel16++ = ((((*inPixel32 >> 0) & 0xFF) >> 3) << 11) | ((((*inPixel32 >> 8) & 0xFF) >> 2) << 5) | ((((*inPixel32 >> 16) & 0xFF) >> 3) << 0);
 		free(data);
 		data = tempData;
@@ -90,9 +90,9 @@ char*  esLoadPNG ( const char *fileName, kRETexturePixelFormat desiredFormat, in
 	else if (desiredFormat == kRETexturePixelFormat_RGBA4444) {
 		//Convert "RRRRRRRRRGGGGGGGGBBBBBBBBAAAAAAAA" to "RRRRGGGGBBBBAAAA"
 		tempData = malloc(POTHigh * POTWide * 2);
-		inPixel32 = (unsigned int*)data;
-		outPixel16 = (unsigned short*)tempData;
-		for(unsigned int i = 0; i < POTWide * POTHigh; ++i, ++inPixel32)
+		inPixel32 = (uint32_t*)data;
+		outPixel16 = (uint16_t*)tempData;
+		for(uint32_t i = 0; i < POTWide * POTHigh; ++i, ++inPixel32)
 			*outPixel16++ = 
 			((((*inPixel32 >> 0) & 0xFF) >> 4) << 12) | // R
 			((((*inPixel32 >> 8) & 0xFF) >> 4) << 8) | // G
@@ -107,9 +107,9 @@ char*  esLoadPNG ( const char *fileName, kRETexturePixelFormat desiredFormat, in
 	else if (desiredFormat == kRETexturePixelFormat_RGB5A1) {
 		//Convert "RRRRRRRRRGGGGGGGGBBBBBBBBAAAAAAAA" to "RRRRRGGGGGBBBBBA"
 		tempData = malloc(POTHigh * POTWide * 2);
-		inPixel32 = (unsigned int*)data;
-		outPixel16 = (unsigned short*)tempData;
-		for(unsigned int i = 0; i < POTWide * POTHigh; ++i, ++inPixel32)
+		inPixel32 = (uint32_t*)data;
+		outPixel16 = (uint16_t*)tempData;
+		for(uint32_t i = 0; i < POTWide * POTHigh; ++i, ++inPixel32)
 			*outPixel16++ = 
 			((((*inPixel32 >> 0) & 0xFF) >> 3) << 11) | // R
 			((((*inPixel32 >> 8) & 0xFF) >> 3) << 6) | // G

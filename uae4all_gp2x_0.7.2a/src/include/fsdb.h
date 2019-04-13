@@ -62,23 +62,23 @@ typedef struct a_inode_struct {
     uae_u32 uniq;
     /* For a directory that is being ExNext()ed, the number of child ainos
        which must be kept locked in core.  */
-    unsigned long locked_children;
+    uint32_t locked_children;
     /* How many ExNext()s are going on in this directory?  */
-    unsigned long exnext_count;
+    uint32_t exnext_count;
     /* AmigaOS locking bits.  */
     int shlock;
     long db_offset;
-    unsigned int dir:1;
-    unsigned int elock:1;
+    uint32_t dir:1;
+    uint32_t elock:1;
     /* Nonzero if this came from an entry in our database.  */
-    unsigned int has_dbentry:1;
+    uint32_t has_dbentry:1;
     /* Nonzero if this will need an entry in our database.  */
-    unsigned int needs_dbentry:1;
+    uint32_t needs_dbentry:1;
     /* This a_inode possibly needs writing back to the database.  */
-    unsigned int dirty:1;
+    uint32_t dirty:1;
     /* If nonzero, this represents a deleted file; the corresponding
      * entry in the database must be cleared.  */
-    unsigned int deleted:1;
+    uint32_t deleted:1;
 } a_inode;
 
 extern char *nname_begin (char *);

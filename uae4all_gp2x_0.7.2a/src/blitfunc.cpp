@@ -19,7 +19,7 @@
 
 void blitdofast_0 (uaecptr pta, uaecptr ptb, uaecptr ptc, uaecptr ptd, struct bltinfo *_GCCRES_ b)
 {
-	unsigned int i,j,hblitsize,bltdmod;
+	uint32_t i,j,hblitsize,bltdmod;
 	if (!ptd || !b->vblitsize || !b->hblitsize) return;
 	hblitsize = b->hblitsize;
 	bltdmod = b->bltdmod;
@@ -35,7 +35,7 @@ void blitdofast_0 (uaecptr pta, uaecptr ptb, uaecptr ptc, uaecptr ptd, struct bl
 }
 void blitdofast_desc_0 (uaecptr pta, uaecptr ptb, uaecptr ptc, uaecptr ptd, struct bltinfo *_GCCRES_ b)
 {
-	unsigned int i,j,hblitsize,bltdmod;
+	uint32_t i,j,hblitsize,bltdmod;
 	if (!ptd || !b->vblitsize || !b->hblitsize) return;
 	hblitsize = b->hblitsize;
 	bltdmod = b->bltdmod;
@@ -51,7 +51,7 @@ void blitdofast_desc_0 (uaecptr pta, uaecptr ptb, uaecptr ptc, uaecptr ptd, stru
 }
 void blitdofast_a (uaecptr pta, uaecptr ptb, uaecptr ptc, uaecptr ptd, struct bltinfo *_GCCRES_ b)
 {
-	register unsigned int i,j;
+	register uint32_t i,j;
 	uae_u32 totald = 0;
 	uae_u32 preva = 0;
 	uae_u32 srcc = b->bltcdat;
@@ -81,7 +81,7 @@ void blitdofast_a (uaecptr pta, uaecptr ptb, uaecptr ptc, uaecptr ptd, struct bl
 void blitdofast_desc_a (uaecptr pta, uaecptr ptb, uaecptr ptc, uaecptr ptd, struct bltinfo *_GCCRES_ b)
 {
 	uae_u32 totald = 0;
-	register unsigned int i,j;
+	register uint32_t i,j;
 	uae_u32 preva = 0;
 	uae_u32 srcc = b->bltcdat;
 	uae_u32 dstd=0;
@@ -108,7 +108,7 @@ void blitdofast_desc_a (uaecptr pta, uaecptr ptb, uaecptr ptc, uaecptr ptd, stru
 }
 void blitdofast_2a (uaecptr pta, uaecptr ptb, uaecptr ptc, uaecptr ptd, struct bltinfo *_GCCRES_ b)
 {
-	register unsigned int i,j;
+	register uint32_t i,j;
 	uae_u32 totald = 0;
 	uae_u32 preva = 0;
 	uae_u32 prevb = 0, srcb = b->bltbhold;
@@ -145,7 +145,7 @@ void blitdofast_2a (uaecptr pta, uaecptr ptb, uaecptr ptc, uaecptr ptd, struct b
 void blitdofast_desc_2a (uaecptr pta, uaecptr ptb, uaecptr ptc, uaecptr ptd, struct bltinfo *_GCCRES_ b)
 {
 	uae_u32 totald = 0;
-	register unsigned int i,j;
+	register uint32_t i,j;
 	uae_u32 preva = 0;
 	uae_u32 prevb = 0, srcb = b->bltbhold;
 	uae_u32 srcc = b->bltcdat;
@@ -179,7 +179,7 @@ void blitdofast_desc_2a (uaecptr pta, uaecptr ptb, uaecptr ptc, uaecptr ptd, str
 }
 void blitdofast_30 (uaecptr pta, uaecptr ptb, uaecptr ptc, uaecptr ptd, struct bltinfo *_GCCRES_ b)
 {
-	register unsigned int i,j;
+	register uint32_t i,j;
 	uae_u32 totald = 0;
 	uae_u32 preva = 0;
 	uae_u32 prevb = 0, srcb = b->bltbhold;
@@ -212,7 +212,7 @@ void blitdofast_30 (uaecptr pta, uaecptr ptb, uaecptr ptc, uaecptr ptd, struct b
 void blitdofast_desc_30 (uaecptr pta, uaecptr ptb, uaecptr ptc, uaecptr ptd, struct bltinfo *_GCCRES_ b)
 {
 	uae_u32 totald = 0;
-	register unsigned int i,j;
+	register uint32_t i,j;
 	uae_u32 preva = 0;
 	uae_u32 prevb = 0, srcb = b->bltbhold;
 	uae_u32 dstd=0;
@@ -242,7 +242,7 @@ void blitdofast_desc_30 (uaecptr pta, uaecptr ptb, uaecptr ptc, uaecptr ptd, str
 }
 void blitdofast_3a (uaecptr pta, uaecptr ptb, uaecptr ptc, uaecptr ptd, struct bltinfo *_GCCRES_ b)
 {
-	register unsigned int i,j;
+	register uint32_t i,j;
 	uae_u32 totald = 0;
 	uae_u32 preva = 0;
 	uae_u32 prevb = 0, srcb = b->bltbhold;
@@ -279,7 +279,7 @@ void blitdofast_3a (uaecptr pta, uaecptr ptb, uaecptr ptc, uaecptr ptd, struct b
 void blitdofast_desc_3a (uaecptr pta, uaecptr ptb, uaecptr ptc, uaecptr ptd, struct bltinfo *_GCCRES_ b)
 {
 	uae_u32 totald = 0;
-	register unsigned int i,j;
+	register uint32_t i,j;
 	uae_u32 preva = 0;
 	uae_u32 prevb = 0, srcb = b->bltbhold;
 	uae_u32 srcc = b->bltcdat;
@@ -313,7 +313,7 @@ void blitdofast_desc_3a (uaecptr pta, uaecptr ptb, uaecptr ptc, uaecptr ptd, str
 }
 void blitdofast_3c (uaecptr pta, uaecptr ptb, uaecptr ptc, uaecptr ptd, struct bltinfo *_GCCRES_ b)
 {
-	register unsigned int i,j;
+	register uint32_t i,j;
 	uae_u32 totald = 0;
 	uae_u32 preva = 0;
 	uae_u32 prevb = 0, srcb = b->bltbhold;
@@ -346,7 +346,7 @@ void blitdofast_3c (uaecptr pta, uaecptr ptb, uaecptr ptc, uaecptr ptd, struct b
 void blitdofast_desc_3c (uaecptr pta, uaecptr ptb, uaecptr ptc, uaecptr ptd, struct bltinfo *_GCCRES_ b)
 {
 	uae_u32 totald = 0;
-	register unsigned int i,j;
+	register uint32_t i,j;
 	uae_u32 preva = 0;
 	uae_u32 prevb = 0, srcb = b->bltbhold;
 	uae_u32 dstd=0;
@@ -376,7 +376,7 @@ void blitdofast_desc_3c (uaecptr pta, uaecptr ptb, uaecptr ptc, uaecptr ptd, str
 }
 void blitdofast_4a (uaecptr pta, uaecptr ptb, uaecptr ptc, uaecptr ptd, struct bltinfo *_GCCRES_ b)
 {
-	register unsigned int i,j;
+	register uint32_t i,j;
 	uae_u32 totald = 0;
 	uae_u32 preva = 0;
 	uae_u32 prevb = 0, srcb = b->bltbhold;
@@ -413,7 +413,7 @@ void blitdofast_4a (uaecptr pta, uaecptr ptb, uaecptr ptc, uaecptr ptd, struct b
 void blitdofast_desc_4a (uaecptr pta, uaecptr ptb, uaecptr ptc, uaecptr ptd, struct bltinfo *_GCCRES_ b)
 {
 	uae_u32 totald = 0;
-	register unsigned int i,j;
+	register uint32_t i,j;
 	uae_u32 preva = 0;
 	uae_u32 prevb = 0, srcb = b->bltbhold;
 	uae_u32 srcc = b->bltcdat;
@@ -447,7 +447,7 @@ void blitdofast_desc_4a (uaecptr pta, uaecptr ptb, uaecptr ptc, uaecptr ptd, str
 }
 void blitdofast_6a (uaecptr pta, uaecptr ptb, uaecptr ptc, uaecptr ptd, struct bltinfo *_GCCRES_ b)
 {
-	register unsigned int i,j;
+	register uint32_t i,j;
 	uae_u32 totald = 0;
 	uae_u32 preva = 0;
 	uae_u32 prevb = 0, srcb = b->bltbhold;
@@ -484,7 +484,7 @@ void blitdofast_6a (uaecptr pta, uaecptr ptb, uaecptr ptc, uaecptr ptd, struct b
 void blitdofast_desc_6a (uaecptr pta, uaecptr ptb, uaecptr ptc, uaecptr ptd, struct bltinfo *_GCCRES_ b)
 {
 	uae_u32 totald = 0;
-	register unsigned int i,j;
+	register uint32_t i,j;
 	uae_u32 preva = 0;
 	uae_u32 prevb = 0, srcb = b->bltbhold;
 	uae_u32 srcc = b->bltcdat;
@@ -518,7 +518,7 @@ void blitdofast_desc_6a (uaecptr pta, uaecptr ptb, uaecptr ptc, uaecptr ptd, str
 }
 void blitdofast_8a (uaecptr pta, uaecptr ptb, uaecptr ptc, uaecptr ptd, struct bltinfo *_GCCRES_ b)
 {
-	register unsigned int i,j;
+	register uint32_t i,j;
 	uae_u32 totald = 0;
 	uae_u32 preva = 0;
 	uae_u32 prevb = 0, srcb = b->bltbhold;
@@ -555,7 +555,7 @@ void blitdofast_8a (uaecptr pta, uaecptr ptb, uaecptr ptc, uaecptr ptd, struct b
 void blitdofast_desc_8a (uaecptr pta, uaecptr ptb, uaecptr ptc, uaecptr ptd, struct bltinfo *_GCCRES_ b)
 {
 	uae_u32 totald = 0;
-	register unsigned int i,j;
+	register uint32_t i,j;
 	uae_u32 preva = 0;
 	uae_u32 prevb = 0, srcb = b->bltbhold;
 	uae_u32 srcc = b->bltcdat;
@@ -589,7 +589,7 @@ void blitdofast_desc_8a (uaecptr pta, uaecptr ptb, uaecptr ptc, uaecptr ptd, str
 }
 void blitdofast_8c (uaecptr pta, uaecptr ptb, uaecptr ptc, uaecptr ptd, struct bltinfo *_GCCRES_ b)
 {
-	register unsigned int i,j;
+	register uint32_t i,j;
 	uae_u32 totald = 0;
 	uae_u32 preva = 0;
 	uae_u32 prevb = 0, srcb = b->bltbhold;
@@ -626,7 +626,7 @@ void blitdofast_8c (uaecptr pta, uaecptr ptb, uaecptr ptc, uaecptr ptd, struct b
 void blitdofast_desc_8c (uaecptr pta, uaecptr ptb, uaecptr ptc, uaecptr ptd, struct bltinfo *_GCCRES_ b)
 {
 	uae_u32 totald = 0;
-	register unsigned int i,j;
+	register uint32_t i,j;
 	uae_u32 preva = 0;
 	uae_u32 prevb = 0, srcb = b->bltbhold;
 	uae_u32 srcc = b->bltcdat;
@@ -660,7 +660,7 @@ void blitdofast_desc_8c (uaecptr pta, uaecptr ptb, uaecptr ptc, uaecptr ptd, str
 }
 void blitdofast_9a (uaecptr pta, uaecptr ptb, uaecptr ptc, uaecptr ptd, struct bltinfo *_GCCRES_ b)
 {
-	register unsigned int i,j;
+	register uint32_t i,j;
 	uae_u32 totald = 0;
 	uae_u32 preva = 0;
 	uae_u32 prevb = 0, srcb = b->bltbhold;
@@ -697,7 +697,7 @@ void blitdofast_9a (uaecptr pta, uaecptr ptb, uaecptr ptc, uaecptr ptd, struct b
 void blitdofast_desc_9a (uaecptr pta, uaecptr ptb, uaecptr ptc, uaecptr ptd, struct bltinfo *_GCCRES_ b)
 {
 	uae_u32 totald = 0;
-	register unsigned int i,j;
+	register uint32_t i,j;
 	uae_u32 preva = 0;
 	uae_u32 prevb = 0, srcb = b->bltbhold;
 	uae_u32 srcc = b->bltcdat;
@@ -731,7 +731,7 @@ void blitdofast_desc_9a (uaecptr pta, uaecptr ptb, uaecptr ptc, uaecptr ptd, str
 }
 void blitdofast_a8 (uaecptr pta, uaecptr ptb, uaecptr ptc, uaecptr ptd, struct bltinfo *_GCCRES_ b)
 {
-	register unsigned int i,j;
+	register uint32_t i,j;
 	uae_u32 totald = 0;
 	uae_u32 preva = 0;
 	uae_u32 prevb = 0, srcb = b->bltbhold;
@@ -768,7 +768,7 @@ void blitdofast_a8 (uaecptr pta, uaecptr ptb, uaecptr ptc, uaecptr ptd, struct b
 void blitdofast_desc_a8 (uaecptr pta, uaecptr ptb, uaecptr ptc, uaecptr ptd, struct bltinfo *_GCCRES_ b)
 {
 	uae_u32 totald = 0;
-	register unsigned int i,j;
+	register uint32_t i,j;
 	uae_u32 preva = 0;
 	uae_u32 prevb = 0, srcb = b->bltbhold;
 	uae_u32 srcc = b->bltcdat;
@@ -802,7 +802,7 @@ void blitdofast_desc_a8 (uaecptr pta, uaecptr ptb, uaecptr ptc, uaecptr ptd, str
 }
 void blitdofast_aa (uaecptr pta, uaecptr ptb, uaecptr ptc, uaecptr ptd, struct bltinfo *_GCCRES_ b)
 {
-	register unsigned int i,j;
+	register uint32_t i,j;
 	uae_u32 totald = 0;
 	uae_u32 srcc = b->bltcdat;
 	uae_u32 dstd=0;
@@ -824,7 +824,7 @@ void blitdofast_aa (uaecptr pta, uaecptr ptb, uaecptr ptc, uaecptr ptd, struct b
 void blitdofast_desc_aa (uaecptr pta, uaecptr ptb, uaecptr ptc, uaecptr ptd, struct bltinfo *_GCCRES_ b)
 {
 	uae_u32 totald = 0;
-	register unsigned int i,j;
+	register uint32_t i,j;
 	uae_u32 srcc = b->bltcdat;
 	uae_u32 dstd=0;
 	for (j = b->vblitsize; j--;) {
@@ -843,7 +843,7 @@ void blitdofast_desc_aa (uaecptr pta, uaecptr ptb, uaecptr ptc, uaecptr ptd, str
 }
 void blitdofast_b1 (uaecptr pta, uaecptr ptb, uaecptr ptc, uaecptr ptd, struct bltinfo *_GCCRES_ b)
 {
-	register unsigned int i,j;
+	register uint32_t i,j;
 	uae_u32 totald = 0;
 	uae_u32 preva = 0;
 	uae_u32 prevb = 0, srcb = b->bltbhold;
@@ -880,7 +880,7 @@ void blitdofast_b1 (uaecptr pta, uaecptr ptb, uaecptr ptc, uaecptr ptd, struct b
 void blitdofast_desc_b1 (uaecptr pta, uaecptr ptb, uaecptr ptc, uaecptr ptd, struct bltinfo *_GCCRES_ b)
 {
 	uae_u32 totald = 0;
-	register unsigned int i,j;
+	register uint32_t i,j;
 	uae_u32 preva = 0;
 	uae_u32 prevb = 0, srcb = b->bltbhold;
 	uae_u32 srcc = b->bltcdat;
@@ -914,7 +914,7 @@ void blitdofast_desc_b1 (uaecptr pta, uaecptr ptb, uaecptr ptc, uaecptr ptd, str
 }
 void blitdofast_ca (uaecptr pta, uaecptr ptb, uaecptr ptc, uaecptr ptd, struct bltinfo *_GCCRES_ b)
 {
-	register unsigned int i,j;
+	register uint32_t i,j;
 	uae_u32 totald = 0;
 	uae_u32 preva = 0;
 	uae_u32 prevb = 0, srcb = b->bltbhold;
@@ -951,7 +951,7 @@ void blitdofast_ca (uaecptr pta, uaecptr ptb, uaecptr ptc, uaecptr ptd, struct b
 void blitdofast_desc_ca (uaecptr pta, uaecptr ptb, uaecptr ptc, uaecptr ptd, struct bltinfo *_GCCRES_ b)
 {
 	uae_u32 totald = 0;
-	register unsigned int i,j;
+	register uint32_t i,j;
 	uae_u32 preva = 0;
 	uae_u32 prevb = 0, srcb = b->bltbhold;
 	uae_u32 srcc = b->bltcdat;
@@ -985,7 +985,7 @@ void blitdofast_desc_ca (uaecptr pta, uaecptr ptb, uaecptr ptc, uaecptr ptd, str
 }
 void blitdofast_cc (uaecptr pta, uaecptr ptb, uaecptr ptc, uaecptr ptd, struct bltinfo *_GCCRES_ b)
 {
-	register unsigned int i,j;
+	register uint32_t i,j;
 	uae_u32 totald = 0;
 	uae_u32 prevb = 0, srcb = b->bltbhold;
 	uae_u32 dstd=0;
@@ -1011,7 +1011,7 @@ void blitdofast_cc (uaecptr pta, uaecptr ptb, uaecptr ptc, uaecptr ptd, struct b
 void blitdofast_desc_cc (uaecptr pta, uaecptr ptb, uaecptr ptc, uaecptr ptd, struct bltinfo *_GCCRES_ b)
 {
 	uae_u32 totald = 0;
-	register unsigned int i,j;
+	register uint32_t i,j;
 	uae_u32 prevb = 0, srcb = b->bltbhold;
 	uae_u32 dstd=0;
 	for (j = b->vblitsize; j--;) {
@@ -1034,7 +1034,7 @@ void blitdofast_desc_cc (uaecptr pta, uaecptr ptb, uaecptr ptc, uaecptr ptd, str
 }
 void blitdofast_d8 (uaecptr pta, uaecptr ptb, uaecptr ptc, uaecptr ptd, struct bltinfo *_GCCRES_ b)
 {
-	register unsigned int i,j;
+	register uint32_t i,j;
 	uae_u32 totald = 0;
 	uae_u32 preva = 0;
 	uae_u32 prevb = 0, srcb = b->bltbhold;
@@ -1071,7 +1071,7 @@ void blitdofast_d8 (uaecptr pta, uaecptr ptb, uaecptr ptc, uaecptr ptd, struct b
 void blitdofast_desc_d8 (uaecptr pta, uaecptr ptb, uaecptr ptc, uaecptr ptd, struct bltinfo *_GCCRES_ b)
 {
 	uae_u32 totald = 0;
-	register unsigned int i,j;
+	register uint32_t i,j;
 	uae_u32 preva = 0;
 	uae_u32 prevb = 0, srcb = b->bltbhold;
 	uae_u32 srcc = b->bltcdat;
@@ -1105,7 +1105,7 @@ void blitdofast_desc_d8 (uaecptr pta, uaecptr ptb, uaecptr ptc, uaecptr ptd, str
 }
 void blitdofast_e2 (uaecptr pta, uaecptr ptb, uaecptr ptc, uaecptr ptd, struct bltinfo *_GCCRES_ b)
 {
-	register unsigned int i,j;
+	register uint32_t i,j;
 	uae_u32 totald = 0;
 	uae_u32 preva = 0;
 	uae_u32 prevb = 0, srcb = b->bltbhold;
@@ -1142,7 +1142,7 @@ void blitdofast_e2 (uaecptr pta, uaecptr ptb, uaecptr ptc, uaecptr ptd, struct b
 void blitdofast_desc_e2 (uaecptr pta, uaecptr ptb, uaecptr ptc, uaecptr ptd, struct bltinfo *_GCCRES_ b)
 {
 	uae_u32 totald = 0;
-	register unsigned int i,j;
+	register uint32_t i,j;
 	uae_u32 preva = 0;
 	uae_u32 prevb = 0, srcb = b->bltbhold;
 	uae_u32 srcc = b->bltcdat;
@@ -1176,7 +1176,7 @@ void blitdofast_desc_e2 (uaecptr pta, uaecptr ptb, uaecptr ptc, uaecptr ptd, str
 }
 void blitdofast_ea (uaecptr pta, uaecptr ptb, uaecptr ptc, uaecptr ptd, struct bltinfo *_GCCRES_ b)
 {
-	register unsigned int i,j;
+	register uint32_t i,j;
 	uae_u32 totald = 0;
 	uae_u32 preva = 0;
 	uae_u32 prevb = 0, srcb = b->bltbhold;
@@ -1213,7 +1213,7 @@ void blitdofast_ea (uaecptr pta, uaecptr ptb, uaecptr ptc, uaecptr ptd, struct b
 void blitdofast_desc_ea (uaecptr pta, uaecptr ptb, uaecptr ptc, uaecptr ptd, struct bltinfo *_GCCRES_ b)
 {
 	uae_u32 totald = 0;
-	register unsigned int i,j;
+	register uint32_t i,j;
 	uae_u32 preva = 0;
 	uae_u32 prevb = 0, srcb = b->bltbhold;
 	uae_u32 srcc = b->bltcdat;
@@ -1247,7 +1247,7 @@ void blitdofast_desc_ea (uaecptr pta, uaecptr ptb, uaecptr ptc, uaecptr ptd, str
 }
 void blitdofast_f0 (uaecptr pta, uaecptr ptb, uaecptr ptc, uaecptr ptd, struct bltinfo *_GCCRES_ b)
 {
-	register unsigned int i,j;
+	register uint32_t i,j;
 	uae_u32 totald = 0;
 	uae_u32 preva = 0;
 	uae_u32 dstd=0;
@@ -1272,7 +1272,7 @@ void blitdofast_f0 (uaecptr pta, uaecptr ptb, uaecptr ptc, uaecptr ptd, struct b
 void blitdofast_desc_f0 (uaecptr pta, uaecptr ptb, uaecptr ptc, uaecptr ptd, struct bltinfo *_GCCRES_ b)
 {
 	uae_u32 totald = 0;
-	register unsigned int i,j;
+	register uint32_t i,j;
 	uae_u32 preva = 0;
 	uae_u32 dstd=0;
 	uae_u32 *blit_masktable_p = blit_masktable + BLITTER_MAX_WORDS - b->hblitsize;
@@ -1294,7 +1294,7 @@ void blitdofast_desc_f0 (uaecptr pta, uaecptr ptb, uaecptr ptc, uaecptr ptd, str
 }
 void blitdofast_fa (uaecptr pta, uaecptr ptb, uaecptr ptc, uaecptr ptd, struct bltinfo *_GCCRES_ b)
 {
-	register unsigned int i,j;
+	register uint32_t i,j;
 	uae_u32 totald = 0;
 	uae_u32 preva = 0;
 	uae_u32 srcc = b->bltcdat;
@@ -1323,7 +1323,7 @@ void blitdofast_fa (uaecptr pta, uaecptr ptb, uaecptr ptc, uaecptr ptd, struct b
 void blitdofast_desc_fa (uaecptr pta, uaecptr ptb, uaecptr ptc, uaecptr ptd, struct bltinfo *_GCCRES_ b)
 {
 	uae_u32 totald = 0;
-	register unsigned int i,j;
+	register uint32_t i,j;
 	uae_u32 preva = 0;
 	uae_u32 srcc = b->bltcdat;
 	uae_u32 dstd=0;
@@ -1348,7 +1348,7 @@ void blitdofast_desc_fa (uaecptr pta, uaecptr ptb, uaecptr ptc, uaecptr ptd, str
 }
 void blitdofast_fc (uaecptr pta, uaecptr ptb, uaecptr ptc, uaecptr ptd, struct bltinfo *_GCCRES_ b)
 {
-	register unsigned int i,j;
+	register uint32_t i,j;
 	uae_u32 totald = 0;
 	uae_u32 preva = 0;
 	uae_u32 prevb = 0, srcb = b->bltbhold;
@@ -1381,7 +1381,7 @@ void blitdofast_fc (uaecptr pta, uaecptr ptb, uaecptr ptc, uaecptr ptd, struct b
 void blitdofast_desc_fc (uaecptr pta, uaecptr ptb, uaecptr ptc, uaecptr ptd, struct bltinfo *_GCCRES_ b)
 {
 	uae_u32 totald = 0;
-	register unsigned int i,j;
+	register uint32_t i,j;
 	uae_u32 preva = 0;
 	uae_u32 prevb = 0, srcb = b->bltbhold;
 	uae_u32 dstd=0;

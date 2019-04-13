@@ -14,7 +14,7 @@
 
 #include "m68k/debug_m68k.h"
 
-static unsigned short mimemoriadummy[65536/2];
+static uint16_t mimemoriadummy[65536/2];
 
 void clear_fame_mem_dummy(void)
 {
@@ -24,13 +24,13 @@ void clear_fame_mem_dummy(void)
 static uintptr_t micontexto_fpa[256];
 
 
-void process_exception(unsigned int vect);
+void process_exception(uint32_t vect);
 
 
-void uae_chk_handler(unsigned vector)
+void uae_chk_handler(uint32_t vector)
 {
-	unsigned opcode=m68k_fetch(m68k_get_pc());
-	unsigned pc=m68k_get_pc();
+	uint32_t opcode=m68k_fetch(m68k_get_pc());
+	uint32_t pc=m68k_get_pc();
     
 	if (cloanto_rom && (opcode & 0xF100) == 0x7100) {
 		_68k_dreg((opcode >> 9) & 7) = (uae_s8)(opcode & 0xFF);
@@ -96,12 +96,12 @@ void uae_chk_handler(unsigned vector)
 
 void init_memmaps(addrbank* banco)
 {
-	unsigned i;
+	uint32_t i;
     
     M68K_CONTEXT *context = m68k_get_context();
     
 	memset(context,0,sizeof(M68K_CONTEXT));
-	memset(&micontexto_fpa,0,sizeof(unsigned)*256);
+	memset(&micontexto_fpa,0,sizeof(uint32_t)*256);
     
 	micontexto_fpa[0x04]=(uintptr_t)&uae_chk_handler;
     
@@ -116,8 +116,8 @@ void init_memmaps(addrbank* banco)
 	for(i=0;i<256;i++)
 	{
 		uintptr_t offset=(uintptr_t)banco->baseaddr;
-		unsigned low_addr=(i<<16);
-		unsigned high_addr=((i+1)<<16)-1;
+		uint32_t low_addr=(i<<16);
+		uint32_t high_addr=((i+1)<<16)-1;
 		void *data=NULL;
 		void *mem_handler_r8=NULL;
 		void *mem_handler_r16=NULL;
@@ -139,14 +139,14 @@ void init_memmaps(addrbank* banco)
 	}
 }
 
-void map_zone(unsigned addr, addrbank* banco, unsigned realstart)
+void map_zone(uint32_t addr, addrbank* banco, uint32_t realstart)
 {
 	uintptr_t offset=(uintptr_t)banco->baseaddr;
 	if (addr>255)
 		return;
     
-	unsigned low_addr=(addr<<16);
-	unsigned high_addr=((addr+1)<<16)-1;
+	uint32_t low_addr=(addr<<16);
+	uint32_t high_addr=((addr+1)<<16)-1;
     
 	if (offset)
 	{

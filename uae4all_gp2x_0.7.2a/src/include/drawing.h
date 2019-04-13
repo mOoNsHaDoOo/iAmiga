@@ -109,7 +109,7 @@ static __inline__ void color_reg_cpy (struct color_entry *_GCCRES_ dst, struct c
 struct color_change {
     int linepos;
     int regno;
-    unsigned long value;
+    uint32_t value;
 } UAE4ALL_ALIGN;
 
 /* 440 rather than 880, since sprites are always lores.  */
@@ -121,10 +121,10 @@ struct color_change {
 
 struct sprite_entry
 {
-    unsigned short pos;
-    unsigned short max;
-    unsigned int first_pixel;
-    unsigned int has_attached;
+    uint16_t pos;
+    uint16_t max;
+    uint32_t first_pixel;
+    uint32_t has_attached;
 } UAE4ALL_ALIGN;
 
 union sps_union {
@@ -228,6 +228,6 @@ extern int inhibit_frame;
 
 void reset_frameskip(void);
 void check_all_prefs(void);
-void delay_frameskip(unsigned);
+void delay_frameskip(uint32_t);
 
 #endif

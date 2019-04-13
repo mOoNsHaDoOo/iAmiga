@@ -17,14 +17,23 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <sys/types.h>
+#include <sys/event.h>
+#include <sys/time.h>
+#include <fcntl.h>
+#include <unistd.h>
 #import "EMUROMBrowserViewController.h"
 #import "EMUBrowser.h"
 #import "EMUFileInfo.h"
 #import "EMUFileGroup.h"
 #import "ScrollToRowHandler.h"
+#import "SVProgressHUD.h"
 
 static NSMutableDictionary *_files = nil;
 static NSMutableDictionary *_lastSeachTerms = nil;
+static bool dirDirty = true;
+static EMUROMBrowserViewController *fileBrowser = nil;
+CFFileDescriptorRef monitoredDirRef = nil;
 
 @implementation EMUROMBrowserViewController {
     @private
@@ -64,11 +73,18 @@ static NSMutableDictionary *_lastSeachTerms = nil;
         [self searchFiles];
         [self.tableView reloadData];
     }
+    
+    fileBrowser = self;
+    if (monitoredDirRef == nil) {
+        [self beginMonitoringDirectory];
+    }
+    
     _searchBar.placeholder = [NSString stringWithFormat: @"search %@", _extension];
     [_scrollToRowHandler scrollToRow];
 }
 
-- (void)loadFiles: (bool) forceReload {
+-(void)fillView
+{
     NSMutableArray *sections = [[NSMutableArray alloc] init];
     
     for (int i = 0; i < 26; i++) {
@@ -82,11 +98,6 @@ static NSMutableDictionary *_lastSeachTerms = nil;
     NSArray *files;
     
     files = [_files objectForKey: _extension];
-    if (files == nil || forceReload) {
-        files = [browser getFileInfosWithFileNameFilter: _extension];
-        _files[_extension] = files;
-    }
-    
     _activeFilesCollection = files;
     for (EMUFileInfo* f in files) {
         EMUFileGroup *g;
@@ -100,8 +111,43 @@ static NSMutableDictionary *_lastSeachTerms = nil;
         
         [g.files addObject:f];
     }
+    
     [browser release];
     _sectionFiles = sections;
+    dirDirty = false;
+    [self.tableView reloadData];
+}
+
+-(void)loadFilesScanDir
+{
+    NSArray *files;
+    EMUBrowser *browser = [[EMUBrowser alloc] init];
+    
+    /*
+    files = [_files objectForKey: _extension];
+    if (files != nil)
+        [files release];
+    */
+    files = [browser getFileInfosWithFileNameFilter: _extension];
+    _files[_extension] = files;
+    [browser release];
+}
+
+-(void)loadFiles: (bool) forceReload {
+    NSArray *files;
+    
+    files = [_files objectForKey: _extension];
+    if (files == nil || forceReload || dirDirty) {
+        [SVProgressHUD setInfoImage:nil];
+        [SVProgressHUD setBackgroundColor:[UIColor colorWithRed:220.0/255.0 green:220.0/255.0 blue:220.0/255.0 alpha:1]];
+        [SVProgressHUD showInfoWithStatus:[NSString stringWithFormat:@"%@\n\n%@", @"FileBrowser", @"Scanning directory..."]];
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self loadFilesScanDir];
+            [self fillView];
+        });
+    } else
+        [self fillView];
 }
 
 -(void)searchFiles
@@ -242,9 +288,91 @@ static NSMutableDictionary *_lastSeachTerms = nil;
     }
 }
 
+static void KQCallback(CFFileDescriptorRef kqRef, CFOptionFlags callBackTypes, void *info)
+{
+    struct kevent event;
+    timespec timeout = { 0, 0 };
+    
+    int kq = CFFileDescriptorGetNativeDescriptor(monitoredDirRef);
+    if (kq) {
+        int eventCount = kevent(kq, NULL, 0, &event, 1, &timeout);
+        if (eventCount == 1) {
+            for (NSString* key in _files) {
+                _files[key] = nil;
+            }
+            
+            if (fileBrowser) {
+                [fileBrowser loadFiles: true];
+            } else
+                dirDirty = true;
+        }
+    }
+    
+    // Re-enable callbacks
+    CFFileDescriptorEnableCallBacks(monitoredDirRef, kCFFileDescriptorReadCallBack);
+}
+
+-(void)beginMonitoringDirectory
+{
+    int dirFD, kq;
+    
+    //
+    NSString *documentsDirectory = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject];
+
+    // Open the directory we're going to watch
+    dirFD = open([documentsDirectory fileSystemRepresentation], O_EVTONLY);
+    if (dirFD >= 0)
+    {
+        // Create a kqueue for our event messages...
+        kq = kqueue();
+        if (kq >= 0)
+        {
+            struct kevent eventToAdd;
+            eventToAdd.ident  = dirFD;
+            eventToAdd.filter = EVFILT_VNODE;
+            eventToAdd.flags  = EV_ADD | EV_CLEAR;
+            eventToAdd.fflags = NOTE_WRITE;
+            eventToAdd.data   = 0;
+            eventToAdd.udata  = NULL;
+            
+            int errNum = kevent(kq, &eventToAdd, 1, NULL, 0, NULL);
+            if (errNum == 0)
+            {
+                CFFileDescriptorContext context = { 0, (__bridge void *)(self), NULL, NULL, NULL };
+                CFRunLoopSourceRef      rls;
+                    
+                // Passing true in the third argument so CFFileDescriptorInvalidate will close kq.
+                monitoredDirRef = CFFileDescriptorCreate(NULL, kq, true, KQCallback, &context);
+                if (monitoredDirRef != NULL)
+                {
+                    rls = CFFileDescriptorCreateRunLoopSource(NULL, monitoredDirRef, 0);
+                    if (rls != NULL)
+                    {
+                        CFRunLoopAddSource(CFRunLoopGetCurrent(), rls, kCFRunLoopDefaultMode);
+                        CFRelease(rls);
+                        CFFileDescriptorEnableCallBacks(monitoredDirRef, kCFFileDescriptorReadCallBack);
+                        
+                        // If everything worked, return early and bypass shutting things down
+                        return;
+                    }
+                    // Couldn't create a runloop source, invalidate and release the CFFileDescriptorRef
+                    CFFileDescriptorInvalidate(monitoredDirRef);
+                    CFRelease(monitoredDirRef);
+                    monitoredDirRef = NULL;
+                }
+            }
+            // kq is active, but something failed, close the handle...
+            close(kq);
+            kq = -1;
+        }
+        // file handle is open, but something failed, close the handle...
+        close(dirFD);
+        dirFD = -1;
+    }
+}
 
 - (void)dealloc {
-
+    fileBrowser = nil;
     self.context = nil;
     self.extension= nil;
     [_roms release];

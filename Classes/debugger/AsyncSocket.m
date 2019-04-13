@@ -3255,8 +3255,8 @@ Failed:
 	[ms appendString:[NSString stringWithFormat:@"<AsyncSocket %p", self]];
 	[ms appendString:[NSString stringWithFormat:@" local %@ remote %@ ", selfstr, peerstr]];
 	
-	unsigned readQueueCount  = (unsigned)[theReadQueue count];
-	unsigned writeQueueCount = (unsigned)[theWriteQueue count];
+	uint32_t readQueueCount  = (uint32_t)[theReadQueue count];
+	uint32_t writeQueueCount = (uint32_t)[theWriteQueue count];
 	
 	[ms appendString:[NSString stringWithFormat:@"has queued %u reads %u writes, ", readQueueCount, writeQueueCount]];
 	
@@ -3271,7 +3271,7 @@ Failed:
 			percentDone = 100.0F;
 		
 		[ms appendString: [NSString stringWithFormat:@"currently read %u bytes (%d%% done), ",
-						   (unsigned int)[theCurrentRead->buffer length],
+						   (uint32_t)[theCurrentRead->buffer length],
 						   theCurrentRead->bytesDone ? percentDone : 0]];
 	}
 	
@@ -3282,7 +3282,7 @@ Failed:
 		int percentDone = (float)theCurrentWrite->bytesDone / (float)[theCurrentWrite->buffer length] * 100.0F;
 		
 		[ms appendString: [NSString stringWithFormat:@"currently written %u (%d%%), ",
-						   (unsigned int)[theCurrentWrite->buffer length],
+						   (uint32_t)[theCurrentWrite->buffer length],
 						   theCurrentWrite->bytesDone ? percentDone : 0]];
 	}
 	

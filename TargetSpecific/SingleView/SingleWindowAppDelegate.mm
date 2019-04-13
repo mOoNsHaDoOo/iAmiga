@@ -146,6 +146,14 @@
     return UIInterfaceOrientationMaskLandscape;
 }
 
+- (BOOL)application:(UIApplication *)app
+            openURL:(NSURL *)url
+            options:(NSDictionary<UIApplicationOpenURLOptionsKey, id> *)options
+{
+    // TODO: implement
+    return YES;
+}
+
 - (BOOL)isAdf:(NSURL *)url {
     NSString *extension = url.path.pathExtension.lowercaseString;
     return [@"adf" isEqualToString:extension] || [@"zip" isEqualToString:extension];

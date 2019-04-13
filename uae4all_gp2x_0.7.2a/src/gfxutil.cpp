@@ -13,11 +13,11 @@
 #include "uae.h"
 #include "xwin.h"
 
-unsigned long doMask (int p, int bits, int shift) {
+uint32_t doMask (int p, int bits, int shift) {
     /* p is a value from 0 to 15 (Amiga color value)
      * scale to 0..255, shift to align msb with mask, and apply mask */
 	
-    register unsigned long val = p * 0x11111111UL;
+    register uint32_t val = p * 0x11111111UL;
     val >>= (32 - bits);
     val <<= shift;
 	

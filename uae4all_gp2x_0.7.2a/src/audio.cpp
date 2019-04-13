@@ -53,13 +53,13 @@
 
 #define USE_MAX_EV
 
-#define MAX_EV ~0ul
+#define MAX_EV ~0x00000000
 
 struct audio_channel_data audio_channel[NUMBER_CHANNELS] UAE4ALL_ALIGN;
 int audio_channel_current_sample[NUMBER_CHANNELS];
 int audio_channel_vol[NUMBER_CHANNELS];
-unsigned long audio_channel_adk_mask[NUMBER_CHANNELS];
-unsigned long audio_channel_evtime[NUMBER_CHANNELS] UAE4ALL_ALIGN;
+uint32_t audio_channel_adk_mask[NUMBER_CHANNELS];
+uint32_t audio_channel_evtime[NUMBER_CHANNELS] UAE4ALL_ALIGN;
 int audio_channel_state[NUMBER_CHANNELS] UAE4ALL_ALIGN;
 
 #ifdef NO_SOUND
@@ -79,10 +79,10 @@ int sound_ahi_enabled;
 static int ahi_interrupt_state;
 #endif
 
-unsigned long scaled_sample_evtime;
+uint32_t scaled_sample_evtime;
 
-static unsigned long last_cycles;
-unsigned long next_sample_evtime;
+static uint32_t last_cycles;
+uint32_t next_sample_evtime;
 
 typedef uae_s8 sample8_t;
 
@@ -160,7 +160,7 @@ typedef uae_s8 sample8_t;
 void schedule_audio (void)
 {
 #ifdef UNROLL_LOOPS
-    unsigned long best = ~0ul;
+    uint32_t best = ~0;
     struct audio_channel_data *cdp;
     eventtab[ev_audio].active = 0;
     eventtab[ev_audio].oldcycles = get_cycles ();
@@ -174,7 +174,7 @@ void schedule_audio (void)
 #endif
     eventtab[ev_audio].evtime = get_cycles () + best;
 #else
-    unsigned long best = MAX_EV;
+    uint32_t best = MAX_EV;
 	
     //eventtab[ev_audio].active = 0;
     //eventtab[ev_audio].oldcycles = get_cycles ();
@@ -188,7 +188,7 @@ void schedule_audio (void)
 	else
 		eventtab[ev_audio].active = 1;
 
-	unsigned long currcycles = get_cycles();
+	uint32_t currcycles = get_cycles();
 	eventtab[ev_audio].oldcycles = currcycles;
     eventtab[ev_audio].evtime = currcycles + best;
 #endif
@@ -711,7 +711,7 @@ void check_prefs_changed_audio (void)
 
 
 #define DEFINE_STATE \
-	register unsigned long int best_evtime = n_cycles + 1; \
+	register uint32_t best_evtime = n_cycles + 1; \
 
 
 #ifdef NO_AHI_CHANNELS
@@ -840,7 +840,7 @@ void check_prefs_changed_audio (void)
 #if 1 && defined(__arm__)
 void update_audio (void)
 {
-    unsigned long int n_cycles;
+    uint32_t n_cycles;
 	
     uae4all_prof_start(4);
     n_cycles = get_cycles () - last_cycles;
@@ -848,7 +848,7 @@ void update_audio (void)
 #ifdef __arm__
 		asm(".align 4");
 #endif	
-		register unsigned long int best_evtime = n_cycles + 1;
+		register uint32_t best_evtime = n_cycles + 1;
 		//int addr = (int)audio_channel_evtime;
 		//AUDIO_PREFETCH(addr);
 
@@ -901,7 +901,7 @@ void update_audio (void)
 			d3 &= audio_channel_adk_mask[3];
 			*(uae_u16 *)sndbufpt = d0+d1+d2+d3;
 			sndbufpt = (uae_u16 *)(((uae_u8 *)sndbufpt) + 2);
-			if ((unsigned)sndbufpt - (unsigned)render_sndbuff >= SNDBUFFER_LEN) {
+			if ((uint32_t)sndbufpt - (uint32_t)render_sndbuff >= SNDBUFFER_LEN) {
 				finish_sound_buffer ();
 			}
 		}
@@ -930,7 +930,7 @@ void update_audio (void)
 #else
 void update_audio (void)
 {
-    unsigned long int n_cycles;
+    uint32_t n_cycles;
 	
     uae4all_prof_start(4);
     n_cycles = get_cycles () - last_cycles;
@@ -1007,7 +1007,7 @@ void AUDxLCL (int nr, uae_u16 v)
 
 void AUDxPER (int nr, uae_u16 v)
 {
-    unsigned long per = v * CYCLE_UNIT;
+    uint32_t per = v * CYCLE_UNIT;
 	
     if (produce_sound)
     	update_audio ();
@@ -1168,7 +1168,7 @@ void fetch_audio(void)
 
 void update_adkmasks (void)
 {
-    unsigned long t;
+    uint32_t t;
 
     t = adkcon | (adkcon >> 4);
     audio_channel_adk_mask[0] = (((t >> 0) & 1) - 1);

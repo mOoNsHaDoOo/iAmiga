@@ -65,7 +65,7 @@ enum blitter_states bltstate;
 
 void build_blitfilltable(void)
 {
-    unsigned int d, fillmask;
+    uint32_t d, fillmask;
     int i;
 	
     for (i = BLITTER_MAX_WORDS; i--;)
@@ -109,7 +109,7 @@ static _INLINE_ void print_bltinfo(struct bltinfo *_GCCRES_ b)
 	dbg(" ---- bltinfo ----");
 	if (b)
 	{
-		unsigned i, sum=0;
+		uint32_t i, sum=0;
 		for(i=0;i<BLITTER_MAX_WORDS;i++)
 			sum+=blit_masktable[i];
 		dbgf("\t blitzero=0x%X, blitashift=0x%X, blitbshift=0x%X, blitdownashift=0x%X\n",b->blitzero,b->blitashift,b->blitbshift,b->blitdownashift);
@@ -590,9 +590,9 @@ static uae_u8 blit_cycle_diagram_start[][10] =
 	{ 4, 4, 1, 2, 3,0, 1, 2, 3, 4 }	/* F */
 };
 
-static long int blit_cycles;
-static long blit_firstline_cycles;
-static long blit_first_cycle;
+static int32_t blit_cycles;
+static int32_t blit_firstline_cycles;
+static int32_t blit_first_cycle;
 static int blit_last_cycle;
 static uae_u8 *blit_diag;
 

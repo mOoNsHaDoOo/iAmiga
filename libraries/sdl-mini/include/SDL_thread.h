@@ -48,7 +48,7 @@ struct SDL_Thread;
 typedef struct SDL_Thread SDL_Thread;
 
 /* The SDL thread ID */
-typedef unsigned long SDL_threadID;
+typedef uint32_t SDL_threadID;
 
 /* The function passed to SDL_CreateThread()
    It is passed a void* user context parameter and returns an int.

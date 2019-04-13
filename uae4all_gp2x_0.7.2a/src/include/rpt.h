@@ -6,5 +6,5 @@
   * Copyright 1998 Bernd Schmidt
   */
 
-typedef unsigned long frame_time_t;
+typedef uint32_t frame_time_t;
 

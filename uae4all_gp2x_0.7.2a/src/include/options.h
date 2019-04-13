@@ -34,8 +34,8 @@ extern char changed_df[NUM_DRIVES][512];
 extern int real_changed_df[NUM_DRIVES];
 extern char romfile[512];
 extern char romkeyfile[512];
-extern unsigned prefs_chipmem_size;
-extern unsigned prefs_fastmem_size;
+extern uint32_t prefs_chipmem_size;
+extern uint32_t prefs_fastmem_size;
 extern int prefs_gfx_framerate, changed_gfx_framerate;
 extern int m68k_speed;
 

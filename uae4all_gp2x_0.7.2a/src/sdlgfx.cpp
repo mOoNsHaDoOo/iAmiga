@@ -89,7 +89,7 @@ int prefs_gfx_framerate, changed_gfx_framerate;
 uae_u16 *prSDLScreenPixels;
 
 char *gfx_mem=NULL;
-unsigned gfx_rowbytes=0;
+uint32_t gfx_rowbytes=0;
 
 Uint32 uae4all_numframes=0;
 
@@ -110,10 +110,10 @@ void uae4all_show_time(void)
 {
 	int i;
 	extern double media_ratio;
-	extern unsigned sound_cuantos[8];
-	extern unsigned sound_ajustes;
-	extern unsigned sound_alcanza_callback;
-	extern unsigned sound_alcanza_render;
+	extern uint32_t sound_cuantos[8];
+	extern uint32_t sound_ajustes;
+	extern uint32_t sound_alcanza_callback;
+	extern uint32_t sound_alcanza_render;
 	double p=(((double)uae4all_frameskipped)*((double)100.0))/((double)uae4all_numframes);
 	printf("---- frameskipping = %.4f%%\n",p);
 	printf("---- framerate = %.4f\n",uae4all_framerate);
@@ -224,7 +224,7 @@ void black_screen_now(void)
 	
 }
 
-static __inline__ int bitsInMask (unsigned long mask)
+static __inline__ int bitsInMask (uint32_t mask)
 {
 	/* count bits in mask */
 	int n = 0;
@@ -236,7 +236,7 @@ static __inline__ int bitsInMask (unsigned long mask)
 	return n;
 }
 
-static __inline__ int maskShift (unsigned long mask)
+static __inline__ int maskShift (uint32_t mask)
 {
 	/* determine how far mask is shifted */
 	int n = 0;
@@ -570,7 +570,7 @@ void handle_events (void)
 	
 #ifdef MAX_AUTOEVENTS
 	{
-		static unsigned cuenta=0;
+		static uint32_t cuenta=0;
 		// /*
 		switch(cuenta&63)
 		{

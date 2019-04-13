@@ -12,7 +12,7 @@
 void swab_memory (uae_u8 *apMemory, uae_u32 aSize);
 
 extern void memory_reset (void);
-extern unsigned chipmem_checksum(void);
+extern uint32_t chipmem_checksum(void);
 
 typedef uae_u32 (*mem_get_func)(uaecptr) REGPARAM;
 typedef void (*mem_put_func)(uaecptr, uae_u32) REGPARAM;

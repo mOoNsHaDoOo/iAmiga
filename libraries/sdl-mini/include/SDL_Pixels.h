@@ -19,13 +19,13 @@ extern "C" {
 
 
 typedef struct SDL_Color {
-	unsigned r,g,b;
+	uint32_t r,g,b;
 } SDL_Color;
 
 typedef struct tagFormat {
-    unsigned long Rmask, Gmask, Bmask;
-    unsigned short Rshift, Gshift, Bshift;
-    unsigned BytesPerPixel;
+    uint32_t Rmask, Gmask, Bmask;
+    uint16_t Rshift, Gshift, Bshift;
+    uint32_t BytesPerPixel;
 } tagFormat;
 
 

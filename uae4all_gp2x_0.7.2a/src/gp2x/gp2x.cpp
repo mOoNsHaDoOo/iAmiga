@@ -21,8 +21,8 @@ extern void record_key(int);
 
 
 int vol = 100;
-unsigned long memDev;
-volatile unsigned short* MEM_REG;
+uint32_t memDev;
+volatile uint16_t* MEM_REG;
 int gp2xClockSpeed;
 
 static int mixerdev;
@@ -74,7 +74,7 @@ void gp2x_init(int argc, char **argv)
 	gp2xClockSpeed = -1;
 
 	memDev = open("/dev/mem", O_RDWR);
-	MEM_REG=(unsigned short *)mmap(0, 0x10000, PROT_READ|PROT_WRITE, MAP_SHARED,memDev, 0xc0000000);
+	MEM_REG=(uint16_t *)mmap(0, 0x10000, PROT_READ|PROT_WRITE, MAP_SHARED,memDev, 0xc0000000);
 
 	mixerdev = open("/dev/mixer", O_RDWR);
 
@@ -185,7 +185,7 @@ void switch_to_hw_sdl(int first_time)
 	mmuhack(first_time);
 
 	// map again
-	MEM_REG=(unsigned short *)mmap(0, 0x10000, PROT_READ|PROT_WRITE, MAP_SHARED,memDev, 0xc0000000);
+	MEM_REG=(uint16_t *)mmap(0, 0x10000, PROT_READ|PROT_WRITE, MAP_SHARED,memDev, 0xc0000000);
 
 	// reinit video
 	graphics_init();

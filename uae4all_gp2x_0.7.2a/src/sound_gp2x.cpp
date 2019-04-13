@@ -26,15 +26,15 @@
 #include "custom.h"
 
 
-extern unsigned long next_sample_evtime;
+extern uint32_t next_sample_evtime;
 
 int produce_sound=0;
 int changed_produce_sound=0;
 
-unsigned int sound_rate=DEFAULT_SOUND_FREQ;
+uint32_t sound_rate=DEFAULT_SOUND_FREQ;
 
 static uae_u16 sndbuffer[4][SNDBUFFER_LEN+32] UAE4ALL_ALIGN;
-unsigned n_callback_sndbuff, n_render_sndbuff;
+uint32_t n_callback_sndbuff, n_render_sndbuff;
 uae_u16 *sndbufpt = sndbuffer[0];
 uae_u16 *render_sndbuff = sndbuffer[0];
 
@@ -105,7 +105,7 @@ void sound_default_evtime(void)
 	switch(m68k_speed)
 	{
 		case 6:
-			scaled_sample_evtime=(unsigned)(MAXHPOS_PAL*MAXVPOS_PAL*VBLANK_HZ_PAL*CYCLE_UNIT/1.86)/sound_rate;
+			scaled_sample_evtime=(uint32_t)(MAXHPOS_PAL*MAXVPOS_PAL*VBLANK_HZ_PAL*CYCLE_UNIT/1.86)/sound_rate;
 			break;
 
 		case 5:
@@ -174,7 +174,7 @@ static void *sound_thread(void *unused)
 static int gp2x_start_sound(int rate, int bits, int stereo)
 {
 	int frag = 0, buffers, ret;
-	unsigned int bsize;
+	uint32_t bsize;
 
 	if (!sound_thread_active)
 	{

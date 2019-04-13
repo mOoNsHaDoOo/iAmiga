@@ -45,7 +45,7 @@ extern char launchDir [256];
 
 typedef struct{
 	SDL_Rect rect;
-	unsigned char up,down,left,right;
+	uint8_t up,down,left,right;
 	SDLKey key;
 } t_vkbd_rect;
 

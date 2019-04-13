@@ -9,4 +9,5 @@
 
 #define SDL_EVENTS_DISABLED 0
 
+#include <stdint.h>
 #include "SDL_config_iphoneos.h"

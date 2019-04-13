@@ -44,35 +44,35 @@
 #define RTC_F_STOP     2
 #define RTC_F_RSET     1
 
-static unsigned int clock_control_d = RTC_D_ADJ + RTC_D_HOLD;
-static unsigned int clock_control_e = 0;
-static unsigned int clock_control_f = RTC_F_24_12;
+static uint32_t clock_control_d = RTC_D_ADJ + RTC_D_HOLD;
+static uint32_t clock_control_e = 0;
+static uint32_t clock_control_f = RTC_F_24_12;
 
-unsigned int ciaaicr, ciaaimask, ciabicr, ciabimask;
-unsigned int ciaacra, ciaacrb, ciabcra, ciabcrb;
+uint32_t ciaaicr, ciaaimask, ciabicr, ciabimask;
+uint32_t ciaacra, ciaacrb, ciabcra, ciabcrb;
 
 
 /* Values of the CIA timers.  */
-unsigned long ciaata, ciaatb, ciabta, ciabtb;
+uint32_t ciaata, ciaatb, ciabta, ciabtb;
 /* Computed by compute_passed_time.  */
-unsigned long ciaata_passed, ciaatb_passed, ciabta_passed, ciabtb_passed;
+uint32_t ciaata_passed, ciaatb_passed, ciabta_passed, ciabtb_passed;
 
-unsigned long ciaatod, ciabtod, ciaatol, ciabtol, ciaaalarm, ciabalarm;
+uint32_t ciaatod, ciabtod, ciaatol, ciabtol, ciaaalarm, ciabalarm;
 int ciaatlatch, ciabtlatch;
 
-unsigned int ciabpra;
+uint32_t ciabpra;
 
-unsigned int gui_ledstate;
+uint32_t gui_ledstate;
 
-static unsigned long ciaala, ciaalb, ciabla, ciablb;
+static uint32_t ciaala, ciaalb, ciabla, ciablb;
 static int ciaatodon, ciabtodon;
-static unsigned int ciaapra, ciaaprb, ciaadra, ciaadrb, ciaasdr;
-static unsigned int ciabprb, ciabdra, ciabdrb, ciabsdr;
+static uint32_t ciaapra, ciaaprb, ciaadra, ciaadrb, ciaasdr;
+static uint32_t ciabprb, ciabdra, ciabdrb, ciabsdr;
 static int div10;
 static int kbstate, kback, ciaasdr_unread = 0;
 
 
-static __inline__ void setclr (unsigned int *_GCCRES_ p, unsigned int val)
+static __inline__ void setclr (uint32_t *_GCCRES_ p, uint32_t val)
 {
     if (val & 0x80) {
 	*p |= val & 0x7F;
@@ -119,8 +119,8 @@ void rethink_cias (void)
 
 static void compute_passed_time (void)
 {
-    unsigned long int ccount = (get_cycles () - eventtab[ev_cia].oldcycles + div10);
-    unsigned long int ciaclocks = ccount / DIV10;
+    uint32_t ccount = (get_cycles () - eventtab[ev_cia].oldcycles + div10);
+    uint32_t ciaclocks = ccount / DIV10;
 
     ciaata_passed = ciaatb_passed = ciabta_passed = ciabtb_passed = 0;
 
@@ -151,8 +151,8 @@ static void compute_passed_time (void)
 
 static void CIA_update (void)
 {
-    unsigned long int ccount = (get_cycles () - eventtab[ev_cia].oldcycles + div10);
-    unsigned long int ciaclocks = ccount / DIV10;
+    uint32_t ccount = (get_cycles () - eventtab[ev_cia].oldcycles + div10);
+    uint32_t ciaclocks = ccount / DIV10;
 	
     int aovfla = 0, aovflb = 0, bovfla = 0, bovflb = 0;
 	
@@ -217,7 +217,7 @@ static void CIA_update (void)
 
 static void CIA_calctimers (void)
 {
-    long ciaatimea = -1, ciaatimeb = -1, ciabtimea = -1, ciabtimeb = -1;
+    int32_t ciaatimea = -1, ciaatimeb = -1, ciabtimea = -1, ciabtimeb = -1;
 
     eventtab[ev_cia].oldcycles = get_cycles ();
 	if ((ciaacra & 0x21) == 0x01) {
@@ -236,7 +236,7 @@ static void CIA_calctimers (void)
     eventtab[ev_cia].active = (ciaatimea != -1 || ciaatimeb != -1
 			       || ciabtimea != -1 || ciabtimeb != -1);
     if (eventtab[ev_cia].active) {
-		unsigned long int ciatime = ~0L;
+		uint32_t ciatime = ~0;
 		if (ciaatimea != -1) ciatime = ciaatimea;
 		if (ciaatimeb != -1 && ciaatimeb < ciatime) ciatime = ciaatimeb;
 		if (ciabtimea != -1 && ciabtimea < ciatime) ciatime = ciabtimea;
@@ -263,7 +263,7 @@ void cia_diskindex (void)
 void CIA_hsync_handler (void)
 {
     uae4all_prof_start(5);
-    static unsigned int keytime = 0, sleepyhead = 0;
+    static uint32_t keytime = 0, sleepyhead = 0;
 	
     if (ciabtodon)
 		ciabtod++;
@@ -325,9 +325,9 @@ void CIA_vsync_handler ()
     uae4all_prof_end(5);
 }
 
-static uae_u8 ReadCIAA (unsigned int addr)
+static uae_u8 ReadCIAA (uint32_t addr)
 {
-    unsigned int tmp;
+    uint32_t tmp;
 	
     compute_passed_time ();
 	
@@ -385,9 +385,9 @@ static uae_u8 ReadCIAA (unsigned int addr)
     return 0;
 }
 
-static uae_u8 ReadCIAB (unsigned int addr)
+static uae_u8 ReadCIAB (uint32_t addr)
 {
-    unsigned int tmp;
+    uint32_t tmp;
 	
     compute_passed_time ();
 	

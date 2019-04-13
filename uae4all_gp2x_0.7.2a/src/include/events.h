@@ -22,14 +22,14 @@ extern int rpt_available;
 
 extern void compute_vsynctime (void);
 
-extern unsigned long int currcycle, nextevent;
+extern uint32_t currcycle, nextevent;
 
 typedef void (*evfunc)(void);
 
 struct ev
 {
     int active;
-    unsigned long int evtime, oldcycles;
+    uint32_t evtime, oldcycles;
 #ifndef UNROLL_EVENT_LOOP
     evfunc handler;
 #endif
@@ -46,10 +46,10 @@ static __inline__ void events_schedule (void)
 {
     int i;
 	
-    unsigned long int mintime = ~0L;
+    uint32_t mintime = ~0;
     for (i = 0; i < ev_max; i++) {
 		if (eventtab[i].active) {
-			unsigned long int eventtime = eventtab[i].evtime - currcycle;
+			uint32_t eventtime = eventtab[i].evtime - currcycle;
 			if (eventtime < mintime)
 				mintime = eventtime;
 		}
@@ -80,7 +80,7 @@ extern "C" void DISK_handler(void);
 				 : "pc", "lr", "cc", "r9", "r12", "r0", "r1", "r2", "r3", "memory"); \
 	//next_event++;
 
-static __inline__ void do_cycles_slow (unsigned long cycles_to_add) {
+static __inline__ void do_cycles_slow (uint32_t cycles_to_add) {
     while ((nextevent - currcycle) <= cycles_to_add) {
 		//register struct ev *next_event asm("r4") = &eventtab[0];
 		PRELOAD(eventtab);
@@ -101,7 +101,7 @@ static __inline__ void do_cycles_slow (unsigned long cycles_to_add) {
 
 #else
 
-static __inline__ void do_cycles_slow (unsigned long cycles_to_add) {
+static __inline__ void do_cycles_slow (uint32_t cycles_to_add) {
     while ((nextevent - currcycle) <= cycles_to_add) {
 		register struct ev *next_event = eventtab;
 		PRELOAD(next_event);
@@ -158,7 +158,7 @@ static __inline__ void handle_active_events (void)
 
 #else
 
-static __inline__ void do_cycles_slow (unsigned long cycles_to_add)
+static __inline__ void do_cycles_slow (uint32_t cycles_to_add)
 {
     while ((nextevent - currcycle) <= cycles_to_add) {
         int i;
@@ -191,7 +191,7 @@ static __inline__ void handle_active_events (void)
 
 #endif
 
-static __inline__ unsigned long get_cycles (void)
+static __inline__ uint32_t get_cycles (void)
 {
     return currcycle;
 }

@@ -32,7 +32,7 @@ enum tagDisaEntryType {
 struct tagInstructionL0 {
 	uint32_t	pc;
 	uint16_t	opcodes[6];
-	unsigned char ccr;
+	uint8_t ccr;
 } __attribute__((__packed__));
 
 struct tagInstructionL1 : tagInstructionL0 {

@@ -7,15 +7,15 @@
 #include <string.h>
 #include "Disa.h"
 
-unsigned int DisaPc=0;
+uint32_t DisaPc=0;
 char *DisaText=NULL; // Text buffer to write in
 static char Tasm[]="bwl?";
 static char Comment[64]="";
-unsigned short (CPU_CALL *DisaWord)(unsigned int a)=NULL;
+uint16_t (CPU_CALL *DisaWord)(uint32_t a)=NULL;
 
-static unsigned int DisaLong(unsigned int a)
+static uint32_t DisaLong(uint32_t a)
 {
-  unsigned int d=0;
+  uint32_t d=0;
   if (DisaWord==NULL) return d;
 
   d= DisaWord(a)<<16;
@@ -336,7 +336,7 @@ static int MakeRegList(char *list,int mask,int ea)
   }
 
   // Knock off trailing '/'
-  len=strlen(list);
+  len=(u_int32_t)strlen(list);
   if (len>0) if (list[len-1]=='/') list[len-1]=0;
   return 0;
 }

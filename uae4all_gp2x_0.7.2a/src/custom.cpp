@@ -97,19 +97,19 @@ static __inline__ void setnasty(void)
 
 static uae_u16 last_custom_value;
 
-static unsigned int n_consecutive_skipped = 0;
-static unsigned int total_skipped = 0;
+static uint32_t n_consecutive_skipped = 0;
+static uint32_t total_skipped = 0;
 
 /* Mouse and joystick emulation */
 
 int buttonstate[3];
 static int mouse_x, mouse_y;
 int joy0button, joy1button;
-unsigned int joy0dir, joy1dir;
+uint32_t joy0dir, joy1dir;
 
 /* Events */
 
-unsigned long int currcycle, nextevent;
+uint32_t currcycle, nextevent;
 struct ev eventtab[ev_max];
 
 static int vpos;
@@ -142,9 +142,9 @@ int maxvpos = MAXVPOS_PAL;
 int minfirstline = MINFIRSTLINE_PAL;
 int vblank_endline = VBLANK_ENDLINE_PAL;
 int vblank_hz = VBLANK_HZ_PAL;
-unsigned long syncbase=200000000;
+uint32_t syncbase=200000000;
 static int fmode;
-unsigned int beamcon0 = -1, new_beamcon0;
+uint32_t beamcon0 = -1, new_beamcon0;
 extern int mainMenu_ntsc;
 
 #define MAX_SPRITES 8
@@ -166,8 +166,8 @@ static struct sprite spr[8];
 
 static int sprite_vblank_endline = 25;
 
-static unsigned int sprpos[MAX_SPRITES] UAE4ALL_ALIGN;
-static unsigned int sprctl[MAX_SPRITES] UAE4ALL_ALIGN;
+static uint32_t sprpos[MAX_SPRITES] UAE4ALL_ALIGN;
+static uint32_t sprctl[MAX_SPRITES] UAE4ALL_ALIGN;
 static uae_u16 sprdata[MAX_SPRITES][4] UAE4ALL_ALIGN;
 static uae_u16 sprdatb[MAX_SPRITES][4] UAE4ALL_ALIGN;
 static int sprite_last_drawn_at[MAX_SPRITES] UAE4ALL_ALIGN;
@@ -188,11 +188,11 @@ uae_u8 *real_bplpt[8];
 /* Used as a debugging aid, to offset any bitplane temporarily.  */
 
 static struct color_entry current_colors;
-static unsigned int bplcon0, bplcon1, bplcon2, bplcon3, bplcon4;
-static unsigned int planes_bplcon0, res_bplcon0;
-static unsigned int diwstrt, diwstop, diwhigh;
+static uint32_t bplcon0, bplcon1, bplcon2, bplcon3, bplcon4;
+static uint32_t planes_bplcon0, res_bplcon0;
+static uint32_t diwstrt, diwstop, diwhigh;
 static int diwhigh_written;
-static unsigned int ddfstrt, ddfstop;
+static uint32_t ddfstrt, ddfstop;
 
 /* The display and data fetch windows */
 
@@ -209,7 +209,7 @@ int diwfirstword, diwlastword;
 static enum diw_states diwstate, hdiwstate;
 
 /* Sprite collisions */
-static unsigned int clxdat, clxcon, clxcon2, clxcon_bpl_enable, clxcon_bpl_match;
+static uint32_t clxdat, clxcon, clxcon2, clxcon_bpl_enable, clxcon_bpl_match;
 static int clx_sprmask;
 
 enum copper_states {
@@ -231,20 +231,20 @@ enum copper_states {
 
 struct copper {
     /* The current instruction words.  */
-    unsigned int i1, i2;
-    unsigned int saved_i1, saved_i2;
+    uint32_t i1, i2;
+    uint32_t saved_i1, saved_i2;
     enum copper_states state;
     /* Instruction pointer.  */
     uaecptr ip, saved_ip;
     int hpos, vpos;
-    unsigned int ignore_next;
+    uint32_t ignore_next;
     int vcmp, hcmp;
 
     /* When we schedule a copper event, knowing a few things about the future
        of the copper list can reduce the number of sync_with_cpu calls
        dramatically.  */
-    unsigned int first_sync;
-    unsigned int regtypes_modified;
+    uint32_t first_sync;
+    uint32_t regtypes_modified;
 } UAE4ALL_ALIGN;
 
 #define REGTYPE_NONE 0
@@ -263,7 +263,7 @@ struct copper {
 #define REGTYPE_FORCE 256
 
 
-static unsigned int regtypes[512];
+static uint32_t regtypes[512];
 
 static struct copper cop_state;
 static int copper_enabled_thisline;
@@ -671,7 +671,7 @@ static _INLINE_ void compute_toscr_delay (int hpos)
 	    { \
 		register int i; \
 		register int to=out_offs; \
-	    	register unsigned *ptr= (unsigned *)(line_data[next_lineno] + (2 * MAX_WORDS_PER_LINE) * j); \
+	    	register uint32_t *ptr= (uint32_t *)(line_data[next_lineno] + (2 * MAX_WORDS_PER_LINE) * j); \
 		for(i=0;i<to;i++,ptr++) \
 			if (*ptr) \
 			{ \
@@ -695,8 +695,8 @@ static __inline__ void toscr_1 (int nbits)
 		register int delay1 = toscr_delay[0];
 		register int delay2 = toscr_delay[1];
 		register uae_u32 mask = 0xFFFF >> (16 - nbits);
-		register unsigned i=0;
-		register unsigned j=toscr_nr_planes;
+		register uint32_t i=0;
+		register uint32_t j=toscr_nr_planes;
 		for (i = 0; i < j; i += 2) {
 			outword[i] <<= nbits;
 			outword[i] |= (todisplay[i] >> (16 - nbits + delay1)) & mask;
@@ -712,8 +712,8 @@ static __inline__ void toscr_1 (int nbits)
     out_nbits += nbits;
     if (out_nbits == 32) {
 		register uae_u8 *dataptr = line_data[next_lineno] + (out_offs << 2);
-		register unsigned i=0;
-		register unsigned j=thisline_decision.nr_planes;
+		register uint32_t i=0;
+		register uint32_t j=thisline_decision.nr_planes;
 		for (; i < j; i++) {
 			register uae_u32 *dataptr32 = (uae_u32 *)dataptr;
 			if (*dataptr32 != outword[i])
@@ -1146,7 +1146,7 @@ static __inline__ void decide_line (int hpos)
 
 /* Called when a color is about to be changed (write to a color register),
  * but the new color has not been entered into the table yet. */
-static _INLINE_ void record_color_change (int hpos, int regno, unsigned long value)
+static _INLINE_ void record_color_change (int hpos, int regno, uint32_t value)
 {
 #ifdef DEBUG_CUSTOM
     dbgf("record_color_change(0x%X,0x%X,0x%X)\n",hpos,regno,value);
@@ -1222,7 +1222,7 @@ static void do_sprite_collisions (void)
     int nr_sprites = curr_drawinfo[next_lineno].nr_sprites;
     int first = curr_drawinfo[next_lineno].first_sprite_entry;
     int i;
-    unsigned int collision_mask = clxmask[clxcon >> 12];
+    uint32_t collision_mask = clxmask[clxcon >> 12];
     int bplres = GET_RES (bplcon0); //bplcon0_res;
     hwres_t ddf_left = thisline_decision.plfleft * 2 << bplres;
     hwres_t hw_diwlast = coord_window_to_diw_x (thisline_decision.diwlastword);
@@ -1309,12 +1309,12 @@ static _INLINE_ void expand_sprres (void)
 }
 
 static __inline__ void record_sprite_1 (uae_u16 *_GCCRES_ buf, uae_u32 datab, int num, int dbl,
-										unsigned int mask, int do_collisions, uae_u32 collision_mask)
+										uint32_t mask, int do_collisions, uae_u32 collision_mask)
 {
     int j = 0;
     while (datab) {
-		unsigned int tmp = *buf;
-		unsigned int col = (datab & 3) << (2 * num);
+		uint32_t tmp = *buf;
+		uint32_t col = (datab & 3) << (2 * num);
 		tmp |= col;
 		if ((j & mask) == 0)
 			*buf++ = tmp;
@@ -1325,7 +1325,7 @@ static __inline__ void record_sprite_1 (uae_u16 *_GCCRES_ buf, uae_u32 datab, in
 		if (do_collisions) {
 			tmp &= collision_mask;
 			if (tmp) {
-				unsigned int shrunk_tmp = sprite_ab_merge[tmp & 255] | (sprite_ab_merge[tmp >> 8] << 2);
+				uint32_t shrunk_tmp = sprite_ab_merge[tmp & 255] | (sprite_ab_merge[tmp >> 8] << 2);
 				clxdat |= sprclx[shrunk_tmp];
 			}
 		}
@@ -1341,7 +1341,7 @@ static __inline__ void record_sprite_1 (uae_u16 *_GCCRES_ buf, uae_u32 datab, in
  The data is recorded either in lores pixels (if ECS), or in hires pixels
  (if AJA).  No support for SHRES sprites.  */
 
-static _INLINE_ void record_sprite (int line, int num, int sprxp, uae_u16 *_GCCRES_ data, uae_u16 *_GCCRES_ datb, unsigned int ctl)
+static _INLINE_ void record_sprite (int line, int num, int sprxp, uae_u16 *_GCCRES_ data, uae_u16 *_GCCRES_ datb, uint32_t ctl)
 {
     struct sprite_entry *e = curr_sprite_entries + next_sprite_entry;
     int i;
@@ -1350,7 +1350,7 @@ static _INLINE_ void record_sprite (int line, int num, int sprxp, uae_u16 *_GCCR
     uae_u32 collision_mask;
     int width = sprite_width;
     int dbl = 0;
-    unsigned int mask = 0;
+    uint32_t mask = 0;
 	
     /* Try to coalesce entries if they aren't too far apart.  */
     if (! next_sprite_forced && e[-1].max + 16 >= sprxp) {
@@ -1372,8 +1372,8 @@ static _INLINE_ void record_sprite (int line, int num, int sprxp, uae_u16 *_GCCR
     word_offs = e->first_pixel + sprxp - e->pos;
 	
     for (i = 0; i < sprite_width; i += 16) {
-		unsigned int da = *data;
-		unsigned int db = *datb;
+		uint32_t da = *data;
+		uint32_t db = *datb;
 		uae_u32 datab = ((sprtaba[da & 0xFF] << 16) | sprtaba[da >> 8]
 						 | (sprtabb[db & 0xFF] << 16) | sprtabb[db >> 8]);
 		
@@ -1598,9 +1598,9 @@ static __inline__ void reset_decisions (void)
 	
     {
 	    register int i;
-	    register unsigned *ptr0=todisplay;
-	    register unsigned *ptr1=fetched;
-	    register unsigned *ptr2=outword;
+	    register uint32_t *ptr0=todisplay;
+	    register uint32_t *ptr1=fetched;
+	    register uint32_t *ptr2=outword;
 	    for(i=0;i<MAX_PLANES;i++,ptr0++,ptr1++,ptr2++)
 	    {
 		    *ptr0=0;
@@ -1840,7 +1840,7 @@ static _INLINE_ void do_mouse_hack (void)
     }
 }
 
-static _INLINE_ void mousehack_handle (unsigned int ctl, unsigned int pos)
+static _INLINE_ void mousehack_handle (uint32_t ctl, uint32_t pos)
 {
     if (!sprvbfl && ((pos & 0xff) << 2) > 2 * DISPLAY_LEFT_SHIFT) {
 		spr0ctl = ctl;
@@ -1876,7 +1876,7 @@ static __inline__ uae_u16 ADKCONR (void)
 }
 static __inline__ uae_u16 VPOSR (void)
 {
-    unsigned int csbit = 0;
+    uint32_t csbit = 0;
     csbit |= 0;
     csbit |= 0;
     return (vpos >> 8) | lof | csbit;
@@ -2132,7 +2132,7 @@ static _INLINE_ void SET_INTERRUPT(void)
  #else
  {
  #ifndef USE_IMASK_TABLE
- register unsigned char mascara=0;
+ register uint8_t mascara=0;
  mascara|=(imask & 0x2000)>>(13-6);
  mascara|=(imask & 0x1000)>>(12-5);
  mascara|=(imask & 0x0800)>>(11-5);
@@ -2148,7 +2148,7 @@ static _INLINE_ void SET_INTERRUPT(void)
  mascara|=(imask & 0x0002);
  mascara|=(imask & 0x0001)<<1;
  #else
- register unsigned char mascara=imask_tab[imask];
+ register uint8_t mascara=imask_tab[imask];
  #endif
  
  #ifndef FAME_INTERRUPTS_PATCH
@@ -2751,9 +2751,9 @@ static __inline__ int dangerous_reg (int reg)
 static _INLINE_ void predict_copper (void)
 {
     uaecptr ip = cop_state.ip;
-    unsigned int c_hpos = cop_state.hpos;
+    uint32_t c_hpos = cop_state.hpos;
     enum copper_states state = cop_state.state;
-    unsigned int w1, w2, cycle_count;
+    uint32_t w1, w2, cycle_count;
 	
     switch (state) {
 		case COP_read1_wr_in2:
@@ -2837,10 +2837,10 @@ static _INLINE_ void predict_copper (void)
 			if ((w2 & 0xFE) != 0xFE)
 				break;
 			else {
-				unsigned int vcmp = (w1 & (w2 | 0x8000)) >> 8;
-				unsigned int hcmp = (w1 & 0xFE);
+				uint32_t vcmp = (w1 & (w2 | 0x8000)) >> 8;
+				uint32_t hcmp = (w1 & 0xFE);
 				
-				unsigned int vp = vpos & (((w2 >> 8) & 0x7F) | 0x80);
+				uint32_t vp = vpos & (((w2 >> 8) & 0x7F) | 0x80);
 				if (vp < vcmp) {
 					/* Whee.  We can wait until the end of the line!  */
 					c_hpos = maxhpos;
@@ -2877,7 +2877,7 @@ done:
 static _INLINE_ void perform_copper_write (int old_hpos)
 {
     int vp = vpos & (((cop_state.saved_i2 >> 8) & 0x7F) | 0x80);
-    unsigned int address = cop_state.saved_i1 & 0x1FE;
+    uint32_t address = cop_state.saved_i1 & 0x1FE;
 	
     if (address < (copcon & 2 ? (0x40u) : 0x80u)) {
 		cop_state.state = COP_stop;	
@@ -2983,7 +2983,7 @@ static _INLINE_ void update_copper (int until_hpos)
 			case COP_skip_in2:
 			{
 				static int skipped_before;
-				unsigned int vcmp, hcmp, vp1, hp1;
+				uint32_t vcmp, hcmp, vp1, hp1;
 				cop_state.state = COP_read1_in2;
 				
 				vcmp = (cop_state.saved_i1 & (cop_state.saved_i2 | 0x8000)) >> 8;
@@ -3048,7 +3048,7 @@ static _INLINE_ void update_copper (int until_hpos)
 					else
 						cop_state.state = COP_wait_in4;
 				} else {
-					unsigned int reg = cop_state.i1 & 0x1FE;
+					uint32_t reg = cop_state.i1 & 0x1FE;
 					cop_state.state = isagnus[reg >> 1] ? COP_read1_wr_in2 : COP_read1_wr_in4;
 				}
 				break;
@@ -3192,7 +3192,7 @@ void do_copper (void)
     update_copper (hpos);
 }
 
-static __inline__ void sync_copper_with_cpu (int hpos, int do_schedule, unsigned int addr)
+static __inline__ void sync_copper_with_cpu (int hpos, int do_schedule, uint32_t addr)
 {
     /* Need to let the copper advance to the current position.  */
     if (eventtab[ev_copper].active) {
@@ -3700,7 +3700,7 @@ void customreset (void)
         for(i = 0 ; i < 32 ; i++)
         {
             vv = current_colors.color_uae_regs_ecs[i];
-            current_colors.color_uae_regs_ecs[i] = (unsigned)-1;
+            current_colors.color_uae_regs_ecs[i] = (uint32_t)-1;
             record_color_change (0, i, vv);
             remembered_color_entry = -1;
             current_colors.color_uae_regs_ecs[i] = vv;
@@ -3722,10 +3722,10 @@ void dumpcustom (void)
 {
 #ifndef DREAMCAST
     write_log ("DMACON: %x INTENA: %x INTREQ: %x VPOS: %x HPOS: %x\n", DMACONR(),
-			   (unsigned int)intena, (unsigned int)intreq, (unsigned int)vpos, (unsigned int)current_hpos());
-    write_log ("COP1LC: %08lx, COP2LC: %08lx\n", (unsigned long)cop1lc, (unsigned long)cop2lc);
+			   (uint32_t)intena, (uint32_t)intreq, (uint32_t)vpos, (uint32_t)current_hpos());
+    write_log ("COP1LC: %08lx, COP2LC: %08lx\n", (uint32_t)cop1lc, (uint32_t)cop2lc);
     write_log ("DIWSTRT: %04x DIWSTOP: %04x DDFSTRT: %04x DDFSTOP: %04x\n",
-			   (unsigned int)diwstrt, (unsigned int)diwstop, (unsigned int)ddfstrt, (unsigned int)ddfstop);
+			   (uint32_t)diwstrt, (uint32_t)diwstop, (uint32_t)ddfstrt, (uint32_t)ddfstop);
 #endif
 }
 
@@ -3750,7 +3750,7 @@ static _INLINE_ void gen_custom_tables (void)
 {
     int i;
     for (i = 0; i < 256; i++) {
-		unsigned int j;
+		uint32_t j;
 		sprtaba[i] = ((((i >> 7) & 1) << 0)
 					  | (((i >> 6) & 1) << 2)
 					  | (((i >> 5) & 1) << 4)
@@ -4139,7 +4139,7 @@ void custom_prepare_savestate (void)
 {
     /* force blitter to finish, no support for saving full blitter state yet */
     if (eventtab[ev_blitter].active) {
-	unsigned int olddmacon = dmacon;
+	uint32_t olddmacon = dmacon;
 	dmacon |= DMA_BLITTER; /* ugh.. */
 	blitter_handler ();
 	dmacon = olddmacon;

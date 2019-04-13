@@ -15,7 +15,7 @@
 
 
 extern void memory_reset (void);
-extern unsigned chipmem_checksum(void);
+extern uint32_t chipmem_checksum(void);
 
 #ifdef SPECIAL_MEM_FLAGS
 
@@ -221,33 +221,33 @@ extern void chipmem_bput (uaecptr, uae_u32) REGPARAM;
 #define CHIPMEM_WPUT(PT,DA) chipmem_wput(PT,DA)
 #else
 #ifdef ERROR_WHEN_MEMORY_OVERRUN
-static __inline__ unsigned short CHIPMEM_WGET(unsigned addr)
+static __inline__ uint16_t CHIPMEM_WGET(uint32_t addr)
 {
 	if (addr>0x000FFFFF)
 	{
 		printf("CHIPMEM_WGET ERROR: DIRECCION 0x.8X INVALIDA !!!\n",addr);
 		exit(1);
 	}
-	return (*((unsigned short *)&chipmemory[(unsigned)addr]));
+	return (*((uint16_t *)&chipmemory[(uint32_t)addr]));
 }
 
-static __inline__ void CHIPMEM_WPUT(unsigned addr,unsigned data)
+static __inline__ void CHIPMEM_WPUT(uint32_t addr,uint32_t data)
 {
 	if (addr>0x000FFFFF)
 	{
 		printf("CHIPMEM_WPUT ERROR: DIRECCION 0x.8X INVALIDA !!!\n",addr);
 		exit(1);
 	}
-	((*((unsigned short *)&chipmemory[(unsigned)addr]))=data);
+	((*((uint16_t *)&chipmemory[(uint32_t)addr]))=data);
 }
 
 #else
 #ifndef SAFE_MEMORY_ACCESS
-#define CHIPMEM_WGET(PT) (*((unsigned short *)&chipmemory[(unsigned)PT]))
-#define CHIPMEM_WPUT(PT,DA) ((*((unsigned short *)&chipmemory[(unsigned)PT]))=DA)
+#define CHIPMEM_WGET(PT) (*((uint16_t *)&chipmemory[(uint32_t)PT]))
+#define CHIPMEM_WPUT(PT,DA) ((*((uint16_t *)&chipmemory[(uint32_t)PT]))=DA)
 #else
-#define CHIPMEM_WGET(PT) (*((unsigned short *)&chipmemory[((unsigned)PT)&~0xfff00000]))
-#define CHIPMEM_WPUT(PT,DA) ((*((unsigned short *)&chipmemory[((unsigned)PT)&~0xfff00000]))=DA)
+#define CHIPMEM_WGET(PT) (*((uint16_t *)&chipmemory[((uint32_t)PT)&~0xfff00000]))
+#define CHIPMEM_WPUT(PT,DA) ((*((uint16_t *)&chipmemory[((uint32_t)PT)&~0xfff00000]))=DA)
 #endif
 #endif
 #endif
@@ -281,13 +281,13 @@ extern void mapped_free (uae_u8 *);
 static __inline__ void uae4all_memcpy(void *_GCCRES_ dest, void *_GCCRES_ src, int n)
 {
 
-	register unsigned int *d = (unsigned int *)(void *)
-		(0xe0000000 | (((unsigned long)dest) & 0x03ffffe0));
-	register unsigned int *dreal=(unsigned int *)dest;
-	register unsigned int *s = (unsigned int *)src;
+	register uint32_t *d = (uint32_t *)(void *)
+		(0xe0000000 | (((uint32_t)dest) & 0x03ffffe0));
+	register uint32_t *dreal=(uint32_t *)dest;
+	register uint32_t *s = (uint32_t *)src;
 
 	{
-		register unsigned qa=((((unsigned int)dest)>>26)<<2)&0x1c;
+		register uint32_t qa=((((uint32_t)dest)>>26)<<2)&0x1c;
 		QACR0 = qa;
 		QACR1 = qa;
 	}
@@ -309,18 +309,18 @@ static __inline__ void uae4all_memcpy(void *_GCCRES_ dest, void *_GCCRES_ src, i
 		d += 8;
 		dreal += 8;
 	}
-	d = (unsigned int *)0xe0000000;
+	d = (uint32_t *)0xe0000000;
 	d[0] = d[8] = 0;
 }
 
 
 static __inline__ void uae4all_memclr(void *_GCCRES_ dest, int n)
 {
-	register unsigned int *d = (unsigned int *)(void *)
-		(0xe0000000 | (((unsigned long)dest) & 0x03ffffe0));
+	register uint32_t *d = (uint32_t *)(void *)
+		(0xe0000000 | (((uint32_t)dest) & 0x03ffffe0));
 
 	{
-		register unsigned qa=((((unsigned int)dest)>>26)<<2)&0x1c;
+		register uint32_t qa=((((uint32_t)dest)>>26)<<2)&0x1c;
 		QACR0 = qa;
 		QACR1 = qa;
 	}
@@ -333,7 +333,7 @@ static __inline__ void uae4all_memclr(void *_GCCRES_ dest, int n)
 		asm("pref @%0" : : "r" (d));
 		d+=8;
 	}
-	d = (unsigned int *)0xe0000000;
+	d = (uint32_t *)0xe0000000;
 	d[0] = d[8] = 0;
 }
 

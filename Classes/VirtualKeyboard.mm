@@ -18,7 +18,7 @@ typedef struct {
 
 typedef struct t_vkbd_rect {
 	CGRect rect;
-	unsigned char up,down,left,right;
+	uint8_t up,down,left,right;
 	SDLKey key;
 } t_vkbd_rect;
 

@@ -36,7 +36,7 @@ extern void togglemouse (void);
 extern void alloc_colors64k (int, int, int, int, int, int);
 
 extern char *gfx_mem;
-extern unsigned gfx_rowbytes;
+extern uint32_t gfx_rowbytes;
 
 class host {
 	

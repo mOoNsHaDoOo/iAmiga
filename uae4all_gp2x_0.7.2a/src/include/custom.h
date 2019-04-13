@@ -63,7 +63,7 @@ extern int n_frames;
 
 extern uae_u16 adkcon;
 
-extern unsigned int joy0dir, joy1dir;
+extern uint32_t joy0dir, joy1dir;
 extern int joy0button, joy1button;
 
 extern void INTREQ (uae_u16);
@@ -103,7 +103,7 @@ uae_u16 __inline__ INTREQR (void) {
 #define VBLANK_HZ_NTSC 60
 
 extern int maxhpos, maxvpos, minfirstline, vblank_endline, numscrlines, vblank_hz;
-extern unsigned long syncbase;
+extern uint32_t syncbase;
 #define NUMSCRLINES (maxvpos+1-minfirstline+1)
 
 #define DMA_AUD0      0x0001
@@ -118,7 +118,7 @@ extern unsigned long syncbase;
 #define DMA_MASTER    0x0200
 #define DMA_BLITPRI   0x0400
 
-extern unsigned long frametime, timeframes;
+extern uint32_t frametime, timeframes;
 
 /* 100 words give you 1600 horizontal pixels. Should be more than enough for
  * superhires. Don't forget to update the definition in genp2c.c as well.
@@ -141,5 +141,5 @@ extern int bpl_off[8];
 /* Compute the number of bitplanes from a value written to BPLCON0  */
 #define GET_PLANES(x) ((((x) >> 12) & 7) | (((x) & 0x10) >> 1))
 
-extern unsigned int beamcon0, new_beamcon0;
+extern uint32_t beamcon0, new_beamcon0;
 #endif

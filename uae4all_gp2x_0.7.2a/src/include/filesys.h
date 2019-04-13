@@ -16,12 +16,12 @@
 #define FILESYS_HARDDRIVE 3
 
 struct hardfiledata {
-    unsigned long size;
-    int nrcyls;
-    int secspertrack;
-    int surfaces;
-    int reservedblocks;
-    int blocksize;
+    uint32_t size;
+    uint32_t nrcyls;
+    uint32_t secspertrack;
+    uint32_t surfaces;
+    uint32_t reservedblocks;
+    uint32_t blocksize;
     FILE *fd;
 };
 #ifdef WIN32

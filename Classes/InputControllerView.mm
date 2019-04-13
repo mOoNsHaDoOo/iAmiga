@@ -326,8 +326,10 @@ extern MPCStateType mainMenu_servermode;
 
 - (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event {
     int buttoncode = [self releasebutton];
-    if(buttoncode == -1)
+    if(buttoncode == -1) {
+        _clickedscreen = YES;
         return;
+    }
     [_mpcController handleinputbuttons:buttoncode buttonstate:1 deviceid:kVirtualPad];
     _clickedscreen = YES;
 }

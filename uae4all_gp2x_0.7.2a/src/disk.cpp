@@ -86,7 +86,7 @@ typedef struct {
     uae_u16 len;
     uae_u32 offs;
     int bitlen;
-    unsigned int sync;
+    uint32_t sync;
     image_tracktype type;
 } trackid;
 
@@ -120,7 +120,7 @@ typedef struct {
     int steplimit;
     int ddhd; /* 1=DD 2=HD */
     int drive_id_scnt; /* drive id shift counter */
-    unsigned long drive_id; /* drive id to be reported */
+    uint32_t drive_id; /* drive id to be reported */
     char newname[256]; /* storage space for new filename during eject delay */
 } drive;
 
@@ -232,7 +232,7 @@ FILE *DISK_validate_filename (const char *fname, int leave_open, int *wrprot)
 
 static int drive_insert (drive * drv, int dnum, const char *fname)
 {
-    unsigned char buffer[2 + 2 + 4 + 4];
+    uint8_t buffer[2 + 2 + 4 + 4];
     trackid *tid;
 	
 #ifdef DEBUG_DISK
@@ -416,12 +416,12 @@ static void drive_motor (drive * drv, int off)
     }
 }
 
-static void read_floppy_data (drive * drv, int track, int offset, unsigned char *dst, int len)
+static void read_floppy_data (drive * drv, int track, int offset, uint8_t *dst, int len)
 {
 #ifdef DEBUG_DISK
     dbgf("disc.c : read_floppy_data track %i len %i\n",track,len);
 #endif
-    unsigned i;
+    uint32_t i;
     trackid *ti;
 	
     ti = &drv->trackdata[track];
@@ -553,7 +553,7 @@ static void drive_fill_bigbuf (drive * drv)
 		int base_offset = ti->type == TRACK_RAW ? 0 : 1;
 		drv->tracklen = ti->bitlen + 16 * base_offset;
 		drv->bigmfmbuf[0] = ti->sync;
-		read_floppy_data (drv, tr, 0, (unsigned char *) (drv->bigmfmbuf + base_offset), (ti->bitlen + 7) / 8);
+		read_floppy_data (drv, tr, 0, (uint8_t *) (drv->bigmfmbuf + base_offset), (ti->bitlen + 7) / 8);
 		for (i = base_offset; i < (drv->tracklen + 15) / 16; i++) {
 			uae_u16 *mfm = drv->bigmfmbuf + i;
 			uae_u8 *data = (uae_u8 *) mfm;

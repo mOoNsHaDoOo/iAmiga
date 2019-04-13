@@ -103,7 +103,7 @@ typedef struct linkedlist_datablock_internal_s
   uLong  avail_in_this_block;
   uLong  filled_in_this_block;
   uLong  unused; /* for future use and alignement */
-  unsigned char data[SIZEDATA_INDATABLOCK];
+  uint8_t data[SIZEDATA_INDATABLOCK];
 } linkedlist_datablock_internal;
 
 typedef struct linkedlist_data_s
@@ -132,8 +132,8 @@ typedef struct
     uLong crc32;
     int  encrypt;
 #ifndef NOCRYPT
-    unsigned long keys[3];     /* keys defining the pseudo-random sequence */
-    const unsigned long* pcrc_32_tab;
+    uint32_t keys[3];     /* keys defining the pseudo-random sequence */
+    const z_crc_t* pcrc_32_tab;
     int crypt_header_size;
 #endif
 } curfile_info;
@@ -206,7 +206,7 @@ local int add_data_in_datablock(ll,buf,len)
     uLong len;
 {
     linkedlist_datablock_internal* ldi;
-    const unsigned char* from_copy;
+    const uint8_t* from_copy;
 
     if (ll==NULL)
         return ZIP_INTERNALERROR;
@@ -219,13 +219,13 @@ local int add_data_in_datablock(ll,buf,len)
     }
 
     ldi = ll->last_block;
-    from_copy = (unsigned char*)buf;
+    from_copy = (uint8_t*)buf;
 
     while (len>0)
     {
         uInt copy_this;
         uInt i;
-        unsigned char* to_copy;
+        uint8_t* to_copy;
 
         if (ldi->avail_in_this_block==0)
         {
@@ -272,11 +272,11 @@ local int ziplocal_putValue (pzlib_filefunc_def, filestream, x, nbByte)
     uLong x;
     int nbByte;
 {
-    unsigned char buf[4];
+    uint8_t buf[4];
     int n;
     for (n = 0; n < nbByte; n++)
     {
-        buf[n] = (unsigned char)(x & 0xff);
+        buf[n] = (uint8_t)(x & 0xff);
         x >>= 8;
     }
     if (x != 0)
@@ -299,10 +299,10 @@ local void ziplocal_putValue_inmemory (dest, x, nbByte)
     uLong x;
     int nbByte;
 {
-    unsigned char* buf=(unsigned char*)dest;
+    uint8_t* buf=(uint8_t*)dest;
     int n;
     for (n = 0; n < nbByte; n++) {
-        buf[n] = (unsigned char)(x & 0xff);
+        buf[n] = (uint8_t)(x & 0xff);
         x >>= 8;
     }
 
@@ -345,7 +345,7 @@ local int ziplocal_getByte(pzlib_filefunc_def,filestream,pi)
     voidpf filestream;
     int *pi;
 {
-    unsigned char c;
+    uint8_t c;
     int err = (int)ZREAD(*pzlib_filefunc_def,filestream,&c,1);
     if (err==1)
     {
@@ -444,7 +444,7 @@ local uLong ziplocal_SearchCentralDir(pzlib_filefunc_def,filestream)
     const zlib_filefunc_def* pzlib_filefunc_def;
     voidpf filestream;
 {
-    unsigned char* buf;
+    uint8_t* buf;
     uLong uSizeFile;
     uLong uBackRead;
     uLong uMaxBack=0xffff; /* maximum size of global comment */
@@ -459,7 +459,7 @@ local uLong ziplocal_SearchCentralDir(pzlib_filefunc_def,filestream)
     if (uMaxBack>uSizeFile)
         uMaxBack = uSizeFile;
 
-    buf = (unsigned char*)ALLOC(BUFREADCOMMENT+4);
+    buf = (uint8_t*)ALLOC(BUFREADCOMMENT+4);
     if (buf==NULL)
         return 0;
 
@@ -880,8 +880,8 @@ extern int ZEXPORT zipOpenNewFileInZip3 (file, filename, zipfi,
     zi->ci.crypt_header_size = 0;
     if ((err==Z_OK) && (password != NULL))
     {
-        unsigned char bufHead[RAND_HEAD_LEN];
-        unsigned int sizeHead;
+        uint8_t bufHead[RAND_HEAD_LEN];
+        uint32_t sizeHead;
         zi->ci.encrypt = 1;
         zi->ci.pcrc_32_tab = get_crc_table();
         /*init_keys(password,zi->ci.keys,zi->ci.pcrc_32_tab);*/
@@ -969,7 +969,7 @@ local int zipFlushWriteBuffer(zi)
 extern int ZEXPORT zipWriteInFileInZip (file, buf, len)
     zipFile file;
     const void* buf;
-    unsigned len;
+    uint32_t len;
 {
     zip_internal* zi;
     int err=ZIP_OK;

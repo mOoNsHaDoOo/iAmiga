@@ -90,10 +90,10 @@
         ((SWAB_DATA) << 24 ) )
 
 #define SWAP_L(SWAB_DATA) \
-	((((unsigned)(SWAB_DATA) & 0xff000000) >> 24)   | \
-	 (((unsigned)(SWAB_DATA) & 0x00ff0000) >> 8) | \
-	 (((unsigned)(SWAB_DATA) & 0x0000ff00) << 8)  | \
-	 (((unsigned)(SWAB_DATA) & 0x000000ff) << 24))
+	((((uint32_t)(SWAB_DATA) & 0xff000000) >> 24)   | \
+	 (((uint32_t)(SWAB_DATA) & 0x00ff0000) >> 8) | \
+	 (((uint32_t)(SWAB_DATA) & 0x0000ff00) << 8)  | \
+	 (((uint32_t)(SWAB_DATA) & 0x000000ff) << 24))
 
 
 

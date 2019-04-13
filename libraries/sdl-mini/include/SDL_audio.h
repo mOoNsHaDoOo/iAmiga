@@ -81,7 +81,7 @@ typedef Uint16 SDL_AudioFormat;
 #define SDL_AUDIO_ISSIGNED(x)        (x & SDL_AUDIO_MASK_SIGNED)
 #define SDL_AUDIO_ISINT(x)           (!SDL_AUDIO_ISFLOAT(x))
 #define SDL_AUDIO_ISLITTLEENDIAN(x)  (!SDL_AUDIO_ISBIGENDIAN(x))
-#define SDL_AUDIO_ISUNSIGNED(x)      (!SDL_AUDIO_ISSIGNED(x))
+#define SDL_AUDIO_ISuint32_t(x)      (!SDL_AUDIO_ISSIGNED(x))
 
 /** 
  *  \name Audio format flags
@@ -89,9 +89,9 @@ typedef Uint16 SDL_AudioFormat;
  *  Defaults to LSB byte order.
  */
 /*@{*/
-#define AUDIO_U8	0x0008  /**< Unsigned 8-bit samples */
+#define AUDIO_U8	0x0008  /**< uint32_t 8-bit samples */
 #define AUDIO_S8	0x8008  /**< Signed 8-bit samples */
-#define AUDIO_U16LSB	0x0010  /**< Unsigned 16-bit samples */
+#define AUDIO_U16LSB	0x0010  /**< uint32_t 16-bit samples */
 #define AUDIO_S16LSB	0x8010  /**< Signed 16-bit samples */
 #define AUDIO_U16MSB	0x1010  /**< As above, but big-endian byte order */
 #define AUDIO_S16MSB	0x9010  /**< As above, but big-endian byte order */

@@ -30,12 +30,12 @@ extern int DEBUG_AHORA;
 	}
 
 
-static __inline__ void dbgsum(char *str, void *buff, unsigned len)
+static __inline__ void dbgsum(char *str, void *buff, uint32_t len)
 {
 	if (DEBUG_AHORA)
 	{
-		unsigned char *p=(unsigned char *)buff;
-		unsigned i,ret=0;
+		uint8_t *p=(uint8_t *)buff;
+		uint32_t i,ret=0;
 		for(i=0;i<len;i++,p++)
 			ret+=(*p)*i;
 		printf("%s : 0x%X\n",str,ret);
@@ -65,11 +65,11 @@ static __inline__ void dbgsum(char *str, void *buff, unsigned len)
 
 #define UAE4ALL_PROFILER_MAX 32
 
-extern unsigned long long uae4all_prof_initial[UAE4ALL_PROFILER_MAX];
-extern unsigned long long uae4all_prof_sum[UAE4ALL_PROFILER_MAX];
-extern unsigned long long uae4all_prof_executed[UAE4ALL_PROFILER_MAX];
+extern uint32_t uae4all_prof_initial[UAE4ALL_PROFILER_MAX];
+extern uint32_t uae4all_prof_sum[UAE4ALL_PROFILER_MAX];
+extern uint32_t uae4all_prof_executed[UAE4ALL_PROFILER_MAX];
 
-static __inline__ void uae4all_prof_start(unsigned a)
+static __inline__ void uae4all_prof_start(uint32_t a)
 {
 	uae4all_prof_executed[a]++;
 #ifndef DREAMCAST
@@ -80,12 +80,12 @@ static __inline__ void uae4all_prof_start(unsigned a)
 }
 
 
-static __inline__ void uae4all_prof_end(unsigned a)
+static __inline__ void uae4all_prof_end(uint32_t a)
 {
 #ifndef DREAMCAST
 	uae4all_prof_sum[a]+=SDL_GetTicks()-uae4all_prof_initial[a];
 #else
-	extern unsigned uae4all_prof_total;
+	extern uint32_t uae4all_prof_total;
 	int i;
 	for(i=0;i<uae4all_prof_total;i++)
 		uae4all_prof_initial[i]+=6;

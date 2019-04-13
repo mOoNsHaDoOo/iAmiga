@@ -27,9 +27,9 @@
 #include <SDL.h>
 
 #ifdef PROFILER_UAE4ALL
-unsigned long long uae4all_prof_initial[UAE4ALL_PROFILER_MAX];
-unsigned long long uae4all_prof_sum[UAE4ALL_PROFILER_MAX];
-unsigned long long uae4all_prof_executed[UAE4ALL_PROFILER_MAX];
+uint32_t uae4all_prof_initial[UAE4ALL_PROFILER_MAX];
+uint32_t uae4all_prof_sum[UAE4ALL_PROFILER_MAX];
+uint32_t uae4all_prof_executed[UAE4ALL_PROFILER_MAX];
 #endif
 
 #ifdef DREAMCAST
@@ -460,17 +460,17 @@ int run_menuControl() {}
 
 #ifdef PROFILER_UAE4ALL
 
-static unsigned uae4all_prof_total_initial=0;
-unsigned uae4all_prof_total=0;
+static uint32_t uae4all_prof_total_initial=0;
+uint32_t uae4all_prof_total=0;
 static char *uae4all_prof_msg[UAE4ALL_PROFILER_MAX];
 
 void uae4all_prof_init(void)
 {
-	unsigned i;
+	uint32_t i;
 #ifndef DREAMCAST
-	unsigned long long s=SDL_GetTicks();
+	uint32_t s=SDL_GetTicks();
 #else
-	unsigned long long s=timer_us_gettime64();
+	uint32_t s=timer_us_gettime64();
 #endif
 	for(i=0;i<UAE4ALL_PROFILER_MAX;i++)
 	{
@@ -494,12 +494,12 @@ void uae4all_prof_add(const char *msg)
 
 void uae4all_prof_show(void)
 {
-	unsigned i;
+	uint32_t i;
 	double toper=0;
 #ifndef DREAMCAST
-	unsigned long long to=SDL_GetTicks()-uae4all_prof_total_initial;
+	uint32_t to=SDL_GetTicks()-uae4all_prof_total_initial;
 #else
-	unsigned long long to=uae4all_prof_sum[0]+uae4all_prof_sum[1];
+	uint32_t to=uae4all_prof_sum[0]+uae4all_prof_sum[1];
 	for(i=0;i<uae4all_prof_total;i++)
 		if (uae4all_prof_sum[i]>to)
 			uae4all_prof_sum[i]=0;
@@ -509,7 +509,7 @@ void uae4all_prof_show(void)
 	puts("--------------------------------------------");
 	for(i=0;i<uae4all_prof_total;i++)
 	{
-		unsigned long long t0=uae4all_prof_sum[i];
+		uint32_t t0=uae4all_prof_sum[i];
 		double percent=(double)t0;
 		percent*=100.0;
 		percent/=(double)to;
@@ -517,7 +517,7 @@ void uae4all_prof_show(void)
 #ifdef DREAMCAST
 		t0/=1000;
 #endif
-		printf("%s: %.2f%% -> Ticks=%i -> %iK veces\n",uae4all_prof_msg[i],percent,((unsigned)t0),(unsigned)(uae4all_prof_executed[i]>>10));
+		printf("%s: %.2f%% -> Ticks=%i -> %iK veces\n",uae4all_prof_msg[i],percent,((uint32_t)t0),(uint32_t)(uae4all_prof_executed[i]>>10));
 	}
 	printf("TOTAL: %.2f%% -> Ticks=%i\n",toper,to);
 	puts("--------------------------------------------"); fflush(stdout);

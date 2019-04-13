@@ -87,14 +87,14 @@ void sound_default_evtime(void) {
 }
 #endif
 
-unsigned get_chipmem_size() {
+uint32_t get_chipmem_size() {
     Settings *settings = [[[Settings alloc] init] autorelease];
-    return (unsigned)settings.CMem * 1024;
+    return (uint32_t)settings.CMem * 1024;
 }
 
-unsigned get_fastmem_size() {
+uint32_t get_fastmem_size() {
     Settings *settings = [[[Settings alloc] init] autorelease];
-    return (unsigned)settings.FMem * 1024 * 1024;
+    return (uint32_t)settings.FMem * 1024 * 1024;
 }
 
 char* get_rom_path() {
@@ -150,17 +150,17 @@ char* get_df_path(int drive) {
 
 #ifdef PROFILER_UAE4ALL
 
-static unsigned uae4all_prof_total_initial=0;
-unsigned uae4all_prof_total=0;
+static uint32_t uae4all_prof_total_initial=0;
+uint32_t uae4all_prof_total=0;
 static const char *uae4all_prof_msg[UAE4ALL_PROFILER_MAX];
 
-unsigned long long uae4all_prof_initial[UAE4ALL_PROFILER_MAX];
-unsigned long long uae4all_prof_sum[UAE4ALL_PROFILER_MAX];
-unsigned long long uae4all_prof_executed[UAE4ALL_PROFILER_MAX];
+uint32_t uae4all_prof_initial[UAE4ALL_PROFILER_MAX];
+uint32_t uae4all_prof_sum[UAE4ALL_PROFILER_MAX];
+uint32_t uae4all_prof_executed[UAE4ALL_PROFILER_MAX];
 
 void uae4all_prof_init(void) {
-	unsigned i;
-	unsigned long long s=SDL_GetTicks();
+	uint32_t i;
+	uint32_t s=SDL_GetTicks();
 
 	for(i=0;i<UAE4ALL_PROFILER_MAX;i++) {
 		uae4all_prof_initial[i]=s;
@@ -180,10 +180,10 @@ void uae4all_prof_add(const char *msg) {
 }
 
 void uae4all_prof_show(void) {
-	unsigned i;
+	uint32_t i;
 	double toper=0;
 
-	unsigned long long to=SDL_GetTicks()-uae4all_prof_total_initial;
+	uint32_t to=SDL_GetTicks()-uae4all_prof_total_initial;
 	
 	puts("\n\n\n\n");
 	puts("--------------------------------------------");
@@ -195,12 +195,12 @@ void uae4all_prof_show(void) {
 			case 7:
 				continue;
 		}
-		unsigned long long t0=uae4all_prof_sum[i];
+		uint32_t t0=uae4all_prof_sum[i];
 		double percent=(double)t0;
 		percent*=100.0;
 		percent/=(double)to;
 		toper+=percent;
-		printf("%s: %.2f%% -> Ticks=%i -> %iK calls\n",uae4all_prof_msg[i],percent,((unsigned)t0),(unsigned)(uae4all_prof_executed[i]>>10));
+		printf("%s: %.2f%% -> Ticks=%i -> %iK calls\n",uae4all_prof_msg[i],percent,((uint32_t)t0),(uint32_t)(uae4all_prof_executed[i]>>10));
 	}
 	printf("TOTAL: %.2f%% -> Ticks=%i\n",toper,to);
 	puts("--------------------------------------------"); fflush(stdout);

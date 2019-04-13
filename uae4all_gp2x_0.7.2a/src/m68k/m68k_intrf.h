@@ -4,10 +4,10 @@
 //#include "menu_config.h"
 
 /* defined in m68k_cmn_intrf.cpp */
-extern unsigned mispcflags;
+extern uint32_t mispcflags;
 
 void init_memmaps(addrbank* banco);
-void map_zone(unsigned addr, addrbank* banco, unsigned realstart);
+void map_zone(uint32_t addr, addrbank* banco, uint32_t realstart);
 void m68k_go(int may_quit);
 void init_m68k(void);
 
@@ -34,13 +34,13 @@ extern M68K_CONTEXT M68KCONTEXT;
 #define _68k_intmask   ((M68KCONTEXT.sr >> 8) & 7)
 #define _68k_spcflags mispcflags
 
-static __inline__ void _68k_setpc(unsigned mipc)
+static __inline__ void _68k_setpc(uint32_t mipc)
 {
 	M68KCONTEXT.pc=mipc;
 	m68k_set_register(M68K_REG_PC, mipc);
 }
 
-static __inline__ void set_special (unsigned x)
+static __inline__ void set_special (uint32_t x)
 {
     _68k_spcflags |= x;
 }

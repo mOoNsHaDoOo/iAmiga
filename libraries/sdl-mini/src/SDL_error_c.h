@@ -32,7 +32,7 @@ typedef struct SDL_error
     {
         void *value_ptr;
 #if 0                           /* What is a character anyway?  (UNICODE issues) */
-        unsigned char value_c;
+        uint8_t value_c;
 #endif
         int value_i;
         double value_f;

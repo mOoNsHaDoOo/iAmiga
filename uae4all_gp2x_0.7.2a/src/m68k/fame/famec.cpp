@@ -856,7 +856,7 @@ static FAMEC_EXTRA_INLINE s32 interrupt_chk__(M68K_CONTEXT &m68kcontext)
 }
 
 /* Called from execute_exception() *and* uae_chk_handler() to process stack and PC */
-void process_exception(unsigned int vect)
+void process_exception(uint32_t vect)
 {
     u32 newPC;
     u32 oldPC = (u32)((uintptr_t)(PC) - BasePC);
@@ -1267,7 +1267,7 @@ static void MULL(u32 src, u16 extra)
     }
     else
     {
-        /* unsigned */
+        /* uint32_t */
         u64 a;
         
         a = (u64)(u32)src * (u64)(u32)DREG((extra >> 12) & 7);
@@ -1318,7 +1318,7 @@ static int DIVL(u32 src, u16 extra)
     }
     else
     {
-        /* unsigned */
+        /* uint32_t */
         u64 a = (u64)(u32)DREG((extra >> 12) & 7);
         u64 quot, rem;
         
@@ -1510,16 +1510,16 @@ static __inline__ void DECODE_EXT_WORD_000 (u32 *adr)
 
 static FAMEC_EXTRA_INLINE u8 bitset_count(u32 data)
 {
-    unsigned int const MASK1  = 0x55555555;
-    unsigned int const MASK2  = 0x33333333;
-    unsigned int const MASK4  = 0x0f0f0f0f;
-    unsigned int const MASK6 = 0x0000003f;
+    uint32_t const MASK1  = 0x55555555;
+    uint32_t const MASK2  = 0x33333333;
+    uint32_t const MASK4  = 0x0f0f0f0f;
+    uint32_t const MASK6 = 0x0000003f;
     
-    unsigned int const w = (data & MASK1) + ((data >> 1) & MASK1);
-    unsigned int const x = (w & MASK2) + ((w >> 2) & MASK2);
-    unsigned int const y = ((x + (x >> 4)) & MASK4);
-    unsigned int const z = (y + (y >> 8));
-    unsigned int const c = (z + (z >> 16)) & MASK6;
+    uint32_t const w = (data & MASK1) + ((data >> 1) & MASK1);
+    uint32_t const x = (w & MASK2) + ((w >> 2) & MASK2);
+    uint32_t const y = ((x + (x >> 4)) & MASK4);
+    uint32_t const z = (y + (y >> 8));
+    uint32_t const c = (z + (z >> 16)) & MASK6;
     
     return c;
 }
@@ -1527,7 +1527,7 @@ static FAMEC_EXTRA_INLINE u8 bitset_count(u32 data)
 
 /*
  DIVU
- Unsigned division
+ uint32_t division
  */
 static u32 getDivu68kCycles(u32 dividend, u16 divisor)
 {

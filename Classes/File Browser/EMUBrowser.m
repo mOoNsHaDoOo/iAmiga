@@ -24,7 +24,7 @@
 
 - (NSArray *)getFileInfosWithFileNameFilter:(NSString *)fileNameFilter {
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString *documentsDirectory = [paths objectAtIndex:0];
+    NSString *documentsDirectory = paths.firstObject;
     
     NSArray *documentFileInfos = [self getFileInfosInDirectory:documentsDirectory fileNameFilter:fileNameFilter];
     NSArray *bundleFileInfos = [self getFileInfosInDirectory:[[NSBundle mainBundle] bundlePath] fileNameFilter:fileNameFilter];

@@ -28,7 +28,7 @@
 #endif
 
 
-extern unsigned long next_sample_evtime;
+extern uint32_t next_sample_evtime;
 
 int produce_sound=0;
 int changed_produce_sound=0;
@@ -59,7 +59,7 @@ static uae_u16 *sndbuffer[8] __attribute__ ((__aligned__ (32))) = {
 	&sndbuffer_all[(SNDBUFFER_LEN*7)+(32*7)],
 };
 
-unsigned n_callback_sndbuff, n_render_sndbuff;
+uint32_t n_callback_sndbuff, n_render_sndbuff;
 uae_u16 *callback_sndbuff, *render_sndbuff, *sndbufpt;
 
 #ifndef PROFILER_UAE4ALL
@@ -144,7 +144,7 @@ static Mix_Chunk *sample_wave[NUM_SAMPLES];
 
 int sound_fd;
 static int have_sound = 0;
-static unsigned long formats;
+static uint32_t formats;
 
 static SDL_AudioSpec spec;
 
@@ -178,8 +178,8 @@ void sound_default_evtime(void)
 double media_ratio=0;
 static __inline__ void calcule_audio_ratio(void)
 {
-	unsigned long long ahora=timer_us_gettime64();
-	static unsigned long long antes=0;
+	uint32_t ahora=timer_us_gettime64();
+	static uint32_t antes=0;
 
 	if (antes)
 	{
@@ -193,10 +193,10 @@ static __inline__ void calcule_audio_ratio(void)
 		antes=ahora;
 }
 
-unsigned sound_cuantos[8]={ 0,0,0,0,0,0,0,0 };
-unsigned sound_ajustes=0;
-unsigned sound_alcanza_callback=0;
-unsigned sound_alcanza_render=0;
+uint32_t sound_cuantos[8]={ 0,0,0,0,0,0,0,0 };
+uint32_t sound_ajustes=0;
+uint32_t sound_alcanza_callback=0;
+uint32_t sound_alcanza_render=0;
 #endif
 
 static void sound_callback (void *userdata, Uint8 *stream, int len)
@@ -210,7 +210,7 @@ static void sound_callback (void *userdata, Uint8 *stream, int len)
     in_callback = 1;
     if (! closing_sound) {
 #ifdef USE_SOUND_SEMS
-         while ((!closing_sound) && (((unsigned)render_sndbuff)==((unsigned)callback_sndbuff)))
+         while ((!closing_sound) && (((uint32_t)render_sndbuff)==((uint32_t)callback_sndbuff)))
 	 		uae_sem_wait (&data_available_sem);
 #else
 	n_callback_sndbuff=(n_callback_sndbuff+1)&7;
@@ -227,7 +227,7 @@ static void sound_callback (void *userdata, Uint8 *stream, int len)
 	}
 #endif
 #ifdef USE_SOUND_SEMS
-	 if (((unsigned)render_sndbuff)!=((unsigned)callback_sndbuff)) 
+	 if (((uint32_t)render_sndbuff)!=((uint32_t)callback_sndbuff)) 
 #endif
 	 {
 #ifndef DREAMCAST
@@ -461,7 +461,7 @@ void uae4all_init_sound(void)
     dbg("sound.c : uae4all_init_sound");
 #endif
 #ifdef MENU_MUSIC
-	unsigned i;
+	uint32_t i;
     	int freq = DEFAULT_SOUND_FREQ_ADJUST;
     	int format = DEFAULT_SOUND_BITS == 8 ? AUDIO_U8 : AUDIO_S16;
     	int channels = 1;

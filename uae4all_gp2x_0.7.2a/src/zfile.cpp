@@ -32,7 +32,7 @@ extern char launchDir[300];
 #include"save_icon.h"
 #define DC_VRAM 0x04000000
 #define VMUFILE_PAD 128+512
-static unsigned char    *paquete=NULL;
+static uint8_t    *paquete=NULL;
 static int              paquete_size=0;
 
 
@@ -58,10 +58,10 @@ static void prepare_save(void)
 	paquete_size-=4;
 }
 
-static void rebuild_paquete(char *name, unsigned size, unsigned char* data, FILE *f)
+static void rebuild_paquete(char *name, uint32_t size, uint8_t* data, FILE *f)
 {
-	unsigned short *crc=(unsigned short*) &paquete[0x46];
-	unsigned *data_len=(unsigned *) &paquete[0x48];
+	uint16_t *crc=(uint16_t*) &paquete[0x46];
+	uint32_t *data_len=(uint32_t *) &paquete[0x48];
 	char *desc_long=(char *) &paquete[16];
 	bzero(desc_long,32);
 	strncpy(desc_long,name,31);
@@ -98,13 +98,13 @@ static void set_vmu_pad(FILE *f)
 #endif
 
 
-static unsigned getFreeBlocks(void)
+static uint32_t getFreeBlocks(void)
 {
 #ifdef DREAMCAST
-	unsigned short buf16[255];
+	uint16_t buf16[255];
 	int free_blocks=0,i=0;
 	maple_device_t *dev;
-	unsigned char addr=0;
+	uint8_t addr=0;
 	int p,u;
 	uint8 v=maple_first_vmu();
 	if (v)
@@ -142,7 +142,7 @@ static void *uae4all_disk_memory[4]={ NULL ,NULL ,NULL ,NULL };
 static void *uae4all_extra_buffer=NULL;
 static size_t uae4all_disk_len[4]={ 0 ,0 ,0 ,0 };
 static size_t uae4all_disk_pos[4]={ 0 ,0 ,0 ,0 };
-static unsigned char uae4all_disk_used[4]= { 0 ,0 ,0 ,0 };
+static uint8_t uae4all_disk_used[4]= { 0 ,0 ,0 ,0 };
 static size_t uae4all_disk_writed[4]= { 0, 0, 0, 0 };
 static size_t uae4all_disk_writed_now[4]= { 0, 0, 0, 0 };
 static void *uae4all_disk_orig[4]={ NULL, NULL, NULL, NULL };
@@ -224,7 +224,7 @@ static size_t  try_to_read_disk(int i,const char *name)
 
 static char __uae4all_write_namefile[32];
 
-static char *get_namefile(unsigned num)
+static char *get_namefile(uint32_t num)
 {
 	size_t crc=uae4all_disk_crc[num];
 #if defined(GP2X) || defined(IPHONE)
@@ -273,7 +273,7 @@ static void uae4all_disk_real_write(int num)
 					FILE *f=fopen(namefile,"wb");
 					if (f)
 					{
-						rebuild_paquete(prefs_df[num], sizecompressed, (unsigned char*) bc, f);
+						rebuild_paquete(prefs_df[num], sizecompressed, (uint8_t*) bc, f);
 						fwrite((void *)&sizecompressed,1,4,f);
 						fwrite(bc,1,sizecompressed,f);
 						fclose(f);
@@ -292,7 +292,7 @@ static void uae4all_disk_real_write(int num)
 
 
 
-static void uae4all_initsave(unsigned num)
+static void uae4all_initsave(uint32_t num)
 {
 #ifndef DREAMCAST
 	if (!uae4all_disk_orig[num])
@@ -308,7 +308,7 @@ static void uae4all_initsave(unsigned num)
 	if (f)
 	{
 		void *bc=calloc(1,MAX_COMP_SIZE);
-		unsigned long n;
+		uint32_t n;
 		set_vmu_pad(f);
 		fread((void *)&n,1,4,f);
 		if (fread(bc,1,n,f)>=n)

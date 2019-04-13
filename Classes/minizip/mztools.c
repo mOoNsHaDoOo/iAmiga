@@ -11,20 +11,20 @@
 #include "zlib.h"
 #include "unzip.h"
 
-#define READ_8(adr)  ((unsigned char)*(adr))
+#define READ_8(adr)  ((uint8_t)*(adr))
 #define READ_16(adr) ( READ_8(adr) | (READ_8(adr+1) << 8) )
 #define READ_32(adr) ( READ_16(adr) | (READ_16((adr)+2) << 16) )
 
 #define WRITE_8(buff, n) do { \
-  *((unsigned char*)(buff)) = (unsigned char) ((n) & 0xff); \
+  *((uint8_t*)(buff)) = (uint8_t) ((n) & 0xff); \
 } while(0)
 #define WRITE_16(buff, n) do { \
-  WRITE_8((unsigned char*)(buff), n); \
-  WRITE_8(((unsigned char*)(buff)) + 1, (n) >> 8); \
+  WRITE_8((uint8_t*)(buff), n); \
+  WRITE_8(((uint8_t*)(buff)) + 1, (n) >> 8); \
 } while(0)
 #define WRITE_32(buff, n) do { \
-  WRITE_16((unsigned char*)(buff), (n) & 0xffff); \
-  WRITE_16((unsigned char*)(buff) + 2, (n) >> 16); \
+  WRITE_16((uint8_t*)(buff), (n) & 0xffff); \
+  WRITE_16((uint8_t*)(buff) + 2, (n) >> 16); \
 } while(0)
 
 extern int ZEXPORT unzRepair(file, fileOut, fileOutTmp, nRecovered, bytesRecovered)
@@ -51,16 +51,16 @@ uLong* bytesRecovered;
 
       /* File entry */
       if (READ_32(header) == 0x04034b50) {
-        unsigned int version = READ_16(header + 4);
-        unsigned int gpflag = READ_16(header + 6);
-        unsigned int method = READ_16(header + 8);
-        unsigned int filetime = READ_16(header + 10);
-        unsigned int filedate = READ_16(header + 12);
-        unsigned int crc = READ_32(header + 14); /* crc */
-        unsigned int cpsize = READ_32(header + 18); /* compressed size */
-        unsigned int uncpsize = READ_32(header + 22); /* uncompressed sz */
-        unsigned int fnsize = READ_16(header + 26); /* file name length */
-        unsigned int extsize = READ_16(header + 28); /* extra field length */
+        uint32_t version = READ_16(header + 4);
+        uint32_t gpflag = READ_16(header + 6);
+        uint32_t method = READ_16(header + 8);
+        uint32_t filetime = READ_16(header + 10);
+        uint32_t filedate = READ_16(header + 12);
+        uint32_t crc = READ_32(header + 14); /* crc */
+        uint32_t cpsize = READ_32(header + 18); /* compressed size */
+        uint32_t uncpsize = READ_32(header + 22); /* uncompressed sz */
+        uint32_t fnsize = READ_16(header + 26); /* file name length */
+        uint32_t extsize = READ_16(header + 28); /* extra field length */
         filename[0] = extra[0] = '\0';
         
         /* Header */

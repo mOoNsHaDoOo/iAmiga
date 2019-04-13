@@ -252,7 +252,7 @@ static char *set_filesys_unit_1 (struct uaedev_mount_info *mountinfo, int nr,
 	    return "Bad hardfile geometry";
 	}
 	fseek (ui->hf.fd, 0, SEEK_END);
-	ui->hf.size = ftell (ui->hf.fd);
+	ui->hf.size = (uint32_t) ftell (ui->hf.fd);
 	ui->hf.secspertrack = secspertrack;
 	ui->hf.surfaces = surfaces;
 	ui->hf.reservedblocks = reserved;
@@ -452,8 +452,8 @@ struct hardfiledata *get_hardfile_data (int nr)
 #define dp_Arg4 32
 
 /* result codes */
-#define DOS_TRUE ((unsigned long)-1L)
-#define DOS_FALSE (0L)
+#define DOS_TRUE ((uint32_t)-1L)
+#define DOS_FALSE (0)
 
 /* Passed as type to Lock() */
 #define SHARED_LOCK         -2     /* File is readable by others */
@@ -553,14 +553,14 @@ typedef struct _unit {
 
     /* Dummy message processing */
     uaecptr dummy_message;
-    volatile unsigned int cmds_sent;
-    volatile unsigned int cmds_complete;
-    volatile unsigned int cmds_acked;
+    volatile uint32_t cmds_sent;
+    volatile uint32_t cmds_complete;
+    volatile uint32_t cmds_acked;
 
     /* ExKeys */
     ExamineKey examine_keys[EXKEYS];
     int next_exkey;
-    unsigned long total_locked_ainos;
+    uint32_t total_locked_ainos;
 
     /* Keys */
     struct key *keys;
@@ -568,10 +568,10 @@ typedef struct _unit {
     uae_u32 a_uniq;
 
     a_inode rootnode;
-    unsigned long aino_cache_size;
+    uint32_t aino_cache_size;
     a_inode *aino_hash[MAX_AINO_HASH];
-    unsigned long nr_cache_hits;
-    unsigned long nr_cache_lookups;
+    uint32_t nr_cache_hits;
+    uint32_t nr_cache_lookups;
 } Unit;
 
 typedef uae_u8 *dpacket;
@@ -734,7 +734,7 @@ static void recycle_aino (Unit *unit, a_inode *new_aino)
 
 static void update_child_names (Unit *unit, a_inode *a, a_inode *parent)
 {
-    int l0 = strlen (parent->nname) + 2;
+    size_t l0 = strlen (parent->nname) + 2;
 
     while (a != 0) {
 	char *name_start;
@@ -1038,7 +1038,7 @@ static a_inode *create_child_aino (Unit *unit, a_inode *base, char *rel, int isd
 static a_inode *lookup_child_aino (Unit *unit, a_inode *base, char *rel, uae_u32 *err)
 {
    a_inode *c = base->child;
-   int l0 = strlen (rel);
+   size_t l0 = strlen (rel);
    
    if (base->dir == 0) {
       *err = ERROR_OBJECT_WRONG_TYPE;
@@ -1046,7 +1046,7 @@ static a_inode *lookup_child_aino (Unit *unit, a_inode *base, char *rel, uae_u32
    }
    
    while (c != 0) {
-      int l1 = strlen (c->aname);
+      size_t l1 = strlen (c->aname);
       if (l0 <= l1 && same_aname (rel, c->aname + l1 - l0)
       && (l0 == l1 || c->aname[l1-l0-1] == '/'))
          break;
@@ -1064,11 +1064,11 @@ static a_inode *lookup_child_aino (Unit *unit, a_inode *base, char *rel, uae_u32
 static a_inode *lookup_child_aino_for_exnext (Unit *unit, a_inode *base, char *rel, uae_u32 *err)
 {
     a_inode *c = base->child;
-    int l0 = strlen (rel);
+    size_t l0 = strlen (rel);
 
     *err = 0;
     while (c != 0) {
-	int l1 = strlen (c->nname);
+	size_t l1 = strlen (c->nname);
 	/* Note: using strcmp here.  */
 	if (l0 <= l1 && strcmp (rel, c->nname + l1 - l0) == 0
 	    && (l0 == l1 || c->nname[l1-l0-1] == FSDB_DIR_SEPARATOR))
@@ -1404,7 +1404,7 @@ static a_inode *find_aino (Unit *unit, uaecptr lock, const char *name, uae_u32 *
          /* That's the best we can hope to do. */
          a = get_aino (unit, &unit->rootnode, name, err);
       } else {
-         TRACE(("aino: 0x%08lx", (unsigned long int)olda->uniq));
+         TRACE(("aino: 0x%08lx", (uint32_t int)olda->uniq));
          TRACE((" \"%s\"\n", olda->nname));
          a = get_aino (unit, olda, name, err);
       }
@@ -1654,7 +1654,7 @@ static ExamineKey *new_exkey (Unit *unit, a_inode *aino)
 static void move_exkeys (Unit *unit, a_inode *from, a_inode *to)
 {
     int i;
-    unsigned long tmp = 0;
+    uint32_t tmp = 0;
     for (i = 0; i < EXKEYS; i++) {
 	ExamineKey *k = unit->examine_keys + i;
 	if (k->uniq == 0)
@@ -2084,8 +2084,8 @@ action_read (Unit *unit, dpacket packet)
 {
 	Key *k = lookup_key (unit, GET_PCK_ARG1 (packet));
 	uaecptr addr = GET_PCK_ARG2 (packet);
-	long size = (uae_s32)GET_PCK_ARG3 (packet);
-	int actual;
+	int32_t size = (uae_s32)GET_PCK_ARG3 (packet);
+	ssize_t actual;
 	
 	if (k == 0) {
 		PUT_PCK_RES1 (packet, DOS_FALSE);
@@ -2097,7 +2097,7 @@ action_read (Unit *unit, dpacket packet)
 	/* HACK HACK HACK HACK
 	 * Try to detect a LoadSeg() */
 	if (k->file_pos == 0 && size >= 4) {
-		unsigned char buf[4];
+		uint8_t buf[4];
 		off_t currpos = lseek(k->fd, 0, SEEK_CUR);
 		read(k->fd, buf, 4);
 		lseek(k->fd, currpos, SEEK_SET);
@@ -2115,14 +2115,14 @@ action_read (Unit *unit, dpacket packet)
 		 * That word will be re-swabbed after data has been read.
 		 */
 		if (((uintptr_t)realpt & 1) > 0)
-			swab_memory ((unsigned char *)((uintptr_t)realpt & ~1), 2);
+			swab_memory ((uint8_t *)((uintptr_t)realpt & ~1), 2);
 		
 		actual = read(k->fd, (char *)realpt, size);
 		
 	    /* If realpt is at odd address, we also have to swab the
 	     * word in which the last byte has been written.
 	     */
-		swab_memory((unsigned char *)((uintptr_t)realpt & ~1), (((actual + 1) & ~1) + ((uintptr_t)realpt & 1)) & ~1);
+		swab_memory((uint8_t *)((uintptr_t)realpt & ~1), (((actual + 1) & ~1) + ((uintptr_t)realpt & 1)) & ~1);
 #else
 		actual = read(k->fd, (char *) realpt, size);
 #endif
@@ -2210,10 +2210,10 @@ static void
 action_seek (Unit *unit, dpacket packet)
 {
     Key *k = lookup_key (unit, GET_PCK_ARG1 (packet));
-    long pos = (uae_s32)GET_PCK_ARG2 (packet);
-    long mode = (uae_s32)GET_PCK_ARG3 (packet);
+    int32_t pos = (uae_s32)GET_PCK_ARG2 (packet);
+    int32_t mode = (uae_s32)GET_PCK_ARG3 (packet);
     off_t res;
-    long old;
+    int32_t old;
     int whence = SEEK_CUR;
 
     if (k == 0) {
@@ -2295,7 +2295,7 @@ static void action_set_comment (Unit * unit, dpacket packet)
     char *commented;
     a_inode *a;
     uae_u32 err;
-    long res1, res2;
+    int32_t res1, res2;
 
     if (unit->ui.readonly) {
 	PUT_PCK_RES1 (packet, DOS_FALSE);
@@ -2357,7 +2357,7 @@ action_change_mode (Unit *unit, dpacket packet)
     /* will be EXCLUSIVE_LOCK/SHARED_LOCK if CHANGE_LOCK,
      * or MODE_OLDFILE/MODE_NEWFILE/MODE_READWRITE if CHANGE_FH */
     long mode = GET_PCK_ARG3 (packet);
-    unsigned long uniq;
+    uint32_t uniq;
     a_inode *a = NULL, *olda = NULL;
     uae_u32 err = 0;
     TRACE(("ACTION_CHANGE_MODE(0x%lx,%d,%d)\n",object,type,mode));
@@ -2415,7 +2415,7 @@ action_change_mode (Unit *unit, dpacket packet)
 }
 
 static void
-action_parent_common (Unit *unit, dpacket packet, unsigned long uniq)
+action_parent_common (Unit *unit, dpacket packet, uint32_t uniq)
 {
     a_inode *olda = lookup_aino (unit, uniq);
     if (olda == 0) {
@@ -2544,7 +2544,7 @@ action_set_file_size (Unit *unit, dpacket packet)
 {
     Key *k, *k1;
     off_t offset = GET_PCK_ARG2 (packet);
-    long mode = (uae_s32)GET_PCK_ARG3 (packet);
+    int32_t mode = (uae_s32)GET_PCK_ARG3 (packet);
     int whence = SEEK_CUR;
 
     if (mode > 0) whence = SEEK_END;
@@ -2562,10 +2562,10 @@ action_set_file_size (Unit *unit, dpacket packet)
     /* If any open files have file pointers beyond this size, truncate only
      * so far that these pointers do not become invalid.  */
     for (k1 = unit->keys; k1; k1 = k1->next) {
-	if (k != k1 && k->aino == k1->aino) {
-	    if (k1->file_pos > offset)
-		offset = k1->file_pos;
-	}
+        if (k != k1 && k->aino == k1->aino) {
+            if (k1->file_pos > offset)
+            offset = k1->file_pos;
+        }
     }
 
     /* Write one then truncate: that should give the right size in all cases.  */

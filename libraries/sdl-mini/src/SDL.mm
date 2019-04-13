@@ -50,7 +50,7 @@ static UIView<DisplayViewSurface>	*view;
 Uint32 SDL_GetTicks() {
 	timeval tv;
 	gettimeofday(&tv, NULL);
-	return (UInt32)(tv.tv_sec - time_start) * 1000UL + tv.tv_usec / 1000;
+	return (UInt32)(tv.tv_sec - time_start) * 1000 + tv.tv_usec / 1000;
 }
 
 void SDL_UnlockSurface(SDL_Surface* a) {

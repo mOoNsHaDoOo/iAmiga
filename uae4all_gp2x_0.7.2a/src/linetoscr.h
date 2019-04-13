@@ -2,7 +2,7 @@
 static __inline__ int LNAME (int spix, int dpix, int stoppos)
 {
 	/* CASO DUAL */
-    unsigned short * __restrict__ buf = ((unsigned short *)xlinebuffer);
+    uint16_t * __restrict__ buf = ((uint16_t *)xlinebuffer);
 	
     if (bpldualpf) {
 		long int * __restrict__ acolors = (long int *)&colors_for_drawing.acolors;
@@ -15,7 +15,7 @@ static __inline__ int LNAME (int spix, int dpix, int stoppos)
         //center fix mithrendal
         dpix = (dpix-VISIBLE_LEFT_BORDER)*2 + VISIBLE_LEFT_BORDER;
 	    while (n--) {
-			register unsigned short d = acolors[lookup[apixels[spix]]];
+			register uint16_t d = acolors[lookup[apixels[spix]]];
 			buf[dpix++] = d;
             buf[dpix++] = d;
             spix ++;
@@ -41,7 +41,7 @@ static __inline__ int LNAME (int spix, int dpix, int stoppos)
         //center fix mithrendal
         dpix = (dpix-VISIBLE_LEFT_BORDER)*2 + VISIBLE_LEFT_BORDER;
 		while (n--) {
-            register unsigned short val = (acolors[apixels[spix]]);
+            register uint16_t val = (acolors[apixels[spix]]);
 			buf[dpix++] = val;
 			buf[dpix++] = val;
 			spix ++;

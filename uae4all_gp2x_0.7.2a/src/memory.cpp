@@ -32,9 +32,9 @@ int bReloadKickstart = 0;
 
 #include "zfile.h"
 
-unsigned prefs_chipmem_size;
-unsigned prefs_fastmem_size;
-unsigned prefs_bogomem_size;
+uint32_t prefs_chipmem_size;
+uint32_t prefs_fastmem_size;
+uint32_t prefs_bogomem_size;
 
 void clear_fame_mem_dummy(void);
 
@@ -49,9 +49,9 @@ uae_u32 allocated_z3fastmem=0;
 uae_u32 allocated_a3000mem=0;
 #endif
 
-static long chip_filepos;
-static long bogo_filepos;
-static long rom_filepos;
+static s64 chip_filepos;
+static s64 bogo_filepos;
+static s64 rom_filepos;
 
 #include <zlib.h>
 static size_t compressed_size;
@@ -425,15 +425,15 @@ uae_u8 REGPARAM2 *a3000mem_xlate (uaecptr addr)
 
 uae_u8 *kickmemory;
 
-static unsigned kickmem_checksum=0;
-static unsigned get_kickmem_checksum(void)
+static uint32_t kickmem_checksum=0;
+static uint32_t get_kickmem_checksum(void)
 {
-    unsigned *p=(unsigned *)kickmemory;
-    unsigned ret=0;
+    uint32_t *p=(uint32_t *)kickmemory;
+    uint32_t ret=0;
     if (p)
     {
-        unsigned max=kickmem_size/4;
-        unsigned i;
+        uint32_t max=kickmem_size/4;
+        uint32_t i;
         for(i=0;i<max;i++)
             ret+=(i+1)*p[i];
     }
@@ -794,7 +794,7 @@ static int kickstart_checksum (uae_u8 *mem, size_t size)
 
 static int read_kickstart (FILE *f, uae_u8 *mem, size_t size, int dochecksum, size_t *cloanto_rom)
 {
-    unsigned char buffer[20];
+    uint8_t buffer[20];
     size_t i, cr = 0;
     
     if (cloanto_rom)
@@ -884,7 +884,7 @@ void swab_memory(uae_u8 *apMemory, uae_u32 aSize)
     uae_u32 i;
     for(i=0; i<aSize; i+=2)
     {
-        unsigned char b1=apMemory[i];
+        uint8_t b1=apMemory[i];
         apMemory[i]=apMemory[i+1];
         apMemory[i+1]=b1;
         
@@ -931,8 +931,8 @@ void mapped_free (uae_u8 *p)
 
 static void init_mem_banks (void)
 {
-    unsigned int i;
-    unsigned int z;
+    uint32_t i;
+    uint32_t z;
     for (i = 0; i < 65536; i++)
     {
         put_mem_bank (i << 16, &dummy_bank);
@@ -1042,7 +1042,7 @@ void memory_reset (void)
     if (kickmem_checksum!=get_kickmem_checksum() | bReloadKickstart)
     {
         bReloadKickstart=0;
-        unsigned chksum=kickmem_checksum;
+        uint32_t chksum=kickmem_checksum;
         reload_kickstart();
         if (chksum!=kickmem_checksum)
         {

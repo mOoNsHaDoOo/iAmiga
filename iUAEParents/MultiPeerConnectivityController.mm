@@ -21,9 +21,9 @@ extern CJoyStick g_touchStick;
 }
 
 extern MPCStateType mainMenu_servermode;
-extern unsigned int mainMenu_joy0dir;
+extern uint32_t mainMenu_joy0dir;
 extern int mainMenu_joy0button;
-extern unsigned int mainMenu_joy1dir;
+extern uint32_t mainMenu_joy1dir;
 extern int mainMenu_joy1button;
 static NSString * const XXServiceType = @"svc-iuae";
 CJoyStick *theJoystick = &g_touchStick;
@@ -257,7 +257,7 @@ withDiscoveryInfo:(NSDictionary<NSString *,
     else
     {
         
-        int aints[6]= {  (unsigned int)direction, (unsigned int)0, BTN_INVALID, (unsigned int)buttontoreleasehorizontal, (unsigned int)buttontoreleasevertical};
+        int aints[6]= {  (uint32_t)direction, (uint32_t)0, BTN_INVALID, (uint32_t)buttontoreleasehorizontal, (uint32_t)buttontoreleasevertical};
         
         NSData *data = [NSData dataWithBytes: &aints length: sizeof(aints)];
         
@@ -280,7 +280,7 @@ withDiscoveryInfo:(NSDictionary<NSString *,
     else
     {
         
-        int aints[5]= { (unsigned int) 0, (unsigned int)buttonstate, (unsigned int) buttonid, (unsigned int) 0, (unsigned int) 0};
+        int aints[5]= { (uint32_t) 0, (uint32_t)buttonstate, (uint32_t) buttonid, (uint32_t) 0, (uint32_t) 0};
         
         NSData *data = [NSData dataWithBytes: &aints length: sizeof(aints)];
         
@@ -294,6 +294,7 @@ withDiscoveryInfo:(NSDictionary<NSString *,
     }
 
 }
+
 - (void)showMessage: (NSString *)sTitel withMessage:(NSString *)sMessage
 {
     dispatch_async(dispatch_get_main_queue(), ^{
@@ -301,7 +302,6 @@ withDiscoveryInfo:(NSDictionary<NSString *,
         [SVProgressHUD setBackgroundColor:[UIColor colorWithRed:220.0/255.0 green:220.0/255.0 blue:220.0/255.0 alpha:1]];
         [SVProgressHUD showInfoWithStatus:[NSString stringWithFormat:@"%@\n\n%@", sTitel, sMessage]];
     });
-    
 }
 
 - (void)session:(MCSession *)session peer:(MCPeerID *)peerID didChangeState:(MCSessionState)state
@@ -320,7 +320,7 @@ MCNearbyServiceAdvertiser *advertiser=nil;
 - (void)session:(MCSession *)session didReceiveData:(NSData *)data fromPeer:(MCPeerID *)peerID
 {
     
-    unsigned int aJoyData[5];
+    uint32_t aJoyData[5];
     [data getBytes: &aJoyData length: sizeof(aJoyData)];
     
     TouchStickDPadState joydir = (TouchStickDPadState)aJoyData[0];

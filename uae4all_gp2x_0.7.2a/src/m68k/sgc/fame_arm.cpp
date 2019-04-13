@@ -86,7 +86,7 @@ if (do_debug) \
 
 #include "fame_arm.h"
 
-typedef unsigned char byte;
+typedef uint8_t byte;
 
 struct M68KCONTEXT_t M68KCONTEXT;
 #define m68kcontext M68KCONTEXT
@@ -104,7 +104,7 @@ register s32 cycles asm("r5");
 #endif
 register void** jt asm("r6");
 register u16 Opcode asm("r8");
-register unsigned int flags asm("r11");
+register uint32_t flags asm("r11");
 register m68kcontext_t *ctx asm("r10");
 
 s32 cycles_needed;
@@ -112,7 +112,7 @@ s32 cycles_needed;
 #ifdef FAMEARM_USE_VFP_REG_FOR_CYCLES
 register float time asm("s16");
 
-__inline__ void _vset_time(unsigned int v) {
+__inline__ void _vset_time(uint32_t v) {
 	asm volatile("vmov %[time], %[v]"
 				 : [time] "=w" (time) : [v] "r" (v));
 }
@@ -124,7 +124,7 @@ __inline__ s32 _vget_time() {
 	return res;
 }
 
-__inline__ void _vsub_time(unsigned int v) {
+__inline__ void _vsub_time(uint32_t v) {
 	asm volatile("vmov r1, %[time] \n\t" 
 				 "subs r1, r1, %[v] \n\t"
 				 "vmov %[time], r1"
@@ -225,13 +225,13 @@ __inline__ void _vsub_time(unsigned int v) {
 #define STORE_CYCLES	m68k_context.cycles = cycles;
 #define LOAD_CYCLES		cycles = m68k_context.cycles;
 
-static unsigned int Read_Byte(unsigned int a) __attribute__((always_inline));
+static uint32_t Read_Byte(uint32_t a) __attribute__((always_inline));
 
-static __inline__ unsigned int Read_Byte(unsigned int a) {
+static __inline__ uint32_t Read_Byte(uint32_t a) {
 	a &= ~0xff000000;
 	uae_u8 *p = baseaddr[a>>16];
 	if ((int)p & 1)	{
-		addrbank *ab = (addrbank *) ((unsigned)p & ~1);
+		addrbank *ab = (addrbank *) ((uint32_t)p & ~1);
 		uae_u32 ret = ab->bget(a);
 		return ret;
 	} else {
@@ -239,11 +239,11 @@ static __inline__ unsigned int Read_Byte(unsigned int a) {
 	}
 }
 
-static __inline__ unsigned int Read_Word(unsigned int a) {
+static __inline__ uint32_t Read_Word(uint32_t a) {
 	a &= ~0xff000000;
 	uae_u16 *p = (uae_u16 *) baseaddr[a>>16];
 	if ((int)p & 1)	{
-		addrbank *ab = (addrbank *) ((unsigned)p & ~1);
+		addrbank *ab = (addrbank *) ((uint32_t)p & ~1);
 		uae_u32 ret = ab->wget(a);
 		return ret;
 	} else {
@@ -251,16 +251,16 @@ static __inline__ unsigned int Read_Word(unsigned int a) {
 	}
 }
 
-static __inline__ unsigned int Read_Long(unsigned int a) {
+static __inline__ uint32_t Read_Long(uint32_t a) {
 	return (Read_Word(a)<<16) | Read_Word(a+2);
 }
 
-static __inline__ void Write_Byte(unsigned int a, unsigned char d) {
+static __inline__ void Write_Byte(uint32_t a, uint8_t d) {
 	a &= ~0xff000000;
 	uae_u8 *p = baseaddr[a>>16];
 	if ((int)p & 1) {
 		STORE_CYCLES
-		addrbank *ab = (addrbank *) ((unsigned)p & ~1);
+		addrbank *ab = (addrbank *) ((uint32_t)p & ~1);
 		ab->bput(a, d&0xff);
 		LOAD_CYCLES
 	} else {
@@ -268,12 +268,12 @@ static __inline__ void Write_Byte(unsigned int a, unsigned char d) {
 	}
 }
 
-static __inline__ void Write_Word(unsigned int a,unsigned short d) {
+static __inline__ void Write_Word(uint32_t a,uint16_t d) {
 	a &= ~0xff000000;
 	uae_u16 *p = (uae_u16 *) baseaddr[a>>16];
 	if ((int)p & 1) {
 		STORE_CYCLES
-		addrbank *ab = (addrbank *) ((unsigned)p & ~1);
+		addrbank *ab = (addrbank *) ((uint32_t)p & ~1);
 		ab->wput(a, d&0xffff);
 		LOAD_CYCLES
 	} else {
@@ -281,7 +281,7 @@ static __inline__ void Write_Word(unsigned int a,unsigned short d) {
 	}
 }
 
-static __inline__ void Write_Long(unsigned int a,unsigned int d) {
+static __inline__ void Write_Long(uint32_t a,uint32_t d) {
 	Write_Word(a, d>>16);
 	Write_Word(a+2, d);
 }
@@ -708,7 +708,7 @@ __inline__ void cpu_state_to_registers(register m68kcontext_t *cpu) {
 }
 
 __inline__ void cpu_state_from_registers() {
-	ctx->pc = (unsigned int)PC;
+	ctx->pc = (uint32_t)PC;
 #ifdef FAMEARM_USE_VFP_REG_FOR_CYCLES
 	ctx->cycles = _vget_time();
 #else
@@ -820,7 +820,7 @@ void check_breakpoints() {
 	}
 }
 
-unsigned short DisaGetWord(unsigned int a) {
+uint16_t DisaGetWord(uint32_t a) {
 	return Read_Word(a);
 }
 
@@ -961,7 +961,7 @@ void m68k_init() {
 #endif
 }
 
-unsigned m68k_reset() {
+uint32_t m68k_reset() {
 	u32 save_r11;
 	u32 save_r10;
 	

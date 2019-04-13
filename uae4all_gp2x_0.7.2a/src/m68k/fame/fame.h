@@ -104,15 +104,15 @@
 #undef s32
 #endif
 
-#define u8	unsigned char
+#define u8	uint8_t
 #define s8	signed char
-#define u16	unsigned short
+#define u16	uint16_t
 #define s16	signed short
-#define u32	unsigned int
+#define u32	uint32_t
 #define s32	signed int
 
-#define u64 unsigned long long
-#define s64 long long
+#define u64 uint64_t
+#define s64 int64_t
 
 
 /* M68K registers */
@@ -194,15 +194,15 @@ extern "C" {
     
     /* General purpose functions */
     void     m68k_init(int force_table);
-    unsigned m68k_reset(void);
-    unsigned m68k_emulate(int n);
+    uint32_t m68k_reset(void);
+    uint32_t m68k_emulate(int n);
     u32 m68k_get_pc(void);
-    int      m68k_fetch(unsigned address);
+    int      m68k_fetch(uint32_t address);
     
     /* CPU context handling functions */
     M68K_CONTEXT *m68k_get_context(void);
     void famec_SetBank(u32 low_addr, u32 high_addr, uintptr_t fetch, void *rb, void *rw, void *wb, void *ww, void *data);
-    int  m68k_set_register(m68k_register reg, unsigned value);
+    int  m68k_set_register(m68k_register reg, uint32_t value);
     
     /* Timing functions */
     void     m68k_release_timeslice(void);

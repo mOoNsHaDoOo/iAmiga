@@ -506,7 +506,7 @@ static _INLINE_ void pfield_init_linetoscr (void)
 static __inline__ void fill_line (void)
 {
     //int nints, nrem;
-	unsigned int nints;
+	uint32_t nints;
     int *start;
     xcolnr val;
 	/*
@@ -554,7 +554,7 @@ static __inline__ void fill_line (void)
 }
 
 /* H-A-M-
-static unsigned int ham_lastcolor;
+static uint32_t ham_lastcolor;
 
 static int ham_decode_pixel;
 
@@ -673,14 +673,14 @@ static __inline__ void draw_sprites_1 (struct sprite_entry *_GCCRES_ e, int dual
     window_pos += pixels_offset;
     for (pos = e->pos; pos < e->max; pos += 1) {
 		int maskshift, plfmask;
-		unsigned int v = buf[pos];
+		uint32_t v = buf[pos];
 		
 		maskshift = shift_lookup[pixdata.apixels[window_pos]];
 		plfmask = (plf_sprite_mask >> maskshift) >> maskshift;
 		v &= ~plfmask;
 		if (v != 0) {
-			unsigned int vlo, vhi, col;
-			unsigned int v1 = v & 255;
+			uint32_t vlo, vhi, col;
+			uint32_t v1 = v & 255;
 			int offs;
 			if (v1 == 0)
 				offs = 4 + sprite_offs[v >> 8];
@@ -775,17 +775,17 @@ static void draw_sprites_normal_sp_lo_nat(struct sprite_entry *_GCCRES_ e)
 	
     window_pos = e->pos + ((DIW_DDF_OFFSET - DISPLAY_LEFT_SHIFT) );
     window_pos += pixels_offset;
-    unsigned max=e->max;
+    uint32_t max=e->max;
     for (pos = e->pos; pos < max; pos++) {
 		int maskshift, plfmask;
-		unsigned int v = buf[pos];
+		uint32_t v = buf[pos];
 		
 		maskshift = shift_lookup[pixdata.apixels[window_pos]];
 		plfmask = (plf_sprite_mask >> maskshift) >> maskshift;
 		v &= ~plfmask;
 		if (v != 0) {
-			unsigned int vlo, vhi, col;
-			unsigned int v1 = v & 255;
+			uint32_t vlo, vhi, col;
+			uint32_t v1 = v & 255;
 			int offs;
 			if (v1 == 0)
 				offs = 4 + sprite_offs[v >> 8];
@@ -817,17 +817,17 @@ static void draw_sprites_normal_dp_lo_nat(struct sprite_entry *_GCCRES_ e)
 	
     window_pos = e->pos + ((DIW_DDF_OFFSET - DISPLAY_LEFT_SHIFT) );
     window_pos += pixels_offset;
-    unsigned max=e->max;
+    uint32_t max=e->max;
     for (pos = e->pos; pos < max; pos++) {
 		int maskshift, plfmask;
-		unsigned int v = buf[pos];
+		uint32_t v = buf[pos];
 		
 		maskshift = shift_lookup[pixdata.apixels[window_pos]];
 		plfmask = (plf_sprite_mask >> maskshift) >> maskshift;
 		v &= ~plfmask;
 		if (v != 0) {
-			unsigned int vlo, vhi, col;
-			unsigned int v1 = v & 255;
+			uint32_t vlo, vhi, col;
+			uint32_t v1 = v & 255;
 			int offs;
 			if (v1 == 0)
 				offs = 4 + sprite_offs[v >> 8];
@@ -863,17 +863,17 @@ static void draw_sprites_normal_sp_lo_at(struct sprite_entry *_GCCRES_ e)
 	
     window_pos = e->pos + ((DIW_DDF_OFFSET - DISPLAY_LEFT_SHIFT) );
     window_pos += pixels_offset;
-    unsigned max=e->max;
+    uint32_t max=e->max;
     for (pos = e->pos; pos < max; pos++) {
 		int maskshift, plfmask;
-		unsigned int v = buf[pos];
+		uint32_t v = buf[pos];
 		
 		maskshift = shift_lookup[pixdata.apixels[window_pos]];
 		plfmask = (plf_sprite_mask >> maskshift) >> maskshift;
 		v &= ~plfmask;
 		if (v != 0) {
-			unsigned int vlo, vhi, col;
-			unsigned int v1 = v & 255;
+			uint32_t vlo, vhi, col;
+			uint32_t v1 = v & 255;
 			int offs;
 			if (v1 == 0)
 				offs = 4 + sprite_offs[v >> 8];
@@ -913,17 +913,17 @@ static void draw_sprites_normal_dp_lo_at(struct sprite_entry *_GCCRES_ e)
 	
     window_pos = e->pos + ((DIW_DDF_OFFSET - DISPLAY_LEFT_SHIFT) );
     window_pos += pixels_offset;
-    unsigned max=e->max;
+    uint32_t max=e->max;
     for (pos = e->pos; pos < max; pos++) {
 		int maskshift, plfmask;
-		unsigned int v = buf[pos];
+		uint32_t v = buf[pos];
 		
 		maskshift = shift_lookup[pixdata.apixels[window_pos]];
 		plfmask = (plf_sprite_mask >> maskshift) >> maskshift;
 		v &= ~plfmask;
 		if (v != 0) {
-			unsigned int vlo, vhi, col;
-			unsigned int v1 = v & 255;
+			uint32_t vlo, vhi, col;
+			uint32_t v1 = v & 255;
 			int offs;
 			if (v1 == 0)
 				offs = 4 + sprite_offs[v >> 8];
@@ -964,17 +964,17 @@ static void draw_sprites_normal_sp_hi_nat(struct sprite_entry *_GCCRES_ e)
     window_pos = e->pos + ((DIW_DDF_OFFSET - DISPLAY_LEFT_SHIFT) );
     window_pos <<= 1;
     window_pos += pixels_offset;
-    unsigned max=e->max;
+    uint32_t max=e->max;
     for (pos = e->pos; pos < max; pos ++) {
 		int maskshift, plfmask;
-		unsigned int v = buf[pos];
+		uint32_t v = buf[pos];
 		
 		maskshift = shift_lookup[pixdata.apixels[window_pos]];
 		plfmask = (plf_sprite_mask >> maskshift) >> maskshift;
 		v &= ~plfmask;
 		if (v != 0) {
-			unsigned int vlo, vhi, col;
-			unsigned int v1 = v & 255;
+			uint32_t vlo, vhi, col;
+			uint32_t v1 = v & 255;
 			int offs;
 			if (v1 == 0)
 				offs = 4 + sprite_offs[v >> 8];
@@ -1010,17 +1010,17 @@ static void draw_sprites_normal_dp_hi_nat(struct sprite_entry *_GCCRES_ e)
     window_pos = e->pos + ((DIW_DDF_OFFSET - DISPLAY_LEFT_SHIFT) );
     window_pos <<= 1;
     window_pos += pixels_offset;
-    unsigned max=e->max;
+    uint32_t max=e->max;
     for (pos = e->pos; pos < max; pos ++) {
 		int maskshift, plfmask;
-		unsigned int v = buf[pos];
+		uint32_t v = buf[pos];
 		
 		maskshift = shift_lookup[pixdata.apixels[window_pos]];
 		plfmask = (plf_sprite_mask >> maskshift) >> maskshift;
 		v &= ~plfmask;
 		if (v != 0) {
-			unsigned int vlo, vhi, col;
-			unsigned int v1 = v & 255;
+			uint32_t vlo, vhi, col;
+			uint32_t v1 = v & 255;
 			int offs;
 			if (v1 == 0)
 				offs = 4 + sprite_offs[v >> 8];
@@ -1057,17 +1057,17 @@ static void draw_sprites_normal_sp_hi_at(struct sprite_entry *_GCCRES_ e)
     window_pos = e->pos + ((DIW_DDF_OFFSET - DISPLAY_LEFT_SHIFT) );
     window_pos <<= 1;
     window_pos += pixels_offset;
-    unsigned max=e->max;
+    uint32_t max=e->max;
     for (pos = e->pos; pos < max; pos++) {
 		int maskshift, plfmask;
-		unsigned int v = buf[pos];
+		uint32_t v = buf[pos];
 		
 		maskshift = shift_lookup[pixdata.apixels[window_pos]];
 		plfmask = (plf_sprite_mask >> maskshift) >> maskshift;
 		v &= ~plfmask;
 		if (v != 0) {
-			unsigned int vlo, vhi, col;
-			unsigned int v1 = v & 255;
+			uint32_t vlo, vhi, col;
+			uint32_t v1 = v & 255;
 			int offs;
 			if (v1 == 0)
 				offs = 4 + sprite_offs[v >> 8];
@@ -1109,17 +1109,17 @@ static void draw_sprites_normal_dp_hi_at(struct sprite_entry *_GCCRES_ e)
     window_pos <<= 1;
     window_pos += pixels_offset;
     
-    unsigned max=e->max;
+    uint32_t max=e->max;
     for (pos = e->pos; pos < max; pos++) {
 		int maskshift, plfmask;
-		unsigned int v = buf[pos];
+		uint32_t v = buf[pos];
 		
 		maskshift = shift_lookup[pixdata.apixels[window_pos]];
 		plfmask = (plf_sprite_mask >> maskshift) >> maskshift;
 		v &= ~plfmask;
 		if (v != 0) {
-			unsigned int vlo, vhi, col;
-			unsigned int v1 = v & 255;
+			uint32_t vlo, vhi, col;
+			uint32_t v1 = v & 255;
 			int offs;
 			if (v1 == 0)
 				offs = 4 + sprite_offs[v >> 8];
@@ -1844,7 +1844,7 @@ static _INLINE_ void do_color_changes (line_draw_func worker_border, line_draw_f
 	
     for (i = dip_for_drawing->first_color_change; i <= dip_for_drawing->last_color_change; i++) {
 		int regno = curr_color_changes[i].regno;
-		unsigned int value = (unsigned int)curr_color_changes[i].value;
+		uint32_t value = (uint32_t)curr_color_changes[i].value;
 		int nextpos, nextpos_in_range;
 		if (i == dip_for_drawing->last_color_change)
 			nextpos = max_diwlastword;
@@ -1963,7 +1963,7 @@ static _INLINE_ void init_drawing_frame (void)
     {
 		register int i=0;
 		register int max=(maxvpos>>2)+1;
-		register unsigned *ptr=(unsigned *)&linestate[0];
+		register uint32_t *ptr=(uint32_t *)&linestate[0];
 		for(i=0;i<max;i++,ptr++)
 			*ptr=0x01010101;
     }

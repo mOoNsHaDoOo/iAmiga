@@ -26,7 +26,7 @@ extern "C" {
     extern void gui_set_message(const char *msg, int t);
     extern void gui_show_window_bar(int per, int max, int case_title);
     
-    extern unsigned int gui_ledstate;
+    extern uint32_t gui_ledstate;
     extern int show_message;
     extern int no_gui;
     extern char *show_message_str;

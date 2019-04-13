@@ -44,7 +44,7 @@ int joystickselected;
 
 CJoyStick g_touchStick;
 
-void read_joystick(int nr, unsigned int *dir, int *button)
+void read_joystick(int nr, uint32_t *dir, int *button)
 {
 #ifndef MAX_AUTOEVENTS
     int left = 0, right = 0, top = 0, bot = 0;

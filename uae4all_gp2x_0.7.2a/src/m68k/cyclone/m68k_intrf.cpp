@@ -47,14 +47,14 @@ M68KCONTEXT_t M68KCONTEXT;
 #define MH_STATIC static
 #endif
 
-MH_STATIC unsigned int cyclone_read8 (unsigned int a);
-MH_STATIC unsigned int cyclone_read16(unsigned int a);
-MH_STATIC unsigned int cyclone_read32(unsigned int a);
-MH_STATIC void cyclone_write8 (unsigned int a,unsigned char  d);
-MH_STATIC void cyclone_write16(unsigned int a,unsigned short d);
-MH_STATIC void cyclone_write32(unsigned int a,unsigned int   d);
+MH_STATIC uint32_t cyclone_read8 (uint32_t a);
+MH_STATIC uint32_t cyclone_read16(uint32_t a);
+MH_STATIC uint32_t cyclone_read32(uint32_t a);
+MH_STATIC void cyclone_write8 (uint32_t a,uint8_t  d);
+MH_STATIC void cyclone_write16(uint32_t a,uint16_t d);
+MH_STATIC void cyclone_write32(uint32_t a,uint32_t   d);
 
-static unsigned int check_pc(unsigned int pc);
+static uint32_t check_pc(uint32_t pc);
 static int irq_ack(int level);
 static int unrecognized_callback(void);
 
@@ -178,7 +178,7 @@ void m68k_irq_update(int end_timeslice)
 #endif
 
 
-static unsigned int check_pc(unsigned int pc)
+static uint32_t check_pc(uint32_t pc)
 {
 	static int loopcode = 0x60fe60fe;
 	pc -= m68k_context.membase;
@@ -196,9 +196,9 @@ static unsigned int check_pc(unsigned int pc)
 		p = (uae_u8 *)&loopcode - pc;
 	}
 
-	//dprintf("newpc=%06x, base=%p, result=%08x, oldpc=%06x", pc, p, (unsigned)p + pc, m68k_context.pc - m68k_context.membase);
-	m68k_context.membase = (unsigned)p;
-	return (unsigned)p + pc;
+	//dprintf("newpc=%06x, base=%p, result=%08x, oldpc=%06x", pc, p, (uint32_t)p + pc, m68k_context.pc - m68k_context.membase);
+	m68k_context.membase = (uint32_t)p;
+	return (uint32_t)p + pc;
 }
 
 
@@ -214,8 +214,8 @@ static int irq_ack(int level)
 
 static int unrecognized_callback(void)
 {
-	unsigned pc = m68k_context.pc - m68k_context.membase;
-	unsigned opcode = *(uae_u16 *)m68k_context.pc;
+	uint32_t pc = m68k_context.pc - m68k_context.membase;
+	uint32_t opcode = *(uae_u16 *)m68k_context.pc;
 
 	dprintfu("op 0x%04x @ 0x%06x", opcode, pc);
 
@@ -291,13 +291,13 @@ static int unrecognized_callback(void)
 
 /* memory handlers */
 #ifndef USE_CYCLONE_MEMHANDLERS
-static unsigned int cyclone_read8(unsigned int a)
+static uint32_t cyclone_read8(uint32_t a)
 {
 	a &= ~0xff000000;
 	uae_u8 *p = baseaddr[a>>16];
 	if ((int)p & 1)
 	{
-		addrbank *ab = (addrbank *) ((unsigned)p & ~1);
+		addrbank *ab = (addrbank *) ((uint32_t)p & ~1);
 		uae_u32 ret = ab->bget(a);
 		mdprintf("@ %06x, handler, =%02x", a, ret);
 		return ret;
@@ -309,13 +309,13 @@ static unsigned int cyclone_read8(unsigned int a)
 	}
 }
 
-static unsigned int cyclone_read16(unsigned int a)
+static uint32_t cyclone_read16(uint32_t a)
 {
 	a &= ~0xff000000;
 	uae_u16 *p = (uae_u16 *) baseaddr[a>>16];
 	if ((int)p & 1)
 	{
-		addrbank *ab = (addrbank *) ((unsigned)p & ~1);
+		addrbank *ab = (addrbank *) ((uint32_t)p & ~1);
 		uae_u32 ret = ab->wget(a);
 		mdprintf("@ %06x, handler, =%04x", a, ret);
 		return ret;
@@ -327,7 +327,7 @@ static unsigned int cyclone_read16(unsigned int a)
 	}
 }
 
-static unsigned int cyclone_read32(unsigned int a)
+static uint32_t cyclone_read32(uint32_t a)
 {
 #ifdef SPLIT_32_2_16
 	return (cyclone_read16(a)<<16) | cyclone_read16(a+2);
@@ -336,7 +336,7 @@ static unsigned int cyclone_read32(unsigned int a)
 	uae_u16 *p = (uae_u16 *) baseaddr[a>>16];
 	if ((int)p & 1)
 	{
-		addrbank *ab = (addrbank *) ((unsigned)p & ~1);
+		addrbank *ab = (addrbank *) ((uint32_t)p & ~1);
 		uae_u32 ret = ab->lget(a);
 		mdprintf("@ %06x, handler, =%08x", a, ret);
 		return ret;
@@ -350,13 +350,13 @@ static unsigned int cyclone_read32(unsigned int a)
 #endif
 }
 
-static void cyclone_write8(unsigned int a, unsigned char d)
+static void cyclone_write8(uint32_t a, uint8_t d)
 {
 	a &= ~0xff000000;
 	uae_u8 *p = baseaddr[a>>16];
 	if ((int)p & 1)
 	{
-		addrbank *ab = (addrbank *) ((unsigned)p & ~1);
+		addrbank *ab = (addrbank *) ((uint32_t)p & ~1);
 		mdprintf("@ %06x, handler, =%02x", a, d);
 		ab->bput(a, d&0xff);
 	}
@@ -367,13 +367,13 @@ static void cyclone_write8(unsigned int a, unsigned char d)
 	}
 }
 
-static void cyclone_write16(unsigned int a,unsigned short d)
+static void cyclone_write16(uint32_t a,uint16_t d)
 {
 	a &= ~0xff000000;
 	uae_u16 *p = (uae_u16 *) baseaddr[a>>16];
 	if ((int)p & 1)
 	{
-		addrbank *ab = (addrbank *) ((unsigned)p & ~1);
+		addrbank *ab = (addrbank *) ((uint32_t)p & ~1);
 		mdprintf("@ %06x, handler, =%04x", a, d);
 		ab->wput(a, d&0xffff);
 	}
@@ -384,7 +384,7 @@ static void cyclone_write16(unsigned int a,unsigned short d)
 	}
 }
 
-static void cyclone_write32(unsigned int a,unsigned int d)
+static void cyclone_write32(uint32_t a,uint32_t d)
 {
 #ifdef SPLIT_32_2_16
 	cyclone_write16(a, d>>16);
@@ -394,7 +394,7 @@ static void cyclone_write32(unsigned int a,unsigned int d)
 	uae_u16 *p = (uae_u16 *) baseaddr[a>>16];
 	if ((int)p & 1)
 	{
-		addrbank *ab = (addrbank *) ((unsigned)p & ~1);
+		addrbank *ab = (addrbank *) ((uint32_t)p & ~1);
 		mdprintf("@ %06x, handler, =%08x", a, d);
 		ab->lput(a, d);
 	}
@@ -415,7 +415,7 @@ void init_memmaps(addrbank* banco)
 {
 }
 
-void map_zone(unsigned addr, addrbank* banco, unsigned realstart)
+void map_zone(uint32_t addr, addrbank* banco, uint32_t realstart)
 {
 }
 
