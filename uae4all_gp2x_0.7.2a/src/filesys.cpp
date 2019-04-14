@@ -1417,7 +1417,7 @@ static a_inode *find_aino (Unit *unit, uaecptr lock, const char *name, uae_u32 *
    return a;
 }
 
-static uaecptr make_lock (Unit *unit, uae_u32 uniq, long mode)
+static uaecptr make_lock (Unit *unit, uae_u32 uniq, uae_s32 mode)
 {
     /* allocate lock from the list kept by the assembly code */
     uaecptr lock;
@@ -1467,7 +1467,7 @@ action_lock (Unit *unit, dpacket packet)
 {
     uaecptr lock = GET_PCK_ARG1 (packet) << 2;
     uaecptr name = GET_PCK_ARG2 (packet) << 2;
-    long mode = GET_PCK_ARG3 (packet);
+    uae_s32 mode = GET_PCK_ARG3 (packet);
     a_inode *a;
     uae_u32 err;
 
@@ -2085,7 +2085,7 @@ action_read (Unit *unit, dpacket packet)
 	Key *k = lookup_key (unit, GET_PCK_ARG1 (packet));
 	uaecptr addr = GET_PCK_ARG2 (packet);
 	int32_t size = (uae_s32)GET_PCK_ARG3 (packet);
-	ssize_t actual;
+	uae_s32 actual;
 	
 	if (k == 0) {
 		PUT_PCK_RES1 (packet, DOS_FALSE);
@@ -2117,7 +2117,7 @@ action_read (Unit *unit, dpacket packet)
 		if (((uintptr_t)realpt & 1) > 0)
 			swab_memory ((uint8_t *)((uintptr_t)realpt & ~1), 2);
 		
-		actual = read(k->fd, (char *)realpt, size);
+		actual = (uae_s32)read(k->fd, (char *)realpt, size);
 		
 	    /* If realpt is at odd address, we also have to swab the
 	     * word in which the last byte has been written.
@@ -2147,7 +2147,7 @@ action_read (Unit *unit, dpacket packet)
 			PUT_PCK_RES2 (packet, ERROR_NO_FREE_STORE);
 			return;
 		}
-		actual = read(k->fd, buf, size);
+		actual = (uae_s32)read(k->fd, buf, size);
 		
 		if (actual < 0) {
 			PUT_PCK_RES1 (packet, 0);
@@ -2197,7 +2197,7 @@ action_write (Unit *unit, dpacket packet)
 	for (i = 0; i < size; i++)
 		buf[i] = get_byte(addr + i);
 	
-	PUT_PCK_RES1 (packet, write(k->fd, buf, size));
+	PUT_PCK_RES1 (packet, (uae_u32)write(k->fd, buf, size));
 	if (GET_PCK_RES1 (packet) != size)
 		PUT_PCK_RES2 (packet, dos_errno ());
 	if (GET_PCK_RES1 (packet) >= 0)
@@ -2235,10 +2235,10 @@ action_seek (Unit *unit, dpacket packet)
 
 	if (whence == SEEK_CUR) temppos = old + pos;
 	if (whence == SEEK_SET) temppos = pos;
-	if (whence == SEEK_END) temppos = filesize + pos;
+	if (whence == SEEK_END) temppos = (uae_s32)(filesize + pos);
 	if (filesize < temppos) {
 	    res = -1;
-	    PUT_PCK_RES1 (packet,res);
+	    PUT_PCK_RES1 (packet,(uae_u32)res);
 	    PUT_PCK_RES2 (packet, ERROR_SEEK_ERROR);
 	    return;
 	}
@@ -2247,7 +2247,7 @@ action_seek (Unit *unit, dpacket packet)
     res = lseek (k->fd, pos, whence);
 
     if (-1 == res) {
-	PUT_PCK_RES1 (packet, res);
+	PUT_PCK_RES1 (packet, (uae_u32)res);
 	PUT_PCK_RES2 (packet, ERROR_SEEK_ERROR);
     } else
 	PUT_PCK_RES1 (packet, old);
@@ -2585,7 +2585,7 @@ action_set_file_size (Unit *unit, dpacket packet)
 	return;
     }
 
-    PUT_PCK_RES1 (packet, offset);
+    PUT_PCK_RES1 (packet, (uae_u32)offset);
     PUT_PCK_RES2 (packet, 0);
 }
 
