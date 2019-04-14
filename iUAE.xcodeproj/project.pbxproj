@@ -259,6 +259,12 @@
 		7EF97ABD1A7586E7002CC332 /* SelectConfigurationViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 7EF97ABC1A7586E7002CC332 /* SelectConfigurationViewController.mm */; };
 		9064AD551C7D09FA004CAE28 /* MultipeerConnectivity.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9064AD541C7D09FA004CAE28 /* MultipeerConnectivity.framework */; };
 		9064AD631C7F7982004CAE28 /* MultiPeerConnectivityController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9064AD611C7F7982004CAE28 /* MultiPeerConnectivityController.mm */; };
+		92E6EBF62263916E0020D301 /* custom.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0552BCA40F3D797C005B30DF /* custom.cpp */; };
+		92E6EBF72263918F0020D301 /* drawing.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0552BCA60F3D797C005B30DF /* drawing.cpp */; };
+		92E6EBF8226391950020D301 /* disk.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0552BCA50F3D797C005B30DF /* disk.cpp */; };
+		92E6EBF92263920C0020D301 /* audio.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0552BC9C0F3D797C005B30DF /* audio.cpp */; };
+		92E6EBFA226392110020D301 /* sound_iphone.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 05E6A3250FC3DAA90086151B /* sound_iphone.cpp */; };
+		92E6EBFB226392180020D301 /* m68k_cmn_intrf.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0552BD0A0F3D797C005B30DF /* m68k_cmn_intrf.cpp */; };
 		9706D6571561817500073678 /* Aperture (1x2 RB).png in Resources */ = {isa = PBXBuildFile; fileRef = 978550B3153A3F2E00580B91 /* Aperture (1x2 RB).png */; };
 		9706D6581561817500073678 /* Aperture (1x3 RB).png in Resources */ = {isa = PBXBuildFile; fileRef = 978550B4153A3F2E00580B91 /* Aperture (1x3 RB).png */; };
 		9706D6591561817500073678 /* Aperture (2x4 BG).png in Resources */ = {isa = PBXBuildFile; fileRef = 978550B5153A3F2E00580B91 /* Aperture (2x4 BG).png */; };
@@ -4959,6 +4965,7 @@
 				0552BD2E0F3D797C005B30DF /* gfxutil.cpp in Sources */,
 				BE6086D91C2CF5AC008E668B /* adfresolver.mm in Sources */,
 				BE951AFD1CA942B1008DD94B /* expansion.cpp in Sources */,
+				92E6EBFB226392180020D301 /* m68k_cmn_intrf.cpp in Sources */,
 				0552BD410F3D797C005B30DF /* keybuf.cpp in Sources */,
 				0552BD470F3D797C005B30DF /* m68k_intrf.cpp in Sources */,
 				0552BD490F3D797C005B30DF /* uae.cpp in Sources */,
@@ -5004,6 +5011,7 @@
 				BE52EFAB1B4FC9B8008E15E6 /* DriveState.m in Sources */,
 				0585D5621091653E00C1E4C1 /* KeyView.m in Sources */,
 				BE951B001CA9442A008DD94B /* fsdb_unix.cpp in Sources */,
+				92E6EBFA226392110020D301 /* sound_iphone.cpp in Sources */,
 				050C393D12C31B24000CE512 /* Disa.c in Sources */,
 				7E4C6AF719DB0F7100D337D0 /* famec.cpp in Sources */,
 				050C3A9412C33D94000CE512 /* disassembler.m in Sources */,
@@ -5049,6 +5057,7 @@
 				9064AD631C7F7982004CAE28 /* MultiPeerConnectivityController.mm in Sources */,
 				978550EB153A3F2E00580B91 /* SDL_sysmutex.c in Sources */,
 				7E079CC11A81594B00EC0DE4 /* AddConfigurationViewController.mm in Sources */,
+				92E6EBF92263920C0020D301 /* audio.cpp in Sources */,
 				7E27C39F1AA3A6D300C00584 /* SettingsDisplayController.mm in Sources */,
 				978550EE153A3F2E00580B91 /* SDL_syssem.c in Sources */,
 				978550F1153A3F2E00580B91 /* SDL_systhread.c in Sources */,
@@ -5062,10 +5071,12 @@
 				7EAA9DCC192541D400541BE1 /* PMCustomKeyboard.mm in Sources */,
 				BE6F9F621C4E2C420061B98C /* VPadLeftOrRight.mm in Sources */,
 				97855100153A3F2E00580B91 /* NoEffect.m in Sources */,
+				92E6EBF62263916E0020D301 /* custom.cpp in Sources */,
 				97855103153A3F2E00580B91 /* OGLDisplay.m in Sources */,
 				7EDCD04F1C3C59420006EB50 /* JoypadMainSettingsController.mm in Sources */,
 				97855106153A3F2E00580B91 /* OGLShaderProgram.m in Sources */,
 				7EB017781B09164900C74B9D /* StateFileManager.mm in Sources */,
+				92E6EBF72263918F0020D301 /* drawing.cpp in Sources */,
 				7E6F37791CDB4E58005BA173 /* SettingsSelectPortViewController.mm in Sources */,
 				BECB5E221DA393B6000E5C2C /* AudioService.mm in Sources */,
 				7E3C13E51A51F16600534164 /* SettingsGeneralController.mm in Sources */,
@@ -5073,6 +5084,7 @@
 				9785512A153A3F2E00580B91 /* SDL_UIKitEvents.m in Sources */,
 				9785512D153A3F2E00580B91 /* SDL_UIKitVideo.m in Sources */,
 				BE951AF21CA93EC0008DD94B /* fsusage.cpp in Sources */,
+				92E6EBF8226391950020D301 /* disk.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

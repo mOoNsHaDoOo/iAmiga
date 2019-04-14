@@ -31,7 +31,7 @@ extern uint32_t next_sample_evtime;
 int produce_sound=0;
 int changed_produce_sound=0;
 
-const uint32_t sound_rate=DEFAULT_SOUND_FREQ;
+//const uint32_t sound_rate=DEFAULT_SOUND_FREQ;
 
 static uae_u16 sndbuffer[4][SNDBUFFER_LEN+32] UAE4ALL_ALIGN;
 uint32_t n_callback_sndbuff, n_render_sndbuff;

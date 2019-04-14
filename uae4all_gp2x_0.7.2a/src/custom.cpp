@@ -4436,7 +4436,7 @@ uae_u8 *save_custom (int *len)
     SW (fmode);			/* 1FC FMODE */
     SW (0xffff);		/* 1FE */
 
-    *len = dst - dstbak;
+    *len = (int)(dst - dstbak);
     return dstbak;
 }
 
@@ -4457,7 +4457,7 @@ uae_u8 *save_custom_agacolors (int *len)
     dstbak = dst = (uae_u8 *)malloc (256*4);
     for (i = 0; i < 256; i++)
 	SL (0); //current_colors.color_regs_aga[i]);
-    *len = dst - dstbak;
+    *len = (int)(dst - dstbak);
     return dstbak;
 }
 
@@ -4495,7 +4495,7 @@ uae_u8 *save_custom_sprite(int *len, int num)
     SW (sprdata[num][3]);
     SW (sprdatb[num][3]);
     SB (spr[num].armed ? 1 : 0);
-    *len = dst - dstbak;
+    *len = (int)(dst - dstbak);
     return dstbak;
 }
 

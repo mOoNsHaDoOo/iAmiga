@@ -55,6 +55,9 @@
 
 #define MAX_EV ~0x00000000
 
+extern float get_sound_volume();
+extern void set_sound_volume(float volume);
+
 struct audio_channel_data audio_channel[NUMBER_CHANNELS] UAE4ALL_ALIGN;
 int audio_channel_current_sample[NUMBER_CHANNELS];
 int audio_channel_vol[NUMBER_CHANNELS];
@@ -1224,7 +1227,7 @@ uae_u8 *save_audio (int *len, int i)
     save_u32 (acd->lc);
     save_u32 (acd->pt);
     save_u32 (audio_channel_evtime[i]);
-    *len = dst - dstbak;
+    *len = (int)(dst - dstbak);
     return dstbak;
 }
 

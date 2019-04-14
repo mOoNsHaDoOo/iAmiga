@@ -9,14 +9,14 @@
 
 // combine the files to avoid multiple loads when accessing global variables
 
-#include "custom.cpp"
+//#include "custom.cpp"
 
-#include "drawing.cpp"
+//#include "drawing.cpp"
 
-#include "disk.cpp"
+//#include "disk.cpp"
 
-#include "m68k/m68k_cmn_intrf.cpp"
+//#include "m68k/m68k_cmn_intrf.cpp"
 
-#include "sound_iphone.cpp"
+//#include "sound_iphone.cpp"
 
-#include "audio.cpp"
+#//include "audio.cpp"

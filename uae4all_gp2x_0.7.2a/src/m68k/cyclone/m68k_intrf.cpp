@@ -497,7 +497,7 @@ uae_u8 *save_cpu (int *len)
     save_u32 (_68k_areg(7));
     save_u16 (_68k_get_sr());				/* SR/CCR */
     save_u32 (M68KCONTEXT.execinfo&0x0080 ? CPUMODE_HALT : 0);	/* flags */
-    *len = dst - dstbak;
+    *len = (int)(dst - dstbak);
     return dstbak;
 }
 

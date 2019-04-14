@@ -44,8 +44,8 @@ public:
 	inline int				sampleFrameCount() { return _sampleFrameCount; }
 	inline SoundChannels	channels() { return (SoundChannels)_dataFormat.mChannelsPerFrame; }
 	inline float			frequency() { return _sampleFrequency; }
-	inline long				remainingSamples() { return _samplesInQueue; }
-	inline long				remainingMilliseconds() { return (long)((double)remainingSamples() / _sampleFrequency * 1000); }
+	inline int				remainingSamples() { return _samplesInQueue; }
+	inline int				remainingMilliseconds() { return (int)((double)remainingSamples() / _sampleFrequency * 1000); }
 	
 	short*					getNextBuffer();
 	void					queueBuffer(short* buffer);
