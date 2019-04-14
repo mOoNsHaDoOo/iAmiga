@@ -1010,7 +1010,7 @@ uae_u8 *save_expansion (int *len)
 #else
     save_u32 (z3fastmem_start);
 #endif
-    *len = dst - dstbak;
+    *len = (int)(dst - dstbak);
     return dstbak;
 }
 

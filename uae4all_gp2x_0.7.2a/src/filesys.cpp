@@ -1264,7 +1264,7 @@ static uae_u32 startup_handler (void)
     put_long (unit->volume + 24, 0);
     put_long (unit->volume + 28, 0); /* lock list */
     put_long (unit->volume + 40, (unit->volume + 44) >> 2); /* Name */
-    namelen = strlen (unit->ui.volname);
+    namelen = (int)strlen (unit->ui.volname);
     put_byte (unit->volume + 44, namelen);
     for (i = 0; i < namelen; i++)
 	put_byte (unit->volume + 45 + i, unit->ui.volname[i]);
@@ -2227,7 +2227,7 @@ action_seek (Unit *unit, dpacket packet)
 
     TRACE(("ACTION_SEEK(%s,%d,%d)\n", k->aino->nname, pos, mode));
 
-    old = lseek (k->fd, 0, SEEK_CUR);
+    old = (int32_t)lseek (k->fd, 0, SEEK_CUR);
     {      
 	uae_s32 temppos;
 	long filesize = lseek (k->fd, 0, SEEK_END);

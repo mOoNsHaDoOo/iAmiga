@@ -281,11 +281,11 @@ get_fs_usage
 #if !defined(STAT_STATFS2_FS_DATA) && !defined(STAT_READ_FILSYS) && !defined(__SYMBIAN32__)
 				/* !Ultrix && !SVR2 */
 
-  fsp->fsu_blocks = CONVERT_BLOCKS (fsd.f_blocks);
-  fsp->fsu_bfree = CONVERT_BLOCKS (fsd.f_bfree);
-  fsp->fsu_bavail = CONVERT_BLOCKS (fsd.f_bavail);
-  fsp->fsu_files = fsd.f_files;
-  fsp->fsu_ffree = fsd.f_ffree;
+  fsp->fsu_blocks = (int32_t)CONVERT_BLOCKS (fsd.f_blocks);
+  fsp->fsu_bfree = (int32_t)CONVERT_BLOCKS (fsd.f_bfree);
+  fsp->fsu_bavail = (int32_t)CONVERT_BLOCKS (fsd.f_bavail);
+  fsp->fsu_files = (int32_t)fsd.f_files;
+  fsp->fsu_ffree = (int32_t)fsd.f_ffree;
 
 #endif /* not STAT_STATFS2_FS_DATA && not STAT_READ_FILSYS */
 

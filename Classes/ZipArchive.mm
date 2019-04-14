@@ -121,7 +121,7 @@
 								  8,
 								  Z_DEFAULT_STRATEGY,
 								  [_password cStringUsingEncoding:NSASCIIStringEncoding],
-								  crcValue );
+								  (uint32_t)crcValue );
 	}
 	if( ret!=Z_OK )
 	{

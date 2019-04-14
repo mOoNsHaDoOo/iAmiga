@@ -1309,7 +1309,7 @@ uae_u8 *save_rom (int first, int *len)
         for (i = 0; i < mem_size; i++)
             *dst++ = byteget (mem_start + i);
     }
-    *len = dst - dstbak;
+    *len = (int)(dst - dstbak);
     return dstbak;
 }
 
