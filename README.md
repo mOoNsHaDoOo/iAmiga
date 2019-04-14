@@ -4,7 +4,7 @@ A fork of iAmiga.
 
 #### iAmigaMS 1.31.1.0 Changelist stack<br>
 
-- Many 32 bit / 64 bit type related warnings fixed. Still some work to do. Down to about 50 warnings from 570
+- Many 32 bit / 64 bit type related warnings fixed. Still some work to do. Down to few warnings from 570
 - Core.CPU.68020: integrated rsn8887's Motorola 68020+ fixes for BFFFO bitfield instructions (fixes ViroCop AGA. AGA to be exposed soon in config)
 - GUI.File browser: iOS 11+ File app integration enabled. You can copy files in the documents directory without iTunes or iFunBox with automatic refresh of the browser in the emulator<br>
 - GUI.File browser: File browser now remembers scanned files and search term for each file type (adf,rom,hdf etc)
