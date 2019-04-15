@@ -2,9 +2,9 @@
 build/*
 *.pbxuser
 *.mode1v3
-*.pyc 
-*~.nib/ 
-*.perspective 
+*.pyc
+*~.nib/
+*.perspective
 *.perspectivev3
 *.xcodeproj/project.xcworkspace/xcuserdata/*
 *.xcodeproj/project.xcworkspace/xcshareddata/*
@@ -32,13 +32,6 @@ disks/
 Packages/
 iUAE/
 roms/
-<<<<<<< HEAD
-<<<<<<< HEAD
 
-
-Submodules/SVProgressHUD/
-=======
-Submodules/
->>>>>>> 1.1.0b1
-=======
->>>>>>> dev
+Submodules
+rom.key
