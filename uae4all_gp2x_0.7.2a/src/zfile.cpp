@@ -228,10 +228,7 @@ static char *get_namefile(uint32_t num)
 {
 	size_t crc=uae4all_disk_crc[num];
 #if defined(GP2X) || defined(IPHONE)
-	if (!launchDir)
-	{
-		getcwd(launchDir, 250);
-	}
+    getcwd(launchDir, 250);
     sprintf((char *)&__uae4all_write_namefile[0],"%s/saves/%.8lX.ads",launchDir, crc);
 #else
 	sprintf((char *)&__uae4all_write_namefile[0],SAVE_PREFIX "%.8X.ads",crc);

@@ -65,16 +65,16 @@
     [restartButton release];
     [super dealloc];
 }
-
-- (void)viewDidUnload {
-    //[self setMenuButton:nil];
-    [self setCloseButton:nil];
-    //[self setMenuView:nil];
-    [self setMouseHandler:nil];
-    [self setWebView:nil];
-    [self setRestartButton:nil];
-    [super viewDidUnload];
-}
+//
+//- (void)viewDidUnload {
+//    //[self setMenuButton:nil];
+//    [self setCloseButton:nil];
+//    //[self setMenuView:nil];
+//    [self setMouseHandler:nil];
+//    [self setWebView:nil];
+//    [self setRestartButton:nil];
+//    [super viewDidUnload];
+//}
 
 - (IBAction)keyboardDidHide:(id)sender
 //Keyboards dismissed by other Means than Fullscreenpanel

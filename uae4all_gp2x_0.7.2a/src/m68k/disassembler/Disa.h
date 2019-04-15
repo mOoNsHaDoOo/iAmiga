@@ -19,7 +19,7 @@ extern char *DisaText; // Text buffer to write in
 extern uint16_t (CPU_CALL *DisaWord)(uint32_t a);
 int DisaGetEa(char *t,int ea,int size);
 
-int DisaGet();
+int DisaGet(void);
 
 #ifdef __cplusplus
 } // End of extern "C"

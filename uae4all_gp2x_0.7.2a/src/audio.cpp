@@ -527,42 +527,42 @@ static audio_handler_func ahi5_table[8] UAE4ALL_ALIGN = {
 
 #define ahi_handler_4() ahi_handler(4)
 #define ahi_handler_5() ahi_handler(5)
-
-static __inline__ void ahi_handler (int nr)
-{
-    struct audio_channel_data *cdp = audio_channel + nr;
-    switch (audio_channel_state[nr]) {
-		case 0:
-			write_log ("Bug in sound code\n");
-			break;
-		case 1:
-			audio_channel_evtime[nr] = cdp->per;
-			cdp->intreq2 = 0;
-			audio_channel_state[nr] = 2;
-			if (cdp->wlen != 1)
-				cdp->wlen = (cdp->wlen - 1) & 0xFFFF;
-			cdp->dat = CHIPMEM_WGET (cdp->pt);
-			cdp->pt += 2;
-			break;
-		case 2:
-			if (nr == 4 && cdp->intreq2)
-				INTREQ (0x8080);
-			cdp->intreq2 = 0;
-			audio_channel_evtime[nr] = cdp->per;
-			cdp->dat = CHIPMEM_WGET (cdp->pt);
-			cdp->pt += 2;
-			if (cdp->wlen == 1) {
-				cdp->pt = cdp->lc;
-				cdp->wlen = cdp->len;
-				cdp->intreq2 = 1;
-			} else
-				cdp->wlen = (cdp->wlen - 1) & 0xFFFF;
-			break;
-		default:
-			audio_channel_state[nr] = 0;
-			break;
-    }
-}
+//
+//static __inline__ void ahi_handler (int nr)
+//{
+//    struct audio_channel_data *cdp = audio_channel + nr;
+//    switch (audio_channel_state[nr]) {
+//        case 0:
+//            write_log ("Bug in sound code\n");
+//            break;
+//        case 1:
+//            audio_channel_evtime[nr] = cdp->per;
+//            cdp->intreq2 = 0;
+//            audio_channel_state[nr] = 2;
+//            if (cdp->wlen != 1)
+//                cdp->wlen = (cdp->wlen - 1) & 0xFFFF;
+//            cdp->dat = CHIPMEM_WGET (cdp->pt);
+//            cdp->pt += 2;
+//            break;
+//        case 2:
+//            if (nr == 4 && cdp->intreq2)
+//                INTREQ (0x8080);
+//            cdp->intreq2 = 0;
+//            audio_channel_evtime[nr] = cdp->per;
+//            cdp->dat = CHIPMEM_WGET (cdp->pt);
+//            cdp->pt += 2;
+//            if (cdp->wlen == 1) {
+//                cdp->pt = cdp->lc;
+//                cdp->wlen = cdp->len;
+//                cdp->intreq2 = 1;
+//            } else
+//                cdp->wlen = (cdp->wlen - 1) & 0xFFFF;
+//            break;
+//        default:
+//            audio_channel_state[nr] = 0;
+//            break;
+//    }
+//}
 
 #endif
 

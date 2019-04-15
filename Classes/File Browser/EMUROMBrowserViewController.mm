@@ -170,10 +170,10 @@ CFFileDescriptorRef monitoredDirRef = nil;
     [self searchFiles];
     [self.tableView reloadData];
 }
-
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
-	return (interfaceOrientation == UIInterfaceOrientationPortrait);
-}
+//
+//- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
+//    return (interfaceOrientation == UIInterfaceOrientationPortrait);
+//}
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     if (_results == nil)

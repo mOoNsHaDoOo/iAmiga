@@ -357,13 +357,13 @@ static __inline__ int res_shift_from_window (int x)
 		return x >> res_shift;
     return x << -res_shift;
 }
-
-static __inline__ int res_shift_from_amiga (int x)
-{
-    if (res_shift >= 0)
-		return x >> res_shift;
-    return x << -res_shift;
-}
+//
+//static __inline__ int res_shift_from_amiga (int x)
+//{
+//    if (res_shift >= 0)
+//        return x >> res_shift;
+//    return x << -res_shift;
+//}
 
 void notice_screen_contents_lost (void)
 {
@@ -2051,19 +2051,20 @@ static _INLINE_ void write_tdnumber (int x, int y, int num)
 		numptr++;
     }
 }
-static _INLINE_ void write_tdletter (int x, int y, char ch)
-{
-    int j;
-    uae_u8 *numptr;
-	
-    numptr = (uae_u8 *)(letters + (ch-65) * TD_NUM_WIDTH + 26 * TD_NUM_WIDTH * y);
-  
-	for (j = 0; j < TD_NUM_WIDTH; j++) {
-	putpixel (x + j, *numptr == 'x' ? xcolors[0xfff] : xcolors[0x000]);
-	numptr++;
-    }
-
-}
+//
+//static _INLINE_ void write_tdletter (int x, int y, char ch)
+//{
+//    int j;
+//    uae_u8 *numptr;
+//
+//    numptr = (uae_u8 *)(letters + (ch-65) * TD_NUM_WIDTH + 26 * TD_NUM_WIDTH * y);
+//
+//    for (j = 0; j < TD_NUM_WIDTH; j++) {
+//    putpixel (x + j, *numptr == 'x' ? xcolors[0xfff] : xcolors[0x000]);
+//    numptr++;
+//    }
+//
+//}
 
 static _INLINE_ void draw_status_line (int line)
 {
@@ -2162,26 +2163,26 @@ void check_all_prefs(void)
 	    notice_new_xcolors ();
 	}
 }
-
-static void fps_counter_upd(void)
-{
-	struct timeval tv;
-	static int thissec, fcount;
-	
-	gettimeofday(&tv, 0);
-	if (tv.tv_sec != thissec)
-	{
-		thissec = (int)tv.tv_sec;
-		fps_counter = fcount;
-		fcount = 0;
-		fps_counter_changed = 1;
-	}
-	else
-	{
-		fps_counter_changed = 0;
-	}
-	fcount++;
-}
+//
+//static void fps_counter_upd(void)
+//{
+//    struct timeval tv;
+//    static int thissec, fcount;
+//
+//    gettimeofday(&tv, 0);
+//    if (tv.tv_sec != thissec)
+//    {
+//        thissec = (int)tv.tv_sec;
+//        fps_counter = fcount;
+//        fcount = 0;
+//        fps_counter_changed = 1;
+//    }
+//    else
+//    {
+//        fps_counter_changed = 0;
+//    }
+//    fcount++;
+//}
 
 static _INLINE_ void finish_drawing_frame (void)
 {

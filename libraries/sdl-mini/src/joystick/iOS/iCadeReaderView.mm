@@ -265,13 +265,13 @@ static const char *OFF_STATES = "eczqtrfnmpgv";
 - (void)deleteBackward {
     // This space intentionally left blank to complete protocol. Woot.
 }
-
-static void HardwareKeyboardStatusChanged(CFNotificationCenterRef center, void *observer, CFStringRef name, const void *object, CFDictionaryRef userInfo)
-{
-    NSLog(@"Darwin notification NAME = %@",name);
-    
-    NSNotificationCenter *notCenter = [NSNotificationCenter defaultCenter];
-    
-    [notCenter postNotificationName:@"HardwareKeyboardStatusChanged" object:(__bridge id)object userInfo:(__bridge id)userInfo];
-}
+//
+//static void HardwareKeyboardStatusChanged(CFNotificationCenterRef center, void *observer, CFStringRef name, const void *object, CFDictionaryRef userInfo)
+//{
+//    NSLog(@"Darwin notification NAME = %@",name);
+//
+//    NSNotificationCenter *notCenter = [NSNotificationCenter defaultCenter];
+//
+//    [notCenter postNotificationName:@"HardwareKeyboardStatusChanged" object:(__bridge id)object userInfo:(__bridge id)userInfo];
+//}
 @end

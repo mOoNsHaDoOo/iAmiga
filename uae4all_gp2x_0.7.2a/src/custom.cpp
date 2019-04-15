@@ -1167,50 +1167,50 @@ static _INLINE_ void record_color_change (int hpos, int regno, uint32_t value)
 }
 
 typedef int sprbuf_res_t, cclockres_t, hwres_t, bplres_t;
-
-//newer code starts here mithrendal
-/* handle very rarely needed playfield collision (CLXDAT bit 0) */
-static void do_playfield_collisions (void)
-{
-    int bplres = GET_RES (bplcon0); //bplcon0_res;;
-    hwres_t ddf_left = thisline_decision.plfleft * 2 << bplres;
-    hwres_t hw_diwlast = coord_window_to_diw_x (thisline_decision.diwlastword);
-    hwres_t hw_diwfirst = coord_window_to_diw_x (thisline_decision.diwfirstword);
-    int i, collided, minpos, maxpos;
-    int planes = /*(currprefs.chipset_mask & CSMASK_AGA) ? 8 :*/ 6;
-    
-    collided = 0;
-    minpos = thisline_decision.plfleft * 2;
-    if (minpos < hw_diwfirst)
-        minpos = hw_diwfirst;
-    maxpos = thisline_decision.plfright * 2;
-    if (maxpos > hw_diwlast)
-        maxpos = hw_diwlast;
-    for (i = minpos; i < maxpos && !collided; i+= 32) {
-        int offs = ((i << bplres) - ddf_left) >> 3;
-        int j;
-        uae_u32 total = 0xffffffff;
-        for (j = 0; j < planes; j++) {
-            int ena = (clxcon_bpl_enable >> j) & 1;
-            int match = (clxcon_bpl_match >> j) & 1;
-            uae_u32 t = 0xffffffff;
-            if (ena) {
-                if (j < thisline_decision.nr_planes) {
-                    t = *(uae_u32 *)(line_data[next_lineno] + offs + 2 * j * MAX_WORDS_PER_LINE);
-                    t ^= (match & 1) - 1;
-                } else {
-                    t = (match & 1) - 1;
-                }
-            }
-            total &= t;
-        }
-        if (total) {
-            collided = 1;
-        }
-    }
-    if (collided)
-        clxdat |= 1;
-}
+//
+////newer code starts here mithrendal
+///* handle very rarely needed playfield collision (CLXDAT bit 0) */
+//static void do_playfield_collisions (void)
+//{
+//    int bplres = GET_RES (bplcon0); //bplcon0_res;;
+//    hwres_t ddf_left = thisline_decision.plfleft * 2 << bplres;
+//    hwres_t hw_diwlast = coord_window_to_diw_x (thisline_decision.diwlastword);
+//    hwres_t hw_diwfirst = coord_window_to_diw_x (thisline_decision.diwfirstword);
+//    int i, collided, minpos, maxpos;
+//    int planes = /*(currprefs.chipset_mask & CSMASK_AGA) ? 8 :*/ 6;
+//
+//    collided = 0;
+//    minpos = thisline_decision.plfleft * 2;
+//    if (minpos < hw_diwfirst)
+//        minpos = hw_diwfirst;
+//    maxpos = thisline_decision.plfright * 2;
+//    if (maxpos > hw_diwlast)
+//        maxpos = hw_diwlast;
+//    for (i = minpos; i < maxpos && !collided; i+= 32) {
+//        int offs = ((i << bplres) - ddf_left) >> 3;
+//        int j;
+//        uae_u32 total = 0xffffffff;
+//        for (j = 0; j < planes; j++) {
+//            int ena = (clxcon_bpl_enable >> j) & 1;
+//            int match = (clxcon_bpl_match >> j) & 1;
+//            uae_u32 t = 0xffffffff;
+//            if (ena) {
+//                if (j < thisline_decision.nr_planes) {
+//                    t = *(uae_u32 *)(line_data[next_lineno] + offs + 2 * j * MAX_WORDS_PER_LINE);
+//                    t ^= (match & 1) - 1;
+//                } else {
+//                    t = (match & 1) - 1;
+//                }
+//            }
+//            total &= t;
+//        }
+//        if (total) {
+//            collided = 1;
+//        }
+//    }
+//    if (collided)
+//        clxdat |= 1;
+//}
 
 
 /* Sprite-to-sprite collisions are taken care of in record_sprite.  This one does
@@ -2267,10 +2267,10 @@ static _INLINE_ void ADKCON (uae_u16 v)
     setclr (&adkcon,v);
     update_adkmasks ();
 }
-
-static _INLINE_ void BEAMCON0 (uae_u16 v)
-{
-}
+//
+//static _INLINE_ void BEAMCON0 (uae_u16 v)
+//{
+//}
 
 static _INLINE_ void BPLPTH (int hpos, uae_u16 v, int num)
 {

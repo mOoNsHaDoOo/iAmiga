@@ -90,18 +90,18 @@ void build_blitfilltable(void)
 		}
     }
 }
-
-static __inline__ uae_u8 * blit_xlateptr(uaecptr bltpt, int bytecount)
-{
-    if (!chipmem_bank.check(bltpt,bytecount)) return NULL;
-    return chipmem_bank.xlateaddr(bltpt);
-}
-
-static __inline__ uae_u8 * blit_xlateptr_desc(uaecptr bltpt, int bytecount)
-{
-    if (!chipmem_bank.check(bltpt-bytecount, bytecount)) return NULL;
-    return chipmem_bank.xlateaddr(bltpt);
-}
+//
+//static __inline__ uae_u8 * blit_xlateptr(uaecptr bltpt, int bytecount)
+//{
+//    if (!chipmem_bank.check(bltpt,bytecount)) return NULL;
+//    return chipmem_bank.xlateaddr(bltpt);
+//}
+//
+//static __inline__ uae_u8 * blit_xlateptr_desc(uaecptr bltpt, int bytecount)
+//{
+//    if (!chipmem_bank.check(bltpt-bytecount, bytecount)) return NULL;
+//    return chipmem_bank.xlateaddr(bltpt);
+//}
 
 #ifdef DEBUG_BLITTER
 static _INLINE_ void print_bltinfo(struct bltinfo *_GCCRES_ b)

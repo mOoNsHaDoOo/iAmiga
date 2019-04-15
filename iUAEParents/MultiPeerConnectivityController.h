@@ -33,7 +33,6 @@ static NSString *const kiCadePad = @"iCadePad";
 + (MultiPeerConnectivityController *)getinstance;
 - (void)handleinputdirections:(TouchStickDPadState)hat_state buttontoreleasevertical:(NSInteger)buttontoreleasevertical buttontoreleasehorizontal: (NSInteger)buttontoreleasehorizontal deviceid:(NSString *)dID;
 - (NSInteger)handleinputbuttons:(NSInteger)buttonid buttonstate:(NSInteger)buttonstate deviceid:(NSString *)dID;
-- (void)handleinputdirections:(TouchStickDPadState)hat_state buttontoreleasevertical:(NSInteger)buttontoreleasevertical buttontoreleasehorizontal: (NSInteger)buttontoreleasehorizontal deviceid: (NSString *)dID;
 - (NSInteger) dpadstatetojoypadkey:(NSString *)direction hatstate:(TouchStickDPadState)hat_state;
 - (void)enableControllerMode;
 - (void)controllerDisconnected:(NSString *)dID;

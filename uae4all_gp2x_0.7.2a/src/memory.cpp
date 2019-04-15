@@ -987,7 +987,7 @@ static void allocate_memory (void)
     /******************/
     if (savestate_state == STATE_RESTORE)
     {
-        fseek (savestate_file, chip_filepos, SEEK_SET);
+        fseek (savestate_file, (long)chip_filepos, SEEK_SET);
         
         void *tmp=malloc(compressed_size);
         uLong outSize=allocated_chipmem;
@@ -1000,12 +1000,12 @@ static void allocate_memory (void)
         {
             // decompression failed - treat data literaly
             allocated_chipmem=(uae_u32)compressed_size;
-            fseek (savestate_file, chip_filepos, SEEK_SET);
+            fseek (savestate_file, (long)chip_filepos, SEEK_SET);
             fread (chipmemory, 1, allocated_chipmem, savestate_file);
         }
         if (allocated_bogomem > 0)
         {
-            fseek (savestate_file, bogo_filepos, SEEK_SET);
+            fseek (savestate_file, (long)bogo_filepos, SEEK_SET);
             fread (bogomemory, 1, allocated_bogomem, savestate_file);
         }
     }

@@ -163,8 +163,6 @@ static CGRect CreateIntegralScaledView(CGRect aFrame, BOOL top) {
 	
 	// full-screen, landscape mode
 	if (UIInterfaceOrientationIsLandscape(self.interfaceOrientation)) {
-		
-		
         int height = self.view.frame.size.height - self.displayTop;
 
         //Stretch or keep 3/4 aspect radio for width

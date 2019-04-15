@@ -1371,28 +1371,28 @@ static Key *new_key (Unit *unit)
 
     return k;
 }
-
-static void
-dumplock (Unit *unit, uaecptr lock)
-{
-    a_inode *a;
-    TRACE(("LOCK: 0x%lx", lock));
-    if (!lock) {
-	TRACE(("\n"));
-	return;
-    }
-    TRACE(("{ next=0x%lx, mode=%ld, handler=0x%lx, volume=0x%lx, aino %lx ",
-	   get_long (lock) << 2, get_long (lock+8),
-	   get_long (lock+12), get_long (lock+16),
-	   get_long (lock + 4)));
-    a = lookup_aino (unit, get_long (lock + 4));
-    if (a == 0) {
-	TRACE(("not found!"));
-    } else {
-	TRACE(("%s", a->nname));
-    }
-    TRACE((" }\n"));
-}
+//
+//static void
+//dumplock (Unit *unit, uaecptr lock)
+//{
+//    a_inode *a;
+//    TRACE(("LOCK: 0x%lx", lock));
+//    if (!lock) {
+//    TRACE(("\n"));
+//    return;
+//    }
+//    TRACE(("{ next=0x%lx, mode=%ld, handler=0x%lx, volume=0x%lx, aino %lx ",
+//       get_long (lock) << 2, get_long (lock+8),
+//       get_long (lock+12), get_long (lock+16),
+//       get_long (lock + 4)));
+//    a = lookup_aino (unit, get_long (lock + 4));
+//    if (a == 0) {
+//    TRACE(("not found!"));
+//    } else {
+//    TRACE(("%s", a->nname));
+//    }
+//    TRACE((" }\n"));
+//}
 
 static a_inode *find_aino (Unit *unit, uaecptr lock, const char *name, uae_u32 *err)
 {
@@ -1679,19 +1679,19 @@ get_fileinfo (Unit *unit, dpacket packet, uaecptr info, a_inode *aino)
     long days, mins, ticks;
     int i, n;
     char *x;
-
+    
     /* No error checks - this had better work. */
     stat (aino->nname, &statbuf);
-
+    
     if (aino->parent == 0) {
-	x = unit->ui.volname;
-	put_long (info + 4, 1);
-	put_long (info + 120, 1);
+        x = unit->ui.volname;
+        put_long (info + 4, 1);
+        put_long (info + 120, 1);
     } else {
-	/* AmigaOS docs say these have to contain the same value. */
-	put_long (info + 4, aino->dir ? 2 : -3);
-	put_long (info + 120, aino->dir ? 2 : -3);
-	x = aino->aname;
+        /* AmigaOS docs say these have to contain the same value. */
+        put_long (info + 4, aino->dir ? 2 : -3);
+        put_long (info + 120, aino->dir ? 2 : -3);
+        x = aino->aname;
     }
     TRACE(("name=\"%s\"\n", x));
     n = (int)strlen (x);
@@ -1699,10 +1699,16 @@ get_fileinfo (Unit *unit, dpacket packet, uaecptr info, a_inode *aino)
 	n = 106;
     i = 8;
     put_byte (info + i, n); i++;
-    while (n--)
-	put_byte (info + i, *x), i++, x++;
-    while (i < 108)
-	put_byte (info + i, 0), i++;
+    while (n--) {
+        put_byte (info + i, *x);
+        i++;
+        x++;
+    }
+    
+    while (i < 108) {
+        put_byte (info + i, 0);
+        i++;
+    }
 
     put_long (info + 116, aino->amigaos_mode);
     put_long (info + 124, (uint32_t)statbuf.st_size);
@@ -1716,21 +1722,26 @@ get_fileinfo (Unit *unit, dpacket packet, uaecptr info, a_inode *aino)
     put_long (info + 136, (uint32_t)mins);
     put_long (info + 140, (uint32_t)ticks);
     if (aino->comment == 0)
-	put_long (info + 144, 0);
+        put_long (info + 144, 0);
     else {
-	TRACE(("comment=\"%s\"\n", aino->comment));
-	i = 144;
-	x = aino->comment;
-	if (! x)
-	    x = "";
-	n = (int)strlen (x);
-	if (n > 78)
-	    n = 78;
-	put_byte (info + i, n); i++;
-	while (n--)
-	    put_byte (info + i, *x), i++, x++;
-	while (i < 224)
-	    put_byte (info + i, 0), i++;
+        TRACE(("comment=\"%s\"\n", aino->comment));
+        i = 144;
+        x = aino->comment;
+        if (! x)
+            x = "";
+        n = (int)strlen (x);
+        if (n > 78)
+            n = 78;
+        put_byte (info + i, n); i++;
+        while (n--) {
+            put_byte (info + i, *x);
+            i++;
+            x++;
+        }
+        while (i < 224) {
+            put_byte (info + i, 0);
+            i++;
+        }
     }
     PUT_PCK_RES1 (packet, DOS_TRUE);
 }
@@ -2230,7 +2241,7 @@ action_seek (Unit *unit, dpacket packet)
     old = (int32_t)lseek (k->fd, 0, SEEK_CUR);
     {      
 	uae_s32 temppos;
-	long filesize = lseek (k->fd, 0, SEEK_END);
+	off_t filesize = lseek (k->fd, 0, SEEK_END);
 	lseek (k->fd, old, SEEK_SET);
 
 	if (whence == SEEK_CUR) temppos = old + pos;

@@ -73,77 +73,78 @@ int lasttrap;
 #endif
 
 static void *extra_stack_list = NULL;
+// TODO
 
-static void *get_extra_stack (void)
-{
-    void *s = extra_stack_list;
-    if (s)
-	extra_stack_list = *(void **)s;
-    if (!s)
-	s = xmalloc (EXTRA_STACK_SIZE);
-    return s;
-}
-
-static void free_extra_stack (void *s)
-{
-    *(void **)s = extra_stack_list;
-    extra_stack_list = s;
-}
-
-static void stack_stub (void *s, TrapFunction f, uae_u32 *retval)
-{
-#ifdef CAN_DO_STACK_MAGIC
-    *retval = f ();
-    /*write_log ("returning from stack_stub\n");*/
-    longjmp (((jmp_buf *)s)[0], 1);
-#endif
-}
+//static void *get_extra_stack (void)
+//{
+//    void *s = extra_stack_list;
+//    if (s)
+//    extra_stack_list = *(void **)s;
+//    if (!s)
+//    s = xmalloc (EXTRA_STACK_SIZE);
+//    return s;
+//}
+//
+//static void free_extra_stack (void *s)
+//{
+//    *(void **)s = extra_stack_list;
+//    extra_stack_list = s;
+//}
+//
+//static void stack_stub (void *s, TrapFunction f, uae_u32 *retval)
+//{
+//#ifdef CAN_DO_STACK_MAGIC
+//    *retval = f ();
+//    /*write_log ("returning from stack_stub\n");*/
+//    longjmp (((jmp_buf *)s)[0], 1);
+//#endif
+//}
 
 static void *current_extra_stack = NULL;
 static uaecptr m68k_calladdr;
-
-static void do_stack_magic (TrapFunction f, void *s, int has_retval)
-{
-#ifdef CAN_DO_STACK_MAGIC
-    uaecptr a7;
-    jmp_buf *j = (jmp_buf *)s;
-    switch (setjmp (j[0])) {
-     case 0:
-	/* Returning directly */
-	current_extra_stack = s;
-	if (has_retval == -1) {
-	    /*write_log ("finishing m68k mode return\n");*/
-	    longjmp (j[1], 1);
-	}
-	/*write_log ("calling native function\n");*/
-	transfer_control (s, EXTRA_STACK_SIZE, stack_stub, f, has_retval);
-	/* not reached */
-	return;
-
-     case 1:
-	/*write_log ("native function complete\n");*/
-	/* Returning normally. */
-	if (stack_has_retval (s, EXTRA_STACK_SIZE))
-	    _68k_dreg (0) = get_retval_from_stack (s, EXTRA_STACK_SIZE);
-	free_extra_stack (s);
-	break;
-
-     case 2:
-	/* Returning to do a m68k call. We're now back on the main stack. */
-	a7 = _68k_areg(7) -= (sizeof (void *) + 7) & ~3;
-	/* Save stack to restore */
-	*((void **)get_real_address (a7 + 4)) = s;
-	/* Save special return address: this address contains a
-	 * calltrap that will longjmp to the right stack. */
-	put_long (_68k_areg (7), RTAREA_BASE + 0xFF00);
-	_68k_setpc (m68k_calladdr);
-	fill_prefetch_0 ();
-	/*write_log ("native function calls m68k\n");*/
-	break;
-    }
-    current_extra_stack = 0;
-#endif
-}
+//
+//static void do_stack_magic (TrapFunction f, void *s, int has_retval)
+//{
+//#ifdef CAN_DO_STACK_MAGIC
+//    uaecptr a7;
+//    jmp_buf *j = (jmp_buf *)s;
+//    switch (setjmp (j[0])) {
+//     case 0:
+//    /* Returning directly */
+//    current_extra_stack = s;
+//    if (has_retval == -1) {
+//        /*write_log ("finishing m68k mode return\n");*/
+//        longjmp (j[1], 1);
+//    }
+//    /*write_log ("calling native function\n");*/
+//    transfer_control (s, EXTRA_STACK_SIZE, stack_stub, f, has_retval);
+//    /* not reached */
+//    return;
+//
+//     case 1:
+//    /*write_log ("native function complete\n");*/
+//    /* Returning normally. */
+//    if (stack_has_retval (s, EXTRA_STACK_SIZE))
+//        _68k_dreg (0) = get_retval_from_stack (s, EXTRA_STACK_SIZE);
+//    free_extra_stack (s);
+//    break;
+//
+//     case 2:
+//    /* Returning to do a m68k call. We're now back on the main stack. */
+//    a7 = _68k_areg(7) -= (sizeof (void *) + 7) & ~3;
+//    /* Save stack to restore */
+//    *((void **)get_real_address (a7 + 4)) = s;
+//    /* Save special return address: this address contains a
+//     * calltrap that will longjmp to the right stack. */
+//    put_long (_68k_areg (7), RTAREA_BASE + 0xFF00);
+//    _68k_setpc (m68k_calladdr);
+//    fill_prefetch_0 ();
+//    /*write_log ("native function calls m68k\n");*/
+//    break;
+//    }
+//    current_extra_stack = 0;
+//#endif
+//}
 
 static uae_u32 execute_fn_on_extra_stack (TrapFunction f, int has_retval)
 {

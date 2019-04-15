@@ -70,26 +70,27 @@ static void ersatz_doio (void)
 {
     uaecptr request = _68k_areg(1);
     switch (get_word (request + 0x1C)) {
-     case 9: /* TD_MOTOR is harmless */
-     case 2: case 0x8002: /* READ commands */
-	break;
+        case 9: /* TD_MOTOR is harmless */
+        case 2: case 0x8002: /* READ commands */
+            break;
 
-     default:
-	write_log ("Only CMD_READ supported in DoIO()\n");
-	return;
+        default:
+            write_log ("Only CMD_READ supported in DoIO()\n");
+            return;
     }
     {
-	uaecptr dest = get_long (request + 0x28);
-	int start = get_long (request + 0x2C) / 512;
-	int nsecs = get_long (request + 0x24) / 512;
-	int tr = start / 11;
-	int sec = start % 11;
-	while (nsecs--) {
-	    DISK_ersatz_read (tr, sec, dest);
-	    dest += 512;
-	    if (++sec == 11)
-		sec = 0, tr++;
-	}
+        uaecptr dest = get_long (request + 0x28);
+        int start = get_long (request + 0x2C) / 512;
+        int nsecs = get_long (request + 0x24) / 512;
+        int tr = start / 11;
+        int sec = start % 11;
+        while (nsecs--) {
+            DISK_ersatz_read (tr, sec, dest);
+            dest += 512;
+            if (++sec == 11) {
+                sec = 0; tr++;
+            }
+        }
     }
 }
 
