@@ -42,7 +42,7 @@ UIView* CreateCGDisplayView(int width, int height) {
 
 const int kBytesPerPixel			= 2;
 const int kBitsPerComponent			= 5;
-const uint32_t kFormat			= kCGBitmapByteOrder16Little | kCGImageAlphaNoneSkipFirst;
+const uint32_t kFormat			    = kCGBitmapByteOrder16Little | kCGImageAlphaNoneSkipFirst;
 CGContextRef				context;
 
 
